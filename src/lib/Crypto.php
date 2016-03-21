@@ -13,7 +13,7 @@ class Crypto
     private $hash;
 
     // Generate a salt and store the hash
-    public function __construct($plain, $salt = false, $compute = true)
+    public function __construct(string $plain, $salt = false, $compute = true)
     {
         if (!$salt && $compute) {
             $this->salt = $this->generateSalt();
@@ -27,7 +27,7 @@ class Crypto
     }
 
     // withHash($hash: string, $salt: string) -> Crypto
-    public static function withHash($hash, $salt)
+    public static function withHash(string $hash, string $salt) : Crypto
     {
         $c = new self(null, null, false);
         $c->setHash($hash);
@@ -37,7 +37,7 @@ class Crypto
     }
 
     // compare($aC: Crypto, $bC: Crypto) -> bool
-    public static function compare(Crypto $aC, Crypto $bC)
+    public static function compare(Crypto $aC, Crypto $bC) : bool
     {
         // Get the two underlying hashes
         $a = $aC->getHash();
@@ -51,7 +51,7 @@ class Crypto
     }
 
     // generateSalt() -> string
-    private function generateSalt()
+    private function generateSalt() : string
     {
         // mt_rand() is inherently not
         // crypto secure, but for lack of
@@ -66,7 +66,7 @@ class Crypto
     }
 
     // computeHash($plain: string) -> string
-    private function computeHash($plain)
+    private function computeHash(string $plain) : string
     {
         // Iteratively apply the SHA 512
         // hash on the password, appending
@@ -84,22 +84,22 @@ class Crypto
         return $result;
     } // end computeHash
 
-    public function getHash()
+    public function getHash() : string
     {
         return $this->hash;
     }
 
-    public function getSalt()
+    public function getSalt() : string
     {
         return $this->salt;
     }
 
-    public function setHash($h)
+    public function setHash(string $h)
     {
         $this->hash = $h;
     }
 
-    public function setSalt($s)
+    public function setSalt(string $s)
     {
         $this->salt = $s;
     }
