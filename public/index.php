@@ -18,15 +18,13 @@ $settings = require __DIR__ . '/../src/settings.php';
 $app = new \Slim\App($settings);
 
 // Bootstrap Eloquent
-// [CITE] http://www.slimframework.com/2013/03/21/slim-and-laravel-eloquent-orm.html
-$connectionFactory = new \Illuminate\Database\Connectors\ConnectionFactory();
-$connection = $connectionFactory->make($settings['eloquent']);
+// [CITE] https://github.com/illuminate/database/blob/master/README.md
+$capsule = new \Illuminate\Database\Capsule\Manager;
+$capsule->addConnection($settings['settings']['eloquent']);
 
-$resolver = new \Illuminate\Database\ConnectionResolver();
-$resolver->addConnection('default', $connection);
-$resolver->setDefaultConnection('default');
-
-\Illuminate\Database\Eloquent\Model::setConnectionResolver($resolver);
+use Illuminate\Container\Container;
+$capsule->setAsGlobal();
+$capsule->bootEloquent();
 
 // Set up dependencies
 require __DIR__ . '/../src/dependencies.php';

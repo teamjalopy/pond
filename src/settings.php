@@ -21,7 +21,8 @@ return [
             'database' => 'pond',
             'username' => 'pond',
             'password' => 'familiar-history-procession-remark',
-            'collation' => 'utf8_general_ci',
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_general_ci',
             'prefix' => '',
         ],
 
