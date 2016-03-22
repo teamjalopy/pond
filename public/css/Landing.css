@@ -1,0 +1,20 @@
+﻿#pondPicture {
+    margin-top:20%;
+    margin-left:5%;
+}
+
+#buttonRow {
+    margin-top:10%;
+    margin-bottom:5%;
+    margin-left:5%;
+}
+
+#background {
+    background-image:url(../Lilypad.jpeg);
+    background-repeat:no-repeat;
+    background-size:cover;
+}
+
+.whiteBox {
+    background-color:white;
+}
