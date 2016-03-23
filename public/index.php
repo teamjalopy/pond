@@ -9,22 +9,12 @@ if (PHP_SAPI == 'cli-server') {
 }
 
 require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/../src/lib/autoload.php';
 
 session_start();
 
 // Instantiate the app
 $settings = require __DIR__ . '/../src/settings.php';
 $app = new \Slim\App($settings);
-
-// Bootstrap Eloquent
-// [CITE] https://github.com/illuminate/database/blob/master/README.md
-$capsule = new \Illuminate\Database\Capsule\Manager;
-$capsule->addConnection($settings['settings']['eloquent']);
-
-use Illuminate\Container\Container;
-$capsule->setAsGlobal();
-$capsule->bootEloquent();
 
 // Set up dependencies
 require __DIR__ . '/../src/dependencies.php';
