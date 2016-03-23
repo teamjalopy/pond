@@ -20,7 +20,7 @@ return [
             'host' => '127.0.0.1',
             'database' => 'pond',
             'username' => 'pond',
-            'password' => 'familiar-history-procession-remark',
+            'password' => 'typhon',
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_general_ci',
             'prefix' => '',
