@@ -27,7 +27,10 @@ return [
         ],
 
         'token' => [
-            'key' => 'BethAq5d'
+            'key' => 'BethAq5d',
+            'iss' => 'http://pondedu.me',
+            'aud' => 'http://pondedu.me',
+            'lifetime' => 1 * 7 * 24 * 60 * 60, // 1 week
         ]
 
     ],
