@@ -26,5 +26,9 @@ return [
             'prefix' => '',
         ],
 
+        'token' => [
+            'key' => 'BethAq5d'
+        ]
+
     ],
 ];

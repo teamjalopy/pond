@@ -4,8 +4,12 @@ namespace Pond;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+
 use Respect\Validation\Exceptions\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+
+use Lcobucci\JWT\Token;
+use Lcobucci\JWT\Signer\Hmac\Sha512 as Signer;
 
 class Auth {
 
@@ -14,9 +18,10 @@ class Auth {
 
         if(! $token = self::authenticate($form['username'],$form['password']) ) {
             return self::badAuthResponse($res);
+        } else {
+            return self::tokenResponse($res,$token);
         }
 
-        return $res;
     } // loginHandler
 
     private static function authenticate($user, $password) {
@@ -47,6 +52,17 @@ class Auth {
 
         if(!Crypto::compare($knownP,$givenP)) {
             return null;
+        } else {
+            $tokenBuilder = new Lcobucci\JWT\Builder();
+            $signer = new Signer();
+            $token = $tokenBuilder->setIssuer('http://pondedu.me')
+                                 ->setAudience('http://pondedu.me')
+                                 ->setIssuedAt(time())
+                                 ->setExpiration(time()+ 1 * 7 * 24 * 60 * 60) // 1 week
+                                 ->set('uid', $reqUser->getKey())
+                                 ->sign($signer, $settings['token']['key'])
+                                 ->getToken();
+            return $token;
         }
     }
 
