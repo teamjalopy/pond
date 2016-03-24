@@ -10,6 +10,5 @@ $app->get('/', function ($request, $response, $args) {
 
 
 $app->post('/api/auth', function ($req, $res, $args) {
-    $this->logger->info("[Pond] POST /api/auth");
-    var_dump($args);
+    return \Pond\Auth::loginHandler($req, $res);
 });
