@@ -9,7 +9,6 @@ $app->get('/', function ($request, $response, $args) {
 });
 
 
-
 /*$app->get('/users', function($req, $res, $args) {
     $users = \Pond\User::all();
     $stat = new \Pond\StatusContainer($users);
@@ -31,7 +30,3 @@ $app->post('/users', function($req, $res, $args) {
     $stat->message("Here is a newly created user");
     return $res->withJson($stat);
 });
-
-
-
- 

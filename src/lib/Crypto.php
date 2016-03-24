@@ -13,7 +13,7 @@ class Crypto
     private $hash;
 
     // Generate a salt and store the hash
-    public function __construct(string $plain, $salt = false, $compute = true)
+    public function __construct($plain = false, $salt = false, $compute = true)
     {
         if (!$salt && $compute) {
             $this->salt = $this->generateSalt();
