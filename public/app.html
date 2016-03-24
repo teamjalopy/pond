@@ -1,56 +1,57 @@
 <!DOCTYPE html>
-<html id="dark">
-    <head>
-        <meta charset="utf-8">
-        <title>Pond</title>
-        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-        <link rel="stylesheet" href="assets/css/landing.css">
-    </head>
-    <body id="landing">
-        <div id="bg_image"></div>
+<html lang="en" class="full">
+<head>
+    <meta charset="utf-8">
+    <title>Pond</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/landing.css">
+</head>
+<body class="full dark landing-page">
+    <div class="bg-full"></div>
 
-        <div class="landing-wrapper">
-            <div class="landing-wrapper-inner">
-                <div class="landing-content">
+    <div class="center-wrapper">
+        <div class="center-wrapper-inner">
+            <div class="center-content">
 
-                    <header>
-                        <div class="container">
-                            <nav class="navbar">
-                                <ul class="nav navbar-nav navbar-right">
-                                    <li><a href="#">Log in</a></li>
-                                </ul>
-                            </nav>
+                <header>
+                    <div class="container">
+                        <nav class="navbar">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="#">Log in</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </header>
+
+                <main class="center-content-inner reveal-animation" id="hero">
+                    <img src="assets/img/pond-white.png" class="pond-logo">
+
+                    <form class="reveal-content">
+                        <div class="form-group">
+                            <input type="email" class="form-control input-lg" placeholder="Email"
+                             spellcheck="false" autocorrect="off" autocapitalize="off" autofocus>
                         </div>
-                    </header>
-
-                    <main class="landing-content-inner reveal-animation" id="hero">
-                        <img src="assets/img/pond-white.png" class="pond-logo">
-
-                        <form id="signup">
-                            <div class="form-group">
-                                <input type="email" class="form-control input-lg" placeholder="Email"
-                                 spellcheck="false" autocorrect="off" autocapitalize="off" autofocus>
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-lg btn-default btn-block">Sign up</button>
-                            </div>
-                        </form>
-                    </main>
-
-                    <footer>
-                        <div class="container">
-                            <p>&copy; 2016 Team Jalopy<p>
+                        <div class="form-group">
+                            <button class="btn btn-lg btn-default btn-block glass">Sign up</button>
                         </div>
-                    </footer>
+                    </form>
+                </main>
 
-                </div><!-- /.landing-content -->
-            </div><!-- /.landing-wrapper-inner -->
-        </div><!-- /.landing-wrapper -->
+                <footer>
+                    <div class="container">
+                        <p>&copy; 2016 Team Jalopy<p>
+                    </div>
+                </footer>
+
+            </div><!-- /.center-content -->
+        </div><!-- /.center-wrapper-inner -->
+    </div><!-- /.center-wrapper -->
 
 
-        <script src="app/lib/angular.min.js"></script>
-        <script src="app/lib/angular-ui-bootstrap.min.js"></script>
-        <script src="app/lib/angular-route.min.js"></script>
+    <script src="app/lib/angular.min.js"></script>
+    <script src="app/lib/angular-ui-bootstrap.min.js"></script>
+    <script src="app/lib/angular-route.min.js"></script>
 
-    </body>
+</body>
 </html>

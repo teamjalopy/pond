@@ -1,75 +1,32 @@
-* {
-    box-sizing: border-box;
-}
-
-html#dark, #dark body {
-    width: 100%;
-    height: 100%;
-
-    background: black;
-    color: white;
-
-    font-size: 13pt;
-
-    margin: 0;
-    padding: 0;
-}
-
-#bg_image {
-    width: 100%;
-    height: 100%;
-    background: url('../img/pond-bg.jpg') no-repeat center center fixed;
-    background-size: cover;
+.landing-page .bg-full {
+    background-image: url('../img/pond-bg.jpg');
     opacity: 0.6;
-    position: absolute;
-    top: 0;
-    z-index: 0;
 }
 
-#login #bg_image {
+.login-page .bg-full {
     background-image: url('../img/fish-bg.jpg');
+    opacity: 0.6;
 }
 
-.landing-wrapper {
-    position: relative;
-    z-index: 1;
-    display: table;
-    width: 100%;
-    height: 100%;
-    min-width: 100%;
-    min-height: 100%;
-}
-
-.landing-wrapper-inner {
-    vertical-align: middle;
-    display: table-cell;
-}
-
-.landing-content {
-    margin: 0 auto;
-}
-
-.landing-content header {
+.center-content header {
     width: 100%;
     position: fixed;
     top: 0;
 }
 
-.landing-content footer {
+.center-content footer {
     width: 100%;
     position: fixed;
     bottom: 0;
 }
 
-.landing-content header p,
-.landing-content footer p {
+.center-content header p,
+.center-content footer p {
     margin: 20px 0;
 }
 
-.landing-content-inner {
-    width: 100%;
+.center-content-inner {
     max-width: 300px;
-    margin: 0 auto;
 }
 
 .pond-logo {
@@ -84,22 +41,25 @@ html#dark, #dark body {
     user-select: none;
 }
 
-.btn {
-    background: white;
+.glass.btn {
+    background: white; /* fallback */
+    color: black; /* fallback */
+
     background: rgba(255,255,255,0.3);
-    color: black;
     color: white;
+
     border: none;
 }
 
-.btn:hover, .btn:active, .btn:hover:active {
-    background: #999;
+.glass.btn:hover, .glass.btn:active, .glass.btn:hover:active {
+    background: #999; /* fallback */
+    color: black; /* fallback */
+
     background: rgba(255,255,255,0.5);
-    color: black;
     color: white;
 }
 
-.btn:active {
+.glass.btn:active {
     opacity: 0.8;
 }
 
@@ -116,44 +76,44 @@ html#dark, #dark body {
     -moz-transform: translateY(0px);
     transform: translateY(0px);
 
-    -webkit-animation-name: shiftHero;
+    -webkit-animation-name: shiftUp;
     -webkit-animation-iteration-count: 1;
     -webkit-animation-timing-function: ease-out;
     -webkit-animation-duration: 1.5s;
 
-    -moz-animation-name: shiftHero;
+    -moz-animation-name: shiftUp;
     -moz-animation-iteration-count: 1;
     -moz-animation-timing-function: ease-out;
     -moz-animation-duration: 1.5s;
 
-    animation-name: shiftHero;
+    animation-name: shiftUp;
     animation-iteration-count: 1;
     animation-timing-function: ease-out;
     animation-duration: 1.5s;
 }
 
-.reveal-animation form {
+.reveal-animation .reveal-content {
     opacity: 1;
 
-    -webkit-animation-name: showSignUp;
+    -webkit-animation-name: fadeInWithDelay;
     -webkit-animation-iteration-count: 1;
     -webkit-animation-timing-function: ease-out;
     -webkit-animation-duration: 1.5s;
 
-    -moz-animation-name: showSignUp;
+    -moz-animation-name: fadeInWithDelay;
     -moz-animation-iteration-count: 1;
     -moz-animation-timing-function: ease-out;
     -moz-animation-duration: 1.5s;
 
-    animation-name: showSignUp;
+    animation-name: fadeInWithDelay;
     animation-iteration-count: 1;
     animation-timing-function: ease-out;
     animation-duration: 1.5s;
 }
 
-/* shiftHero animation */
+/* shiftUp animation */
 
-@-webkit-keyframes shiftHero {
+@-webkit-keyframes shiftUp {
     0% {
         -webkit-transform: translateY(80px);
     }
@@ -165,7 +125,7 @@ html#dark, #dark body {
     }
 }
 
-@-moz-keyframes shiftHero {
+@-moz-keyframes shiftUp {
     0% {
         -moz-transform: translateY(80px);
     }
@@ -177,7 +137,7 @@ html#dark, #dark body {
     }
 }
 
-@keyframes shiftHero {
+@keyframes shiftUp {
     0% {
         transform: translateY(80px);
     }
@@ -189,9 +149,9 @@ html#dark, #dark body {
     }
 }
 
-/* showSignUp animation */
+/* fadeInWithDelay animation */
 
-@-webkit-keyframes showSignUp {
+@-webkit-keyframes fadeInWithDelay {
     0% {
         opacity: 0;
     }
@@ -203,7 +163,7 @@ html#dark, #dark body {
     }
 }
 
-@-moz-keyframes showSignUp {
+@-moz-keyframes fadeInWithDelay {
     0% {
         opacity: 0;
     }
@@ -215,7 +175,7 @@ html#dark, #dark body {
     }
 }
 
-@keyframes showSignUp {
+@keyframes fadeInWithDelay {
     0% {
         opacity: 0;
     }
@@ -225,31 +185,4 @@ html#dark, #dark body {
     100% {
         opacity: 1;
     }
-}
-
-/* "Vertical input group"
- * Bootstrap extension
- * [CITE] http://codepen.io/jxnblk/pen/gJFtz
-*/
-
-.input-group-vertical {
-  margin-bottom: 10px;
-}
-.input-group-vertical .form-control {
-  border-radius: 0;
-}
-.input-group-vertical .form-group {
-  margin-bottom: 0;
-}
-.input-group-vertical .form-group:not(:last-child) .form-control:not(:focus) {
-  border-bottom-color: transparent;
-}
-.input-group-vertical .form-group:first-child .form-control {
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-}
-.input-group-vertical .form-group:last-child .form-control {
-  border-bottom-right-radius: 3px;
-  border-bottom-left-radius: 3px;
-  top: -2px;
 }
