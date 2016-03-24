@@ -1,26 +1,54 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html id="dark">
     <head>
         <meta charset="utf-8">
-        <title>Pond - Learning Done Easy</title>
+        <title>Pond</title>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/landing.css">
     </head>
-    <!--Bootstrap CSS-->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/landing.css">
-    <body>
-        <div class="container-fluid">
-            <div class="row" id="pondPicture">
-                <div class="col-md-4"></div>
-                <div class="card card-block col-md-3 whiteBox">
-                    <!--Background image should be a moving pond-->
-                    <img src="Pond Color.png" alt="Pong Logo" class="img-rectangle card-img-top" width="100%;" height="100%;">
-                    <div class="row" id="buttonRow">
-                        <a href="Login.html" class="btn btn-primary">Login</a>
-                        <a href="SignUp.html" class="btn btn-primary">Signup</a>
-                        <span>Learning Made Easy</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <body id="landing">
+        <div id="bg_image"></div>
+
+        <div class="landing-wrapper">
+            <div class="landing-wrapper-inner">
+                <div class="landing-content">
+
+                    <header>
+                        <div class="container">
+                            <nav class="navbar">
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="#">Log in</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </header>
+
+                    <main class="landing-content-inner reveal-animation" id="hero">
+                        <img src="img/pond-white.png" class="pond-logo">
+
+                        <form id="signup">
+                            <div class="form-group">
+                                <input type="email" class="form-control input-lg" placeholder="Email"
+                                 spellcheck="false" autocorrect="off" autocapitalize="off" autofocus>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-lg btn-default btn-block">Sign up</button>
+                            </div>
+                        </form>
+                    </main>
+
+                    <footer>
+                        <div class="container">
+                            <p>&copy; 2016 Team Jalopy<p>
+                        </div>
+                    </footer>
+
+                </div><!-- /.landing-content -->
+            </div><!-- /.landing-wrapper-inner -->
+        </div><!-- /.landing-wrapper -->
+
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.2/angular.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.2/angular-animate.min.js"></script> -->
+
     </body>
 </html>
