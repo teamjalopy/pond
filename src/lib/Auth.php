@@ -16,7 +16,6 @@ class Auth {
             return self::badAuthResponse($res);
         }
 
-
         return $res;
     } // loginHandler
 
