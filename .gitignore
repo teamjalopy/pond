@@ -5,7 +5,8 @@ composer.phar
 /vendor/
 
 # SLIM
-/logs/
+/logs/*
+!/logs/README.md
 
 # ELOQUENT
 *.sqlite
