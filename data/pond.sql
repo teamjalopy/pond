@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.47-0ubuntu0.14.04.1)
 # Database: pond
-# Generation Time: 2016-03-22 00:55:34 +0000
+# Generation Time: 2016-03-24 00:19:05 +0000
 # ************************************************************
 
 
@@ -19,7 +19,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-USE DATABASE `pond`
 
 # Dump of table lesson_progress
 # ------------------------------------------------------------
@@ -85,6 +84,8 @@ CREATE TABLE `users` (
   `salt` char(64) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `validation_token` varchar(64) DEFAULT NULL,
+  `validated` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
