@@ -92,14 +92,14 @@ html#dark, #dark body {
     border: none;
 }
 
-.btn:enabled:hover, .btn:enabled:active, .btn:enabled:hover:active {
+.btn:hover, .btn:active, .btn:hover:active {
     background: #999;
     background: rgba(255,255,255,0.5);
     color: black;
     color: white;
 }
 
-.btn:enabled:active {
+.btn:active {
     opacity: 0.8;
 }
 
