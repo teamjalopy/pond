@@ -14,11 +14,13 @@
         </fieldset>
 
         <div class="form-group">
-            <button class="btn btn-lg btn-default btn-block glass">Log in</button>
+            <button class="btn btn-lg btn-default btn-block glass" ng-disabled="!submitEnabled">Log in</button>
         </div>
 
-        <div class="glass alert alert-danger" role="alert" ng-repeat="error in errors" ng-cloak ng-show="LoginForm.$submitted">
-            <strong>Whoops!</strong> {{message}}
+        <div class="animate-alert" ng-repeat="error in errors" ng-show="LoginForm.$submitted">
+            <div class="glass alert alert-danger" role="alert">
+                <strong>Whoops!</strong> {{error.message}}
+            </div>
         </div>
 
     </form>

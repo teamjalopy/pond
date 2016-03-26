@@ -17,15 +17,19 @@ angular.module('pond.LoginView', ['ngRoute'])
     $scope.topLinkText = 'Sign up';
     $scope.topLink = '#/';
 
+    $scope.errors = [];
+    $scope.submitEnabled = true;
+
     $scope.submitLogin = function() {
+
+        $scope.errors = [];
+        $scope.submitEnabled = false;
 
         // Must use `this` instead of `$scope` for model access because login form
         // is in an ngInclude rather than directly in the template (LandingTemplate),
         // so $scope is lost because Angular creates a child scope. `this` will always resolve
         // to the current scope (the child scope in this case, because submitLogin()
         // is therein triggered).
-
-        this.errors = [];
 
         var loginData = { 'username' : this.loginUsername, 'password' : this.loginPassword };
 
@@ -38,12 +42,13 @@ angular.module('pond.LoginView', ['ngRoute'])
         .then(
             function successCallback(response) {
                 console.log(response);
+                console.log("TODO redirect and store token");
             },
             function errorCallback(response) {
-                this.errors.push({
+                $scope.submitEnabled = true;
+                $scope.errors.push({
                     'message': response.data.message
                 });
-                console.log(this);
             }
         );
     };

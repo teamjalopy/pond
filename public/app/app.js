@@ -2,6 +2,7 @@
 
 angular.module('pond', [
     'ngRoute',
+    'ngAnimate',
     'pond.HomeView',
     'pond.LoginView'
 ])
