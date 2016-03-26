@@ -5,11 +5,12 @@ angular.module('pond', [
     'pond.HomeView',
     'pond.LoginView'
 ])
-.config(['$routeProvider',
-    function($routeProvider) {
+.config(['$routeProvider', function($routeProvider) {
         $routeProvider.otherwise({ redirectTo: '/' });
-    }
-]);
+}])
+.value('settings',{
+    'baseURI': 'http://pond.dev/'
+});
 /*
 var app = angular.module('pond', ['ngRoute']);
 

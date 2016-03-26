@@ -63,6 +63,12 @@
     opacity: 0.8;
 }
 
+.glass.alert-danger {
+    border: none;
+    background: rgba(255,0,0,0.2);
+    color: #fcc;
+}
+
 .nav li a, .nav li a:hover {
     background: none;
     color: #fff;

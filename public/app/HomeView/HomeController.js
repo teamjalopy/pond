@@ -10,7 +10,6 @@ angular.module('pond.HomeView', ['ngRoute'])
 }])
 
 .controller('HomeController', ['$scope', '$http', function($scope, $http) {
-    console.log('home controller');
 
     $scope.pagePartial = '/app/HomeView/HomePartial.html';
     $scope.bgClass = 'front';

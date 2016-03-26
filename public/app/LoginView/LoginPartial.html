@@ -1,7 +1,7 @@
 <main class="center-content-inner">
     <img src="assets/img/pond-white.png" class="pond-logo">
 
-    <form>
+    <form ng-submit="submitLogin()" name="LoginForm" ng-model="LoginForm">
         <fieldset class="input-group-vertical">
             <div class="form-group">
                 <input type="text" class="form-control input-lg" placeholder="Username" spellcheck="false" autocorrect="off" autocapitalize="off" autofocus
@@ -14,8 +14,12 @@
         </fieldset>
 
         <div class="form-group">
-            <button class="btn btn-lg btn-default btn-block glass"
-            ng-click="submitLogin()">Log in</button>
+            <button class="btn btn-lg btn-default btn-block glass">Log in</button>
         </div>
+
+        <div class="glass alert alert-danger" role="alert" ng-repeat="error in errors" ng-cloak ng-show="LoginForm.$submitted">
+            <strong>Whoops!</strong> {{message}}
+        </div>
+
     </form>
 </main>

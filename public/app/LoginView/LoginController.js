@@ -9,8 +9,7 @@ angular.module('pond.LoginView', ['ngRoute'])
     });
 }])
 
-.controller('LoginController', ['$scope', '$http', function($scope, $http) {
-    console.log('login controller');
+.controller('LoginController', ['$scope', '$http', 'settings', function($scope, $http, settings) {
 
     $scope.pagePartial = '/app/LoginView/LoginPartial.html';
     $scope.bgClass = 'login';
@@ -19,12 +18,20 @@ angular.module('pond.LoginView', ['ngRoute'])
     $scope.topLink = '#/';
 
     $scope.submitLogin = function() {
-        var loginData = { 'username' : $scope.loginUsername, 'password' : $scope.loginPassword };
-        console.log(loginData);
+
+        // Must use `this` instead of `$scope` for model access because login form
+        // is in an ngInclude rather than directly in the template (LandingTemplate),
+        // so $scope is lost because Angular creates a child scope. `this` will always resolve
+        // to the current scope (the child scope in this case, because submitLogin()
+        // is therein triggered).
+
+        this.errors = [];
+
+        var loginData = { 'username' : this.loginUsername, 'password' : this.loginPassword };
 
         $http({
             'method': 'POST',
-            'url': 'http://private-ff358f-pond1.apiary-mock.com/auth',
+            'url': settings.baseURI + 'api/auth',
             'headers': { 'Content-Type' : 'application/json'},
             'data': loginData
         })
@@ -33,7 +40,10 @@ angular.module('pond.LoginView', ['ngRoute'])
                 console.log(response);
             },
             function errorCallback(response) {
-                console.log("error callback");
+                this.errors.push({
+                    'message': response.data.message
+                });
+                console.log(this);
             }
         );
     };
