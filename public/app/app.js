@@ -30,10 +30,31 @@ app.controller('MainController', function($scope, LandingPage) {
     $scope.LandingPage = LandingPage;
 });
 
-app.controller('LogInController', function($scope, LandingPage) {
+app.controller('LogInController', function($scope, LandingPage, $http) {
     LandingPage.topLinkText    = 'Sign up';
     LandingPage.topLinkAddress = '#/sign-up';
     LandingPage.bodyClass      = 'log-in-page';
+
+    $scope.submitLogin = function() {
+        var loginData = { 'username' : $scope.loginUsername, 'password' : $scope.loginPassword };
+        console.log(loginData);
+        
+        $http({
+            'method': 'POST',
+            'url': 'http://private-ff358f-pond1.apiary-mock.com/auth',
+            'headers': { 'Content-Type' : 'application/json'},
+            'data': loginData
+        })
+        .then(
+            function successCallback(response) {
+                console.log(response);
+            },
+            function errorCallback(response) {
+                console.log("error callback");
+            }
+        );
+
+    };
 });
 
 app.controller('SignUpController', function($scope, LandingPage) {

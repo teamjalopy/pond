@@ -51,15 +51,18 @@
                         <form>
                             <fieldset class="input-group-vertical">
                                 <div class="form-group">
-                                    <input type="text" class="form-control input-lg" placeholder="Username" spellcheck="false" autocorrect="off" autocapitalize="off" autofocus>
+                                    <input type="text" class="form-control input-lg" placeholder="Username" spellcheck="false" autocorrect="off" autocapitalize="off" autofocus
+                                    ng-model="loginUsername">
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control input-lg" placeholder="Password">
+                                    <input type="password" class="form-control input-lg" placeholder="Password"
+                                    ng-model="loginPassword">
                                 </div>
                             </fieldset>
 
                             <div class="form-group">
-                                <button class="btn btn-lg btn-default btn-block glass">Log in</button>
+                                <button class="btn btn-lg btn-default btn-block glass"
+                                ng-click="submitLogin()">Log in</button>
                             </div>
                         </form>
                     </main>
