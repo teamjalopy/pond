@@ -1,9 +1,9 @@
-.sign-up-page .bg-full {
+.bg-full.front {
     background-image: url('../img/pond-bg.jpg');
     opacity: 0.6;
 }
 
-.log-in-page .bg-full {
+.bg-full.login {
     background-image: url('../img/fish-bg.jpg');
     opacity: 0.6;
 }
@@ -61,6 +61,18 @@
 
 .glass.btn:active {
     opacity: 0.8;
+}
+
+.glass.alert-danger {
+    border: none;
+    background: rgba(255,0,0,0.2);
+    color: #fcc;
+}
+
+.glass.alert-success {
+    border: none;
+    background: rgba(0,255,0,0.2);
+    color: #cfc;
 }
 
 .nav li a, .nav li a:hover {

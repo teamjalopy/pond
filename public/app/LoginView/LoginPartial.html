@@ -1,0 +1,36 @@
+<main class="center-content-inner">
+    <img src="assets/img/pond-white.png" class="pond-logo">
+
+    <form ng-submit="submitLogin()" name="LoginForm" ng-model="LoginForm">
+        <fieldset class="input-group-vertical">
+            <div class="form-group">
+                <input type="text" class="form-control input-lg" placeholder="Username" spellcheck="false" autocorrect="off" autocapitalize="off" autofocus
+                ng-model="loginUsername">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control input-lg" placeholder="Password"
+                ng-model="loginPassword">
+            </div>
+        </fieldset>
+
+        <div class="form-group">
+            <button class="btn btn-lg btn-default btn-block glass"
+            ng-disabled="!submitEnabled">Log in</button>
+        </div>
+
+        <div class="animate-alert" ng-repeat="error in errors" ng-show="LoginForm.$submitted">
+            <div class="glass alert alert-danger" role="alert">
+                <strong>Whoops!</strong> {{error.message}}
+            </div>
+        </div>
+
+        <div class="glass alert alert-danger" role="alert" ng-show="needLogin">
+            You need to be logged in to access this page.
+        </div>
+
+        <div class="glass alert alert-success" role="alert" ng-show="didLogOut">
+            You've been successfully logged out.
+        </div>
+
+    </form>
+</main>
