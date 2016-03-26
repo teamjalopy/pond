@@ -69,6 +69,12 @@
     color: #fcc;
 }
 
+.glass.alert-success {
+    border: none;
+    background: rgba(0,255,0,0.2);
+    color: #cfc;
+}
+
 .nav li a, .nav li a:hover {
     background: none;
     color: #fff;

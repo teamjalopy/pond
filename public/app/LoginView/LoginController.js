@@ -22,11 +22,14 @@ function($scope, $http, $location, $cookies, settings) {
     $scope.submitEnabled = true;
 
     $scope.needLogin = $location.search().e == 'needLogin';
+    $scope.didLogOut = $location.search().e == 'didLogOut';
 
     $scope.submitLogin = function() {
 
         $scope.errors = [];
         $scope.submitEnabled = false;
+
+        $location.search('e', null);
 
         // Must use `this` instead of `$scope` for model access because login form
         // is in an ngInclude rather than directly in the template (LandingTemplate),

@@ -14,7 +14,8 @@
         </fieldset>
 
         <div class="form-group">
-            <button class="btn btn-lg btn-default btn-block glass" ng-disabled="!submitEnabled">Log in</button>
+            <button class="btn btn-lg btn-default btn-block glass"
+            ng-disabled="!submitEnabled">Log in</button>
         </div>
 
         <div class="animate-alert" ng-repeat="error in errors" ng-show="LoginForm.$submitted">
@@ -25,6 +26,10 @@
 
         <div class="glass alert alert-danger" role="alert" ng-show="needLogin">
             You need to be logged in to access this page.
+        </div>
+
+        <div class="glass alert alert-success" role="alert" ng-show="didLogOut">
+            You've been successfully logged out.
         </div>
 
     </form>

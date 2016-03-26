@@ -19,10 +19,11 @@ function($scope, $http, $cookies, $location) {
         }
     });
 
-    $scope.message = $cookies.get('token');
+    $scope.message = "Dashboard controller works!";
 
     $scope.logOut = function() {
         $cookies.remove('token');
+        $location.search('e','didLogOut');
         $location.path('/log-in');
     }
 }]);
