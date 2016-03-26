@@ -9,7 +9,8 @@ angular.module('pond.LoginView', ['ngRoute'])
     });
 }])
 
-.controller('LoginController', ['$scope', '$http', 'settings', function($scope, $http, settings) {
+.controller('LoginController', ['$scope', '$http', '$location', '$cookies', 'settings',
+function($scope, $http, $location, $cookies, settings) {
 
     $scope.pagePartial = '/app/LoginView/LoginPartial.html';
     $scope.bgClass = 'login';
@@ -41,8 +42,11 @@ angular.module('pond.LoginView', ['ngRoute'])
         })
         .then(
             function successCallback(response) {
-                console.log(response);
-                console.log("TODO redirect and store token");
+                // Store token
+                console.log(response.data.data.token);
+                $cookies.put('token', response.data.data.token);
+                // Redirect to dashboard
+                //$location.path('/dashboard');
             },
             function errorCallback(response) {
                 $scope.submitEnabled = true;

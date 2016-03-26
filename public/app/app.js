@@ -3,8 +3,10 @@
 angular.module('pond', [
     'ngRoute',
     'ngAnimate',
+    'ngCookies',
     'pond.HomeView',
-    'pond.LoginView'
+    'pond.LoginView',
+    'pond.DashboardView'
 ])
 .config(['$routeProvider', function($routeProvider) {
         $routeProvider.otherwise({ redirectTo: '/' });
