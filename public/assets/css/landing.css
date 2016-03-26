@@ -1,9 +1,9 @@
-.sign-up-page .bg-full {
+.bg-full.front {
     background-image: url('../img/pond-bg.jpg');
     opacity: 0.6;
 }
 
-.log-in-page .bg-full {
+.bg-full.login {
     background-image: url('../img/fish-bg.jpg');
     opacity: 0.6;
 }
