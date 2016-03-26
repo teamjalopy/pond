@@ -9,6 +9,20 @@ angular.module('pond.DashboardView', ['ngRoute'])
     });
 }])
 
-.controller('DashboardController', ['$scope', '$http', function($scope, $http) {
-    $scope.message = "dashboard controller works!";
+.controller('DashboardController', ['$scope', '$http', '$cookies', '$location',
+function($scope, $http, $cookies, $location) {
+
+    $scope.$on('$routeChangeSuccess', function () {
+        if(!$cookies.get('token')) {
+            $location.search('e','needLogin');
+            $location.path('/log-in');
+        }
+    });
+
+    $scope.message = $cookies.get('token');
+
+    $scope.logOut = function() {
+        $cookies.remove('token');
+        $location.path('/log-in');
+    }
 }]);

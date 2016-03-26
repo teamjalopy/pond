@@ -21,6 +21,8 @@ function($scope, $http, $location, $cookies, settings) {
     $scope.errors = [];
     $scope.submitEnabled = true;
 
+    $scope.needLogin = $location.search().e == 'needLogin';
+
     $scope.submitLogin = function() {
 
         $scope.errors = [];
@@ -46,7 +48,7 @@ function($scope, $http, $location, $cookies, settings) {
                 console.log(response.data.data.token);
                 $cookies.put('token', response.data.data.token);
                 // Redirect to dashboard
-                //$location.path('/dashboard');
+                $location.path('/dashboard');
             },
             function errorCallback(response) {
                 $scope.submitEnabled = true;
