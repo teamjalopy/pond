@@ -19,5 +19,4 @@ $app->get('/users/{user_id}', function($req, $res, $args) {
 $app->post('/users', function($req, $res, $args) {
   $reg = new \Pond\Reg($this);
   $valid = $reg->userHandler($req, $res);
-  echo("this worked asshole");
 });
