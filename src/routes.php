@@ -8,25 +8,16 @@ $app->get('/', function ($request, $response, $args) {
     return $this->renderer->render($response, 'index.phtml', $args);
 });
 
-
-/*$app->get('/users', function($req, $res, $args) {
-    $users = \Pond\User::all();
-    $stat = new \Pond\StatusContainer($users);
-    $stat->message("Here are all the users");
-    return $res->withJson($stat);
-});
- */
-
 $app->get('/users/{user_id}', function($req, $res, $args) {
-    $users = \Pond\User::find(2);
+    $users = Pond\User::find($args['user_id']);
     $stat = new \Pond\StatusContainer($users);
-    $stat->message("Here is user_id 1");
+    $stat->message("Here is requested user");
     return $res->withJson($stat);
 });
+
 
 $app->post('/users', function($req, $res, $args) {
-    $users = \Pond\User::create(array('user_id' => 2, 'username' =>'kBeth', 'name' => "Kimberly Beth", 'type' => 'STUDENT', 'password' => '21346', 'salt' => 'peanut', 'created_at' => '2008-11-11 13:23:44', 'updated_at' => '2008-11-11 11:12:01' ));
-    $stat = new \Pond\StatusContainer($users);
-    $stat->message("Here is a newly created user");
-    return $res->withJson($stat);
+  $reg = new \Pond\Reg($this);
+  $valid = $reg->userHandler($req, $res);
+  echo("this worked asshole");
 });
