@@ -26,39 +26,36 @@ class UserController
     $this->logger = $this->container->get('logger');
   }
 
-  public function registrationHandler(Request $request, Response $response): Response {
+  public function registrationHandler(Request $req, Response $res): Response {
     $stat = new \Pond\StatusContainer();
-    $form = $request->getParsedBody();
+    $user = new \Pond\User();
+    $form = $req->getParsedBody();
 
     $email = @$form['email'];
     $password = @$form['password'];
-    $crypto = new Pond\Crypto($password);
+    $crypto = new Crypto($password);
 
-    $stat->error('Email or password invalid.');
-    $stat->message('Check your email and password.');
-    $response = $response->withStatus(401);
+    if($this->validation($email, $password)){
+      $stat->success();
+      $stat->message('User sucessfully created.');
+      $res = $res->withStatus(200);
 
-    // if(validation($email, $password)){
-    //   $stat->success();
-    //   $stat->message('User sucessfully created.');
-    //   $res = $res->withStatus(200);
-    //
-    //   $user->user_id = @$form['user_id'];
-    //   $user->email = $email;
-    //   $user->name = @$form['name'];
-    //   $user->type = @$form['type'];
-    //   $user->password = $crypto->getHash();
-    //   $user->salt = $crypto->getSalt();
-    //   $user->save();
-    // }
-    //
-    // else{
-    //   $stat->error('Email or password invalid.');
-    //   $stat->message('Check your email and password.');
-    //   $response = $response->withStatus(401);
-    // }
+      $user->user_id = @$form['user_id'];
+      $user->email = $email;
+      $user->name = @$form['name'];
+      $user->type = @$form['type'];
+      $user->password = $crypto->getHash();
+      $user->salt = $crypto->getSalt();
+      $user->save();
+    }
 
-    return $response->withJson($stat);
+    else{
+      $stat->error('Invalid Entry');
+      $stat->message('Check your email and password.');
+      $res = $res->withStatus(401);
+    }
+
+    return $res->withJson($stat);
 
   }
 
@@ -82,13 +79,12 @@ class UserController
        }
 
        // Try to get the requested User or throw an exception
-       $reqUser = User::where('email', $email)->firstOrFail();
-       if($reqUser != null){
-           $this->logger->info('Email is already in use');
-           return false;
+       try{
+           $reqUser = User::where('email', $email)->firstOrFail();
+           $this->logger->info("email already in use");
+       } catch(ModelNotFoundException $e){
+           return true;
        }
-
-       return true;
 
    }
 

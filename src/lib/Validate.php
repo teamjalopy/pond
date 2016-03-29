@@ -9,7 +9,7 @@ class Validate {
     public static function get(string $name) {
         switch ($name) {
             case 'email':
-                return v::notEmpty()->alnum()->noWhitespace()->length(3,254)->email();
+                return v::notEmpty()->email()->noWhitespace()->length(3,254);
                 break;
 
             case 'password':

@@ -11,15 +11,7 @@ $app->get('/api/users/{user_id}', function($req, $res, $args) {
 
 
 $app->post('/api/users', function($req, $res, $args) {
-    /*$form = $req->getParsedBody();
-    $user = new Pond\User;
-    $user->email = @$form['email'];
-    $user->name = @$form['name'];
-    $user->type = @$form['type'];
-    $user->password = @$form['password'];
-    $user->save();*/
     $reg = new \Pond\UserController($this);
-    // $var = $reg->registrationHandler($req, $res);
-    // var_dump($var);
+    $res = $reg->registrationHandler($req, $res);
     return $res;
 });
