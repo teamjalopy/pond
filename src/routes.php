@@ -19,6 +19,7 @@ $app->post('/api/users', function($req, $res, $args) {
     $user->password = @$form['password'];
     $user->save();*/
     $reg = new \Pond\UserController($this);
-    $var = $reg->registrationHandler($req, $res);
-    var_dump($var);
+    // $var = $reg->registrationHandler($req, $res);
+    // var_dump($var);
+    return $res;
 });

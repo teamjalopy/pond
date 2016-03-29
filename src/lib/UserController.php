@@ -4,20 +4,24 @@ namespace Pond;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+
 use Respect\Validation\Validator as v;
+
 use Respect\Validation\Exceptions\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use \RuntimeException;
+
 use Pond\User;
 use Pond\Auth;
+
 use Slim\Container;
 
-class UserController extends Controller
+class UserController
 {
   private $container;
   private $logger;
 
-  function __construct(Container $c ){
+  function __construct(Container $c){
     $this->container = $c;
     $this->logger = $this->container->get('logger');
   }
