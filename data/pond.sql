@@ -77,7 +77,7 @@ CREATE TABLE `modules` (
 
 CREATE TABLE `users` (
   `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(64) NOT NULL DEFAULT '',
+  `email` varchar(254) NOT NULL DEFAULT '',
   `name` varchar(128) DEFAULT NULL,
   `type` enum('TEACHER','STUDENT') NOT NULL,
   `password` char(128) DEFAULT NULL,
