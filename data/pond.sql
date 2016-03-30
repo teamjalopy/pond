@@ -43,7 +43,7 @@ CREATE TABLE `lesson_progress` (
 CREATE TABLE `lessons` (
   `lesson_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `creator_id` int(11) unsigned NOT NULL,
-  `lesson_name` int(128) DEFAULT NULL,
+  `lesson_name` varchar(128) DEFAULT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
