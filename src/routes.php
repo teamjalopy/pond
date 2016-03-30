@@ -13,23 +13,39 @@ $app->get('/api/auth/{user_id}', function ($req, $res) {
     return $isAuth ? $res->withStatus(200) : $res->withStatus(401);
 });
 
-$app->get('/lessons/{lesson_id}', function($req, $res, $args) {
+$app->get('/api/lessons/{lesson_id}', function($req, $res, $args) {
     
 });
 
-$app->put('/lessons/{lesson_id}', function($req, $res, $args) {
+$app->put('/api/lessons/{lesson_id}', function($req, $res, $args) {
     
 });
 
-$app->delete('/lessons/{lesson_id}', function($req, $res, $args) {
+$app->delete('/api/lessons/{lesson_id}', function($req, $res, $args) {
     
 });
 
-$app->get('/lessons', function($req, $res, $args) {
-    
+$app->get('/api/lessons', function($req, $res, $args) {
+    $db = new \Pond\Lesson($this);
+	$array = [];
+	$jsonResponse = $response->withHeader("Content-type","application/json");
+	
+	foreach($db->query('SELECT * FROM lessons') as $row) {
+    	array_push($array, [
+			"lesson_id" => $row['lesson_id'],
+			"lesson_name" => $row['lesson_name'],
+			"creator_id" => $row['creator_id'],
+			"published" => ($row['published'] == 1)
+		]);
+    }
+	
+	return $jsonResponse->write( json_encode($array) );
+	
 });
 
-$app->post('/lessons', function($req, $res, $args) {
-    $less = new \Pond\Lesson($this);
-    return $less->lessonHandler($req, $res);
+$app->post('/api/lessons', function($req, $res, $args) {
+    $db = new \Pond\Lesson($this);
+    $creator = $req->getAttribute('creator_id'); 
+	$lesson = $req->getAttribute('lesson_name');
+	$db->query("INSERT INTO lessons (creator_id,lesson_name) VALUES ('$creator','$lesson');");
 });
