@@ -27,32 +27,26 @@ $app->delete('/api/lessons/{lesson_id}', function($req, $res, $args) {
 
 $app->get('/api/lessons', function($req, $res, $args) {
   $lessonObj = [];
-
-  // $jsonResponse = $res->withHeader("Content-type","application/json");
+  $lessons = \Pond\Lesson::all();
+ 
   foreach($lessons as $lesson){
     array_push($lessonObj,[
-      "id" => $lesson->lesson_id,
-      "name" =>$lesson->lesson_name,
-      "creator" => $lesson->creator_id
+      "lesson_id" => $lesson->lesson_id,
+      "lesson_name" =>$lesson->lesson_name,
+      "creator_id" => $lesson->creator_id
     ]);
   }
-  /*array_push($array,[
-    "id" => "52",
-    "name" => "things",
-    "creator" => "him"
-  ]);*/
 
-  // return $jsonResponse->write(json_encode($array));
   return $res->withJson($lessonObj);
 });
 
 $app->post('/api/lessons', function($req, $res, $args) {
   $lesson = new \Pond\Lesson();
   $form = $req->getParsedBody();
-  $lesson->lesson_id = @$form['lesson_id'];
+  //$lesson->lesson_id = @$form['lesson_id'];
   $lesson->creator_id = @$form['creator_id'];
   $lesson->lesson_name = @$form['lesson_name'];
-  $lesson->published = @$form['published'];
+//  $lesson->published = @$form['published'];
   $lesson->save();
 	$array = array("lesson"=>$lesson_name,"creator"=>$creator);
 	$jsonResponse = $res->withHeader("Content-type","application/json");
