@@ -1,29 +1,56 @@
 <main class="center-content-inner reveal-animation">
-    <img src="assets/img/pond-white.png" class="pond-logo">
+    <!-- <img src="assets/img/pond-white.png" class="pond-logo"> -->
 
-    <form class="reveal-content">
-        <div class="form-group">
-            <input type="email" class="form-control input-lg" placeholder="Email"
-             spellcheck="false" autocorrect="off" autocapitalize="off" autofocus ng-model="signupEmail">
-        </div>
-        <fieldset class="input-group-vertical">
-            <div class="form-group">
-                <input type="password" class="form-control input-lg" placeholder="Password" spellcheck="false" autocorrect="off" autocapitalize="off" autofocus
-                ng-model="signupPassword">
-            </div>
-            <div class="form-group">
-                <input type="password" class="form-control input-lg" placeholder="Repeat Password"
-                ng-model="signupPasswordAgain">
-            </div>
-        </fieldset><!-- /.input-group-vertical -->
-        <div class="form-group">
-            <div class="captcha" vc-recaptcha key="'6LfBLBwTAAAAABR1cqkA5C-ISbvb-34EzgVTxCzs'"
-            ng-model="signupCaptcha">
-            </div>
-        </div>
+    <form name="signupForm">
+        <div class="form-steps-container">
+            <div class="form-steps" ng-style="shiftCSS">
 
-        <div class="form-group">
-            <button class="btn btn-lg btn-default btn-block glass">Sign up</button>
-        </div>
+                <div class="form-step">
+                    <img src="assets/img/pond-white.png" class="pond-logo">
+
+                    <div class="form-group reveal-content">
+                        <input type="email" class="form-control input-lg" placeholder="Email"
+                         spellcheck="false" autocorrect="off" autocapitalize="off" autofocus
+                         ng-model="signupEmail" name="signupEmail" ng-required="true">
+                    </div>
+                    <div class="form-group reveal-content">
+                        <button class="btn btn-lg btn-default btn-block glass"
+                        ng-click="nextStep()"
+                        ng-disabled="!signupForm.signupEmail.$valid"
+                        type="button"><i class="fa fa-chevron-right fa-lg"></i></button>
+                    </div>
+                </div><!-- /.form-step -->
+
+                <div class="form-step">
+                    <div class="rel">
+                        <button class="pond-back-button" type="button"
+                         ng-click="prevStep()">
+                            <i class="fa fa-chevron-left fa-lg"></i>
+                        </button>
+                        <img src="assets/img/pond-white.png" class="pond-logo">
+                    </div>
+                    <fieldset class="input-group-vertical">
+                        <div class="form-group">
+                            <input type="password" class="form-control input-lg" placeholder="Password" spellcheck="false" autocorrect="off" autocapitalize="off"
+                            ng-model="signupPassword" name="signupPassword">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control input-lg" placeholder="Repeat Password"
+                            ng-model="signupPasswordAgain" name="signupPasswordAgain" compare-to="signupPassword">
+                        </div>
+                    </fieldset><!-- /.input-group-vertical -->
+                    <div class="form-group">
+                        <div class="captcha" vc-recaptcha key="'6LfBLBwTAAAAABR1cqkA5C-ISbvb-34EzgVTxCzs'"
+                        ng-model="signupCaptcha">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-lg btn-default btn-block glass"
+                         ng-disabled="!signupForm.$valid">Sign up</button>
+                    </div>
+                </div><!-- /.form-step -->
+
+            </div><!-- /.form-steps -->
+        </div><!-- /.form-steps-container -->
     </form>
 </main>
