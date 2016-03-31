@@ -37,8 +37,9 @@ class UserController
     $email = $form['email'];
     $password = $form['password'];
     $crypto = new Crypto($password);
+    $captcha = $_POST['g-recaptcha-response'];
 
-    if($message = self::validation($email, $password)){
+    if($message = self::validation($email, $password, $captcha)){
         return self::badRegistration($res, $message);
     }
 
@@ -61,7 +62,7 @@ class UserController
   }
 
 
-  private function validation($email, $password) : string{
+  private function validation($email, $password, $captcha) : string{
       $text;
        // Email format validation
        try {
@@ -92,6 +93,22 @@ class UserController
            return null;
        }
 
+       //based on example from codexworld.com
+       if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])){
+           $secret = '6LfBLBwTAAAAAMAdOpVYySINYpzC0VaaarUsfggD';
+           $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$_POST['g-recaptcha-response']);
+           $responseData = json_decode($verifyResponse);
+
+           if($responseData->success){
+               return null;
+            }
+
+            else{
+                $text = "Captcha verification failed";
+                return $text;
+            }
+
+        }
 
    }
 
