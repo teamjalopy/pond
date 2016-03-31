@@ -32,7 +32,29 @@ $app->get('/api/lessons/{lesson_id}', function($req, $res, $args) {
 });
 
 $app->put('/api/lessons/{lesson_id}', function($req, $res, $args) {
-    
+    $auth = new \Pond\Auth($this);
+    try{
+        $lessons = Pond\Lesson::findOrFail($args['lesson_id']);
+        $creator_id = $lessons->creator_id;
+        $isAuth = $auth->isRequestAuthorized($req,$creator_id);
+        if(!$isAuth) {
+            $res->withStatus(401); // Unauthorized
+        } else {
+            $stat = new \Pond\StatusContainer($lessons);
+            $stat->success();
+            $lessons->delete();
+            $stat->message("The lesson has been deleted");
+            return $res->withJson($stat);
+        }
+
+    }
+    catch(ModelNotFoundException $e){
+        $stat = new \Pond\StatusContainer($lessons);
+        $stat->error("Lesson Not Found");
+        $stat->message('Lesson not found.');
+        $res = $res->withStatus(404);
+        return $res->withJson($stat);
+    }
 });
 
 $app->delete('/api/lessons/{lesson_id}', function($req, $res, $args) {
@@ -62,6 +84,7 @@ $app->delete('/api/lessons/{lesson_id}', function($req, $res, $args) {
 });
 
 $app->get('/api/lessons', function($req, $res, $args) {
+
   $lessonObj = [];
   $lessons = \Pond\Lesson::all();
 
@@ -69,7 +92,11 @@ $app->get('/api/lessons', function($req, $res, $args) {
     array_push($lessonObj, $lesson->toArray());
   }
 
-  return $res->withJson($lessonObj);
+  $stat = new \Pond\StatusContainer($lessonObj);
+  $stat->success();
+  $stat->message("Here are the lessons");
+  $res = $res->withStatus(200);
+  return $res->withJson($stat);
 });
 
 $app->post('/api/lessons', function($req, $res, $args) {
@@ -79,6 +106,10 @@ $app->post('/api/lessons', function($req, $res, $args) {
   $lesson->creator_id = @$form['creator_id'];
   $lesson->lesson_name = @$form['lesson_name'];
   $lesson->save();
-
+  $stat = new \Pond\StatusContainer($lesson);
+  $stat->success();
+  $stat->message("Lesson created");
+  $res = $res->withStatus(200);
+  return $res->withJson($stat);
 
 });
