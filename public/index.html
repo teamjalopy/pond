@@ -1,24 +1,28 @@
 <!DOCTYPE html>
-<html lang="en" class="full">
+<html lang="en" class="full full-force">
 <head>
     <meta charset="utf-8">
     <title>Pond</title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/font-awesome.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/landing.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 </head>
-<body ng-app="pond" class="full" ng-cloak>
+<body ng-app="pond" class="full full-force" ng-cloak>
 
-    <div ng-view class="full">
+    <div ng-view class="full full-force">
 
     </div>
 
+    <!-- Other Libraries -->
+    <script src="https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit"></script>
     <!-- Angular script(s) -->
     <script src="app/lib/angular.js"></script>
     <script src="app/lib/angular-route.js"></script>
     <script src="app/lib/angular-cookies.js"></script>
     <script src="app/lib/angular-animate.js"></script>
+    <script src="app/lib/angular-recaptcha.js"></script>
     <!-- Angular App script -->
     <script src="app/app.js"></script>
     <!-- Controllers -->
