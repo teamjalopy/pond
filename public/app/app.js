@@ -1,43 +1,51 @@
+'use strict';
 
-var app = angular.module('pond', ['ngRoute']);
+var app =
+angular.module('pond', [
+    'ngRoute',
+    'ngAnimate',
+    'ngCookies',
+    'vcRecaptcha',
+    'pond.HomeView',
+    'pond.LoginView',
+    'pond.DashboardView'
+])
+.config(['$routeProvider', function($routeProvider) {
+        $routeProvider.otherwise({ redirectTo: '/' });
+}])
+.value('settings',{
+    'baseURI': 'http://pond.dev/'
+});
 
-app.config(['$routeProvider',
-    function($routeProvider) {
-        $routeProvider.when('/log-in', {
-            templateUrl: 'log-in.html',
-            controller: 'LogInController'
-        })
-        .when('/sign-up', {
-            templateUrl: 'sign-up.html',
-            controller: 'SignUpController'
-        })
-        .otherwise({
-            redirectTo: '/sign-up'
-        });
-    }
-]);
+// Prevent view/partial caching
+// [CITE] https://gist.github.com/claudemamo/9092047#file-app-2-js
+app.run(function($rootScope, $templateCache) {
+    $rootScope.$on('$routeChangeStart', function(event, next, current) {
+        if (typeof(current) !== 'undefined'){
+            $templateCache.remove(current.templateUrl);
+        }
+    });
+});
 
-app.factory('LandingPage', function() {
-    var topLinkText = 'Default';
-    var topLinkAddress = '/';
-    var bodyClass = 'asdf';
+// Compare To validator
+// [CITE] http://plnkr.co/edit/FipgiTUaaymm5Mk6HIfn?p=preview
+var compareTo = function() {
     return {
-        // topLinkText: function() { return topLinkText; }
+        require: "ngModel",
+        scope: {
+            otherModelValue: "=compareTo"
+        },
+        link: function(scope, element, attributes, ngModel) {
+
+            ngModel.$validators.compareTo = function(modelValue) {
+                return modelValue == scope.otherModelValue;
+            };
+
+            scope.$watch("otherModelValue", function() {
+                ngModel.$validate();
+            });
+        }
     };
-});
+}
 
-app.controller('MainController', function($scope, LandingPage) {
-    $scope.LandingPage = LandingPage;
-});
-
-app.controller('LogInController', function($scope, LandingPage) {
-    LandingPage.topLinkText    = 'Sign up';
-    LandingPage.topLinkAddress = '#/sign-up';
-    LandingPage.bodyClass      = 'log-in-page';
-});
-
-app.controller('SignUpController', function($scope, LandingPage) {
-    LandingPage.topLinkText    = 'Log in';
-    LandingPage.topLinkAddress = '#/log-in';
-    LandingPage.bodyClass      = 'sign-up-page';
-});
+app.directive("compareTo", compareTo);

@@ -1,0 +1,34 @@
+<link rel="stylesheet" href="assets/css/landing.css">
+<div class="full dark">
+    <div class="bg-full" ng-class="bgClass"></div>
+
+    <div class="center-wrapper">
+        <div class="center-wrapper-inner">
+            <div class="center-content">
+
+                <header>
+                    <div class="container">
+                        <nav class="navbar">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li>
+                                    <a href="{{topLink}}">{{topLinkText}}</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </header>
+
+                <ng-include src="pagePartial"></ng-include>
+
+                <!-- <div ng-view></div> -->
+
+                <footer>
+                    <div class="container">
+                        <p>&copy; 2016 Team Jalopy<p>
+                    </div>
+                </footer>
+
+            </div><!-- /.center-content -->
+        </div><!-- /.center-wrapper-inner -->
+    </div><!-- /.center-wrapper -->
+</div><!-- /.full.dark -->

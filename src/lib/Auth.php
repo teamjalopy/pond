@@ -30,7 +30,7 @@ class Auth {
     public function loginHandler(Request $req, Response $res): Response {
         $form = $req->getParsedBody();
 
-        if(! $token = self::authenticate(@$form['username'],@$form['password']) ) {
+        if(! $token = self::authenticate(@$form['email'],@$form['password']) ) {
             return self::badAuthResponse($res);
         } else {
             return self::tokenResponse($res,$token);
@@ -99,12 +99,12 @@ class Auth {
         }
     }
 
-    private function authenticate($username, $password) {
-        // Username format validation
+    private function authenticate($email, $password) {
+        // Email format validation
         try {
-            \Pond\Validate::get('username')->check( $username );
+            \Pond\Validate::get('email')->check( $email );
         } catch(ValidationException $e) {
-            $this->logger->info('Username validation fail');
+            $this->logger->info('User email validation fail');
             return null;
         }
 
@@ -118,7 +118,7 @@ class Auth {
 
         // Try to get the requested User or throw an exception
         try {
-            $reqUser = User::where('username', $username)->firstOrFail();
+            $reqUser = User::where('email', $email)->firstOrFail();
         } catch(ModelNotFoundException $e) {
             $this->logger->info('User model retrieval fail');
             return null;
@@ -157,7 +157,7 @@ class Auth {
     static function badAuthResponse(Response $res): Response {
         $stat = new \Pond\StatusContainer();
         $stat->error('BadAuth');
-        $stat->message('Check your username and password.');
+        $stat->message('Check your email and password.');
 
         $res = $res->withStatus(401); // Unauthorized
         return $res->withJson($stat);
