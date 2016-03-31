@@ -31,7 +31,7 @@ $app->get('/api/lessons/{lesson_id}', function($req, $res, $args) {
     }
 });
 
-$app->put('/api/lessons/{lesson_id}', function($req, $res, $args) {
+/*$app->put('/api/lessons/{lesson_id}', function($req, $res, $args) {
     $auth = new \Pond\Auth($this);
     try{
         $lessons = Pond\Lesson::findOrFail($args['lesson_id']);
@@ -81,7 +81,7 @@ $app->delete('/api/lessons/{lesson_id}', function($req, $res, $args) {
         $res = $res->withStatus(404);
         return $res->withJson($stat);
     }
-});
+});*/
 
 $app->get('/api/lessons', function($req, $res, $args) {
 
