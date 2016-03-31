@@ -9,7 +9,8 @@ angular.module('pond.HomeView', ['ngRoute'])
     });
 }])
 
-.controller('HomeController', ['$scope', '$http', function($scope, $http) {
+.controller('HomeController', ['$scope', '$http', '$location', '$cookies', 'settings',
+function($scope, $http, $location, $cookies, settings) {
 
     $scope.pagePartial = '/app/HomeView/HomePartial.html';
     $scope.bgClass = 'front';
@@ -26,16 +27,51 @@ angular.module('pond.HomeView', ['ngRoute'])
 
     $scope.nextStep = function() { // increment shifter
         $scope.increment($scope.shiftBy * -1);
-    };
+    }
 
     $scope.prevStep = function() { // decrement shifter
         $scope.increment($scope.shiftBy);
-    };
+    }
 
     $scope.increment = function(amount) {
         $scope.shiftAmount += amount;
         $scope.shiftAmount = $scope.shiftAmount % $scope.maxShift;
         var css = {transform:'translateX('+$scope.shiftAmount+'px)'};
         $scope.shiftCSS = css
+    }
+
+    $scope.errors = [];
+    $scope.submitEnabled = true;
+
+    $scope.submitRegistration = function() {
+
+            $scope.errors = [];
+            $scope.submitEnabled = false;
+
+            // $location.search('e', null);
+
+            var registrationData = {
+                'email' : this.signupEmail,
+                'password' : this.signupPassword,
+                'captcha' : this.signupCaptcha
+            };
+
+            $http({
+                'method': 'POST',
+                'url': settings.baseURI + 'api/users',
+                'headers': { 'Content-Type' : 'application/json'},
+                'data': registrationData
+            })
+            .then(
+                function successCallback(response) {
+                    console.log("Register success");
+                },
+                function errorCallback(response) {
+                    $scope.submitEnabled = true;
+                    $scope.errors.push({
+                        'message': response.data.message
+                    });
+                }
+            );
     }
 }]);

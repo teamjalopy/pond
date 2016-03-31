@@ -1,7 +1,7 @@
 <main class="center-content-inner reveal-animation">
     <!-- <img src="assets/img/pond-white.png" class="pond-logo"> -->
 
-    <form name="signupForm">
+    <form name="signupForm" ng-submit="submitRegistration()">
         <div class="form-steps-container">
             <div class="form-steps" ng-style="shiftCSS">
 
@@ -32,11 +32,12 @@
                     <fieldset class="input-group-vertical">
                         <div class="form-group">
                             <input type="password" class="form-control input-lg" placeholder="Password" spellcheck="false" autocorrect="off" autocapitalize="off"
-                            ng-model="signupPassword" name="signupPassword">
+                             ng-model="signupPassword" name="signupPassword">
                         </div>
                         <div class="form-group">
                             <input type="password" class="form-control input-lg" placeholder="Repeat Password"
-                            ng-model="signupPasswordAgain" name="signupPasswordAgain" compare-to="signupPassword">
+                             ng-model="signupPasswordAgain" name="signupPasswordAgain"
+                             compare-to="signupPassword">
                         </div>
                     </fieldset><!-- /.input-group-vertical -->
                     <div class="form-group">
@@ -46,7 +47,13 @@
                     </div>
                     <div class="form-group">
                         <button class="btn btn-lg btn-default btn-block glass"
-                         ng-disabled="!signupForm.$valid">Sign up</button>
+                         ng-disabled="!signupForm.$valid || !submitEnabled">Sign up</button>
+                    </div>
+
+                    <div class="animate-alert" ng-repeat="error in errors" ng-show="signupForm.$submitted">
+                        <div class="glass alert alert-danger" role="alert">
+                            <strong>Whoops!</strong> {{error.message}}
+                        </div>
                     </div>
                 </div><!-- /.form-step -->
 
