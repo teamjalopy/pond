@@ -121,3 +121,9 @@ html, body {
     opacity: 1;
     max-height: 100px;
 }
+
+/* Captcha styling */
+
+.captcha {
+    height: 78px;
+}

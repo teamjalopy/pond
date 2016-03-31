@@ -17,6 +17,7 @@ use Pond\Auth;
 
 use Slim\Container;
 
+
 class UserController
 {
   private $container;
@@ -28,31 +29,31 @@ class UserController
   }
 
   public function registrationHandler(Request $req, Response $res): Response {
+
     $stat = new \Pond\StatusContainer();
     $user = new \Pond\User();
     $form = $req->getParsedBody();
+
     $email = $form['email'];
     $password = $form['password'];
     $crypto = new Crypto($password);
 
-    if($this->validation($email, $password)){
-      $stat->success();
-      $stat->message('User sucessfully created.');
-      $res = $res->withStatus(200);
-
-      $user->user_id = $form['user_id'];
-      $user->email = $email;
-      $user->name = $form['name'];
-      $user->type = $form['type'];
-      $user->password = $crypto->getHash();
-      $user->salt = $crypto->getSalt();
-      $user->save();
+    if($message = self::validation($email, $password)){
+        return self::badRegistration($res, $message);
     }
 
     else{
-      $stat->error('Invalid Entry');
-      $stat->message('Check your email and password.');
-      $res = $res->withStatus(400);
+        $stat->success();
+        $stat->message('User sucessfully created.');
+        $res = $res->withStatus(200);
+
+        $user->user_id = $form['user_id'];
+        $user->email = $email;
+        $user->name = $form['name'];
+        $user->type = $form['type'];
+        $user->password = $crypto->getHash();
+        $user->salt = $crypto->getSalt();
+        $user->save();
     }
 
     return $res->withJson($stat);
@@ -60,13 +61,15 @@ class UserController
   }
 
 
-  private function validation($email, $password) : bool {
+  private function validation($email, $password) : string{
+      $text;
        // Email format validation
        try {
            \Pond\Validate::get('email')->check($email);
        } catch(ValidationException $e){
             $this->logger->info('User email validation fail');
-            return false;
+            $text = "Email is invalid";
+            return $text;
        }
 
 
@@ -75,18 +78,30 @@ class UserController
            \Pond\Validate::get('password')->check( $password );
        } catch(ValidationException $e) {
            $this->logger->info('Password validation fail');
-           return false;
+           $text = "Password is invalid";
+           return $text;
        }
 
        // Try to get the requested User or throw an exception
        try{
            $reqUser = User::where('email', $email)->firstOrFail();
-           $this->logger->info("email already in use");
+           $this->logger->info("Email already in use");
+           $text = "Email is alread in use";
+           return $text;
        } catch(ModelNotFoundException $e){
-           return true;
+           return null;
        }
 
-       return false;  //user exists
+
+   }
+
+   static function badRegistration(Response $res, string $message): Response{
+
+       $stat = new \Pond\StatusContainer();
+       $stat->error('BadRegistration');
+       $stat->message($message);
+       $res = $res->withStatus(400); // Unauthorized
+       return $res->withJson($stat);
 
    }
 

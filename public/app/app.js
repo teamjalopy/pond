@@ -4,6 +4,7 @@ angular.module('pond', [
     'ngRoute',
     'ngAnimate',
     'ngCookies',
+    'vcRecaptcha',
     'pond.HomeView',
     'pond.LoginView',
     'pond.DashboardView'
