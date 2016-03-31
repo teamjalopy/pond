@@ -15,6 +15,17 @@ require __DIR__ . '/../src/lib/autoload.php';
 $settings = require __DIR__ . '/../src/settings.php';
 $app = new \Slim\App($settings);
 
+// Errors to log rather than to end user
+$c = $app->getContainer();
+$c['errorHandler'] = function ($c) {
+    return function ($request, $response, $exception) use ($c) {
+        $c['logger']->error("Error 500 diverted: ".$exception->getMessage());
+        return $c['response']->withStatus(500)
+                             ->withHeader('Content-Type', 'text/html')
+                             ->write('Something went wrong on our side!');
+    };
+};
+
 // Bootstrap Eloquent
 // [CITE] https://github.com/illuminate/database/blob/master/README.md
 $capsule = new \Illuminate\Database\Capsule\Manager;
