@@ -8,12 +8,12 @@ class Validate {
 
     public static function get(string $name) {
         switch ($name) {
-            case 'username':
-                return v::notEmpty()->alnum()->noWhitespace()->length(1,64);
+            case 'email':
+                return v::notEmpty()->email()->noWhitespace()->length(3,254);
                 break;
 
             case 'password':
-                return v::notEmpty()->noWhitespace()->length(8,128);
+                return v::notEmpty()->length(8,128);
                 break;
 
             default:

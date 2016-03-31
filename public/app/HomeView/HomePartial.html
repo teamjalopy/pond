@@ -1,13 +1,86 @@
 <main class="center-content-inner reveal-animation">
-    <img src="assets/img/pond-white.png" class="pond-logo">
+    <!-- <img src="assets/img/pond-white.png" class="pond-logo"> -->
 
-    <form class="reveal-content">
-        <div class="form-group">
-            <input type="email" class="form-control input-lg" placeholder="Email"
-             spellcheck="false" autocorrect="off" autocapitalize="off" autofocus>
-        </div>
-        <div class="form-group">
-            <button class="btn btn-lg btn-default btn-block glass">Sign up</button>
-        </div>
+    <form name="signupForm" ng-submit="submitRegistration()">
+        <div class="form-steps-container">
+            <div class="form-steps" ng-style="shiftCSS">
+
+                <div class="form-step">
+                    <img src="assets/img/pond-white.png" class="pond-logo">
+
+                    <div class="form-group reveal-content">
+                        <input type="email" class="form-control input-lg" placeholder="Email"
+                         spellcheck="false" autocorrect="off" autocapitalize="off" autofocus
+                         autocomplete="false"
+                         ng-model="signupEmail" name="signupEmail" ng-required="true">
+                    </div>
+                    <div class="form-group reveal-content">
+                        <button class="btn btn-lg btn-default btn-block glass"
+                        ng-click="nextStep()" ng-class="{'noclick':!signupForm.signupEmail.$valid}" type="button">
+                            <span>Sign up </span>
+                            <i class="fa fa-chevron-right" style="vertical-align:middle"
+                             ng-hide="!signupForm.signupEmail.$valid"></i>
+                        </button>
+                    </div>
+                </div><!-- /.form-step -->
+
+                <div class="form-step">
+                    <div class="rel">
+                        <button class="pond-back-button" type="button"
+                         ng-click="prevStep()">
+                            <i class="fa fa-chevron-left fa-lg"></i>
+                        </button>
+                        <img src="assets/img/pond-white.png" class="pond-logo">
+                    </div>
+                    <fieldset class="input-group-vertical">
+                        <div class="form-group">
+                            <input type="password" class="form-control input-lg" placeholder="Password" spellcheck="false" autocorrect="off" autocapitalize="off"
+                             ng-model="signupPassword" name="signupPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control input-lg" placeholder="Repeat Password"
+                             ng-model="signupPasswordAgain" name="signupPasswordAgain"
+                             compare-to="signupPassword" required>
+                        </div>
+                    </fieldset><!-- /.input-group-vertical -->
+                    <div class="form-group" style="padding:0 20px">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" ng-model="signupType" value="'teacher'">
+                                <span>I'm a teacher</span>
+                            </label>
+                        </div><!-- /.radio -->
+                        <div class="radio">
+                            <label>
+                                <input type="radio" ng-model="signupType" value="'student'">
+                                <span>I'm a student</span>
+                            </label>
+                        </div><!-- /.radio -->
+                    </div>
+                    <div class="form-group">
+                        <div class="captcha" vc-recaptcha key="'6LfBLBwTAAAAABR1cqkA5C-ISbvb-34EzgVTxCzs'"
+                        ng-model="signupCaptcha">
+                        </div>
+                    </div>
+                    <div class="form-group" ng-switch="registered">
+                        <button class="btn btn-lg btn-block btn-default glass"
+                        ng-switch-when="false" ng-disabled="!signupForm.$valid || !submitEnabled">
+                            <span>Sign up</span>
+                        </button>
+                        <button class="btn btn-lg btn-block btn-success noclick" ng-switch-when="true"
+                        type="button">
+                            <i class="fa fa-check"></i>
+                        </button>
+                    </div>
+
+                    <div class="animate-alert" ng-repeat="error in errors" ng-show="signupForm.$submitted">
+                        <div class="glass alert alert-danger" role="alert">
+                            <strong>Whoops!</strong> {{error.message}}
+                        </div>
+                    </div>
+                </div><!-- /.form-step -->
+
+            </div><!-- /.form-steps -->
+        </div><!-- /.form-steps-container -->
     </form>
 </main>

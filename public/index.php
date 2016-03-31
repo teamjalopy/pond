@@ -15,6 +15,22 @@ require __DIR__ . '/../src/lib/autoload.php';
 $settings = require __DIR__ . '/../src/settings.php';
 $app = new \Slim\App($settings);
 
+// Errors to log rather than to end user
+$c = $app->getContainer();
+$c['errorHandler'] = function ($c) {
+    return function ($request, $response, $exception) use ($c) {
+        $c->get('logger')->error("Error 500 diverted: ".$exception->getMessage());
+
+        $stat = new \Pond\StatusContainer();
+        $stat->error("ObfuscatedInternalServerError");
+        $stat->message("Something went wrong on our side!");
+
+        return $response->withStatus(500)
+                        ->withHeader('Content-Type', 'text/plain')
+                        ->withJson($stat);
+    };
+};
+
 // Bootstrap Eloquent
 // [CITE] https://github.com/illuminate/database/blob/master/README.md
 $capsule = new \Illuminate\Database\Capsule\Manager;
@@ -34,4 +50,5 @@ require __DIR__ . '/../src/middleware.php';
 require __DIR__ . '/../src/routes.php';
 
 // Run app
+$c->get('logger')->info("Starting app");
 $app->run();
