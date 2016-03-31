@@ -59,10 +59,9 @@ function($scope, $http, $location, $cookies, settings) {
             var registrationData = {
                 'email' : this.signupEmail,
                 'password' : this.signupPassword,
-                'captcha' : this.signupCaptcha
+                'captcha' : this.signupCaptcha,
+                'type' : this.signupType
             };
-
-            console.log(registrationData);
 
             $http({
                 'method': 'POST',
@@ -74,6 +73,7 @@ function($scope, $http, $location, $cookies, settings) {
                 function successCallback(response) {
                     console.log("Register success");
                     $scope.registered = true;
+                    console.log(response.data);
                 },
                 function errorCallback(response) {
                     $scope.submitEnabled = true;

@@ -16,9 +16,11 @@
                     </div>
                     <div class="form-group reveal-content">
                         <button class="btn btn-lg btn-default btn-block glass"
-                        ng-click="nextStep()"
-                        ng-disabled="!signupForm.signupEmail.$valid"
-                        type="button"><i class="fa fa-chevron-right fa-lg"></i></button>
+                        ng-click="nextStep()" ng-class="{'noclick':!signupForm.signupEmail.$valid}" type="button">
+                            <span>Sign up </span>
+                            <i class="fa fa-chevron-right" style="vertical-align:middle"
+                             ng-hide="!signupForm.signupEmail.$valid"></i>
+                        </button>
                     </div>
                 </div><!-- /.form-step -->
 
@@ -33,14 +35,28 @@
                     <fieldset class="input-group-vertical">
                         <div class="form-group">
                             <input type="password" class="form-control input-lg" placeholder="Password" spellcheck="false" autocorrect="off" autocapitalize="off"
-                             ng-model="signupPassword" name="signupPassword">
+                             ng-model="signupPassword" name="signupPassword" required>
                         </div>
                         <div class="form-group">
                             <input type="password" class="form-control input-lg" placeholder="Repeat Password"
                              ng-model="signupPasswordAgain" name="signupPasswordAgain"
-                             compare-to="signupPassword">
+                             compare-to="signupPassword" required>
                         </div>
                     </fieldset><!-- /.input-group-vertical -->
+                    <div class="form-group" style="padding:0 20px">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" ng-model="signupType" value="'teacher'">
+                                <span>I'm a teacher</span>
+                            </label>
+                        </div><!-- /.radio -->
+                        <div class="radio">
+                            <label>
+                                <input type="radio" ng-model="signupType" value="'student'">
+                                <span>I'm a student</span>
+                            </label>
+                        </div><!-- /.radio -->
+                    </div>
                     <div class="form-group">
                         <div class="captcha" vc-recaptcha key="'6LfBLBwTAAAAABR1cqkA5C-ISbvb-34EzgVTxCzs'"
                         ng-model="signupCaptcha">

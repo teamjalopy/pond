@@ -30,36 +30,38 @@ class UserController
 
   public function registrationHandler(Request $req, Response $res): Response {
 
-    $stat = new \Pond\StatusContainer();
     $user = new \Pond\User();
     $form = $req->getParsedBody();
 
     $email = $form['email'];
     $password = $form['password'];
     $crypto = new Crypto($password);
+    $type = $form['type'];
     $captcha = $form['captcha'];
 
-    if($message = self::validation($email, $password, $captcha)) {
-        return self::badRegistration($res, $message);
-    }
+    $errRes = $this->validation($email, $password, $type, $captcha, function($e) use($res) {
+        return self::badRegistration($res, $e);
+    });
 
-    $stat->success();
-    $stat->message('User sucessfully created.');
-    $res = $res->withStatus(200);
+    if(isset($errRes)) {
+        return $errRes;
+    };
 
-    $user->user_id = $form['user_id'];
     $user->email = $email;
-    $user->name = $form['name'];
-    $user->type = $form['type'];
+    $user->type = $type;
     $user->password = $crypto->getHash();
     $user->salt = $crypto->getSalt();
     $user->save();
 
+    $stat = new StatusContainer();
+    $stat->success();
+    $stat->message('User successfully created.');
+    $res = $res->withStatus(200);
     return $res->withJson($stat);
   }
 
 
-  private function validation($email, $password, $captcha, callable $errorCallback) : string {
+  private function validation($email, $password, $type, $captcha, callable $errorCallback) {
       $text = "";
        // Email format validation
        try {
@@ -67,9 +69,8 @@ class UserController
        } catch(ValidationException $e){
             $this->logger->info('User email validation fail');
             $text = "Email is invalid";
-            return $text;
+            return call_user_func($errorCallback, $text);
        }
-
 
        // Password format validation
        try {
@@ -77,26 +78,19 @@ class UserController
        } catch(ValidationException $e) {
            $this->logger->info('Password validation fail');
            $text = "Please make sure you password is at least 8 characters long.";
-           call_user_func($errorCallback, $text);
-           return false;
+           return call_user_func($errorCallback, $text);
        }
 
-       // Try to get the requested User or throw an exception
-       try{
-           $reqUser = User::where('email', $email)->firstOrFail();
+       if($reqUser = User::where('email', $email)->first()) {
            $this->logger->info("Email already in use");
-           $text = "Email is alread in use";
-           call_user_func($errorCallback, $text);
-           return false;
-       } catch(ModelNotFoundException $e){
-           // continue
+           $text = "Email is already in use";
+           return call_user_func($errorCallback, $text);
        }
 
        //based on example from codexworld.com
        if( !isset($captcha) || empty($captcha) ){
            $text = "Captcha verification failed";
-           call_user_func($errorCallback, $text);
-           return false;
+           return call_user_func($errorCallback, $text);
        }
 
        $secret = '6LfBLBwTAAAAAMAdOpVYySINYpzC0VaaarUsfggD';
@@ -107,20 +101,19 @@ class UserController
            return true;
         } else {
             $text = "Captcha verification failed";
-            call_user_func($errorCallback, $text);
-            return false;
+            return call_user_func($errorCallback, $text);
         }
+
+        return null;
    }
 
    static function badRegistration(Response $res, string $message): Response{
-
        $stat = new \Pond\StatusContainer();
        $stat->error('BadRegistration');
        $stat->message($message);
-       $res = $res->withStatus(400); // Unauthorized
+
+       $res = $res->withStatus(400); // Bad Request
        return $res->withJson($stat);
-
    }
-
 
 }

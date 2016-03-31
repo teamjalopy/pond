@@ -19,10 +19,15 @@ $app = new \Slim\App($settings);
 $c = $app->getContainer();
 $c['errorHandler'] = function ($c) {
     return function ($request, $response, $exception) use ($c) {
-        $c['logger']->error("Error 500 diverted: ".$exception->getMessage());
-        return $c['response']->withStatus(500)
-                             ->withHeader('Content-Type', 'text/html')
-                             ->write('Something went wrong on our side!');
+        $c->get('logger')->error("Error 500 diverted: ".$exception->getMessage());
+
+        $stat = new \Pond\StatusContainer();
+        $stat->error("ObfuscatedInternalServerError");
+        $stat->message("Something went wrong on our side!");
+
+        return $response->withStatus(500)
+                        ->withHeader('Content-Type', 'text/plain')
+                        ->withJson($stat);
     };
 };
 
@@ -45,5 +50,5 @@ require __DIR__ . '/../src/middleware.php';
 require __DIR__ . '/../src/routes.php';
 
 // Run app
-$app->logger->info("Starting app");
+$c->get('logger')->info("Starting app");
 $app->run();
