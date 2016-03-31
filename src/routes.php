@@ -1,5 +1,6 @@
 <?php
 // Routes
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 $app->post('/api/auth', function ($req, $res, $args) {
     $auth = new \Pond\Auth($this);
@@ -14,7 +15,20 @@ $app->get('/api/auth/{user_id}', function ($req, $res) {
 });
 
 $app->get('/api/lessons/{lesson_id}', function($req, $res, $args) {
-
+    try{
+        $lessons = Pond\Lesson::findOrFail($args['lesson_id']);
+        $stat = new \Pond\StatusContainer($lessons);
+        $stat->success();
+        $stat->message("Here is the requested lesson");
+        return $res->withJson($stat);
+    }
+    catch(ModelNotFoundException $e){
+        $stat = new \Pond\StatusContainer($lessons);
+        $stat->error("Lesson Not Found");
+        $stat->message('Lesson not found.');
+        $res = $res->withStatus(404);
+        return $res->withJson($stat);
+    }
 });
 
 $app->put('/api/lessons/{lesson_id}', function($req, $res, $args) {
