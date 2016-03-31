@@ -98,13 +98,11 @@ class UserController
        $responseData = json_decode($verifyResponse);
 
        if($responseData->success){
-           return true;
+           return null;
         } else {
             $text = "Captcha verification failed";
             return call_user_func($errorCallback, $text);
-        }
-
-        return null;
+        } // end of code flow
    }
 
    static function badRegistration(Response $res, string $message): Response{
