@@ -11,6 +11,7 @@
                     <div class="form-group reveal-content">
                         <input type="email" class="form-control input-lg" placeholder="Email"
                          spellcheck="false" autocorrect="off" autocapitalize="off" autofocus
+                         autocomplete="false"
                          ng-model="signupEmail" name="signupEmail" ng-required="true">
                     </div>
                     <div class="form-group reveal-content">
@@ -45,9 +46,15 @@
                         ng-model="signupCaptcha">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <button class="btn btn-lg btn-default btn-block glass"
-                         ng-disabled="!signupForm.$valid || !submitEnabled">Sign up</button>
+                    <div class="form-group" ng-switch="registered">
+                        <button class="btn btn-lg btn-block btn-default glass"
+                        ng-switch-when="false" ng-disabled="!signupForm.$valid || !submitEnabled">
+                            <span>Sign up</span>
+                        </button>
+                        <button class="btn btn-lg btn-block btn-success noclick" ng-switch-when="true"
+                        type="button">
+                            <i class="fa fa-check"></i>
+                        </button>
                     </div>
 
                     <div class="animate-alert" ng-repeat="error in errors" ng-show="signupForm.$submitted">

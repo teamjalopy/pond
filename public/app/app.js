@@ -18,10 +18,13 @@ angular.module('pond', [
 });
 
 // Prevent view/partial caching
+// [CITE] https://gist.github.com/claudemamo/9092047#file-app-2-js
 app.run(function($rootScope, $templateCache) {
-   $rootScope.$on('$viewContentLoaded', function() {
-      $templateCache.removeAll();
-   });
+    $rootScope.$on('$routeChangeStart', function(event, next, current) {
+        if (typeof(current) !== 'undefined'){
+            $templateCache.remove(current.templateUrl);
+        }
+    });
 });
 
 // Compare To validator

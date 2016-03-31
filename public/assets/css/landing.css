@@ -46,6 +46,10 @@
     user-select: none;
 }
 
+.btn.btn-success {
+    border: none;
+}
+
 .glass.btn,
 .glass.btn:disabled, .glass.btn:disabled:hover,
 .glass.btn:disabled:active, .glass.btn:disabled:hover:active {
@@ -102,6 +106,7 @@
     margin-top: -20px;
     border: none;
     background: none;
+    text-shadow: 0px 1px 5px #000;
 }
 
 /* Animate */

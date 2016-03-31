@@ -42,8 +42,14 @@ function($scope, $http, $location, $cookies, settings) {
 
     $scope.errors = [];
     $scope.submitEnabled = true;
+    $scope.registered = false;
 
     $scope.submitRegistration = function() {
+
+            if($scope.registered) {
+                console.log('already registered.');
+                return;
+            }
 
             $scope.errors = [];
             $scope.submitEnabled = false;
@@ -56,6 +62,8 @@ function($scope, $http, $location, $cookies, settings) {
                 'captcha' : this.signupCaptcha
             };
 
+            console.log(registrationData);
+
             $http({
                 'method': 'POST',
                 'url': settings.baseURI + 'api/users',
@@ -65,12 +73,14 @@ function($scope, $http, $location, $cookies, settings) {
             .then(
                 function successCallback(response) {
                     console.log("Register success");
+                    $scope.registered = true;
                 },
                 function errorCallback(response) {
                     $scope.submitEnabled = true;
                     $scope.errors.push({
                         'message': response.data.message
                     });
+                    console.log(response.data);
                 }
             );
     }

@@ -8,6 +8,14 @@ html, body {
     height: 100%;
 }
 
+.noclick {
+    pointer-events: none;
+}
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+    display: none;
+}
+
 *, *:before, *:after {
     box-sizing: inherit;
 }
