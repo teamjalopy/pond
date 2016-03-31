@@ -8,6 +8,7 @@ use Slim\Http\Response;
 use Respect\Validation\Validator as v;
 
 use Respect\Validation\Exceptions\ValidationException;
+use Respect\Validation\Exceptions\NestedValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use \RuntimeException;
 
@@ -30,9 +31,8 @@ class UserController
     $stat = new \Pond\StatusContainer();
     $user = new \Pond\User();
     $form = $req->getParsedBody();
-
-    $email = @$form['email'];
-    $password = @$form['password'];
+    $email = $form['email'];
+    $password = $form['password'];
     $crypto = new Crypto($password);
 
     if($this->validation($email, $password)){
@@ -40,10 +40,10 @@ class UserController
       $stat->message('User sucessfully created.');
       $res = $res->withStatus(200);
 
-      $user->user_id = @$form['user_id'];
+      $user->user_id = $form['user_id'];
       $user->email = $email;
-      $user->name = @$form['name'];
-      $user->type = @$form['type'];
+      $user->name = $form['name'];
+      $user->type = $form['type'];
       $user->password = $crypto->getHash();
       $user->salt = $crypto->getSalt();
       $user->save();
@@ -52,7 +52,7 @@ class UserController
     else{
       $stat->error('Invalid Entry');
       $stat->message('Check your email and password.');
-      $res = $res->withStatus(401);
+      $res = $res->withStatus(400);
     }
 
     return $res->withJson($stat);
@@ -60,8 +60,7 @@ class UserController
   }
 
 
-  private function validation($email, $password) {
-
+  private function validation($email, $password) : bool {
        // Email format validation
        try {
            \Pond\Validate::get('email')->check($email);
@@ -69,6 +68,7 @@ class UserController
             $this->logger->info('User email validation fail');
             return false;
        }
+
 
        // Password format validation
        try {
@@ -85,6 +85,8 @@ class UserController
        } catch(ModelNotFoundException $e){
            return true;
        }
+
+       return false;  //user exists
 
    }
 
