@@ -7,6 +7,9 @@
         public function getPasswordAttribute($value) {
             return Crypto::withHash($value, $this->salt);
         }
-        return $this->hasOne('Pond\Lesson','foreign_key');
+
+        public function lessons() {
+            return $this->hasMany('Pond\Lesson','creator_id');
+        }
     }
 ?>
