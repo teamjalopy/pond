@@ -38,6 +38,7 @@ $app->get('/api/lessons/{lesson_id}', function($req, $res, $args) {
         $stat = new \Pond\StatusContainer($lessons);
         $stat->success();
         $stat->message("Here is the requested lesson");
+        $res = $res->withStatus(200);
         return $res->withJson($stat);
     }
     catch(ModelNotFoundException $e){
@@ -49,21 +50,35 @@ $app->get('/api/lessons/{lesson_id}', function($req, $res, $args) {
     }
 });
 
-/*$app->put('/api/lessons/{lesson_id}', function($req, $res, $args) {
-    $auth = new \Pond\Auth($this);
+$app->put('/api/lessons/{lesson_id}', function($req, $res, $args) {
+    //$auth = new \Pond\Auth($this);
     try{
         $lessons = Pond\Lesson::findOrFail($args['lesson_id']);
-        $creator_id = $lessons->creator_id;
-        $isAuth = $auth->isRequestAuthorized($req,$creator_id);
-        if(!$isAuth) {
-            $res->withStatus(401); // Unauthorized
-        } else {
+        //$creator_id = $lessons->creator_id;
+        //$isAuth = $auth->isRequestAuthorized($req,$creator_id);
+        //if(!$isAuth) {
+        //    $res->withStatus(401); // Unauthorized
+        //} else {
+        $form = $req->getParsedBody();
+        $lesson_name = @$form['lesson_name'];
+        $published = @$form['published'];
+        if(isset($lesson_name)){
+            $lessons->lesson_name = @$form['lesson_name'];
+            $lessons->save();
+        }
+        if(isset($published)){
+            if($published == '1' or $published == '0'){
+                $lessons->published = @$form['published'];
+                $lessons->save();
+            }
+        }
+
             $stat = new \Pond\StatusContainer($lessons);
             $stat->success();
-            $lessons->delete();
-            $stat->message("The lesson has been deleted");
+            $stat->message("The lesson has been updated.");
+            $res = $res->withStatus(200);
             return $res->withJson($stat);
-        }
+        //}
 
     }
     catch(ModelNotFoundException $e){
@@ -76,20 +91,20 @@ $app->get('/api/lessons/{lesson_id}', function($req, $res, $args) {
 });
 
 $app->delete('/api/lessons/{lesson_id}', function($req, $res, $args) {
-    $auth = new \Pond\Auth($this);
+    //$auth = new \Pond\Auth($this);
     try{
         $lessons = Pond\Lesson::findOrFail($args['lesson_id']);
-        $creator_id = $lessons->creator_id;
-        $isAuth = $auth->isRequestAuthorized($req,$creator_id);
-        if(!$isAuth) {
-            $res->withStatus(401); // Unauthorized
-        } else {
+        //$creator_id = $lessons->creator_id;
+        //$isAuth = $auth->isRequestAuthorized($req,$creator_id);
+        //if(!$isAuth) {
+        //    $res->withStatus(401); // Unauthorized
+        //} else {
             $stat = new \Pond\StatusContainer($lessons);
             $stat->success();
             $lessons->delete();
             $stat->message("The lesson has been deleted");
             return $res->withJson($stat);
-        }
+        //}
 
     }
     catch(ModelNotFoundException $e){
@@ -99,7 +114,7 @@ $app->delete('/api/lessons/{lesson_id}', function($req, $res, $args) {
         $res = $res->withStatus(404);
         return $res->withJson($stat);
     }
-});*/
+});
 
 $app->get('/api/lessons', function($req, $res, $args) {
 
@@ -120,13 +135,39 @@ $app->get('/api/lessons', function($req, $res, $args) {
 $app->post('/api/lessons', function($req, $res, $args) {
   $lesson = new \Pond\Lesson();
   $form = $req->getParsedBody();
+  $lesson_name = @$form['lesson_name'];
+  $creator_id = @$form['creator_id'];
+  $published = @$form['published'];
 
-  $lesson->creator_id = @$form['creator_id'];
-  $lesson->lesson_name = @$form['lesson_name'];
-  $lesson->save();
-  $stat = new \Pond\StatusContainer($lesson);
-  $stat->success();
-  $stat->message("Lesson created");
-  $res = $res->withStatus(200);
-  return $res->withJson($stat);
+  $users = \Pond\User::all();
+  $userObj = [];
+
+  foreach($users as $user){
+      if($user->type == 'TEACHER')
+        array_push($userObj,$user->user_id);
+  }
+
+  if(isset($creator_id) and isset($lesson_name) and in_array($creator_id,$userObj)){
+      $lesson->creator_id = $creator_id;
+      $lesson->lesson_name = $lesson_name;
+      $lesson->save();
+      if(isset($published) and ($published == '1' or $published == '0')){
+          $lesson->published = $published;
+          $lesson->save();
+      }
+      $stat = new \Pond\StatusContainer($lesson);
+      $stat->success();
+      $stat->message("Lesson created");
+      $res = $res->withStatus(200);
+      return $res->withJson($stat);
+
+  } else{
+      $stat = new \Pond\StatusContainer($lesson);
+      $stat->error("Lesson not created.");
+      $stat->message("Lesson not created. Fill out the fields.");
+      $res = $res->withStatus(400);
+      return $res->withJson($stat);
+  }
+
+
 });
