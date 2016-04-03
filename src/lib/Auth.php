@@ -7,7 +7,9 @@ use Slim\Http\Response;
 
 use Respect\Validation\Exceptions\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use \Exception;
 use \RuntimeException;
+use \InvalidArgumentException;
 
 use Slim\Container;
 
@@ -39,26 +41,41 @@ class Auth {
     } // loginHandler
 
     public function isRequestAuthorized(Request $req, $forUID = null): bool {
-        // First, check for Authorization: Bearer [token]
+
+        // Step 1. check for Authorization: Bearer [token]
         // header
 
-        if(!$req->hasHeader('Authorization')) {
-            return false;
-        }
-
-        $tokenHeader = $req->getHeader('Authorization')[0]; // Bearer xxxxx.yyyyy.zzzzz
-        $tokenString = explode(' ', $tokenHeader)[1]; // xxxxx.yyyyy.zzzzz
+        $tokenString = "";
 
         try {
-            $parser = new Parser();
-            $token = $parser->parse($tokenString);
-        } catch(RuntimeException $e) {
-            // Token parsing failed, bad token assumed.
+            $tokenHeader = $req->getHeader('Authorization')[0]; // Bearer xxxxx.yyyyy.zzzzz
+            $tokenHeaderValue = explode(' ', $tokenHeader); // ['Bearer', 'xxxxx.yyyyy.zzzzz']
+            if(isset($tokenHeaderValue[1])) {
+                $this->logger->info("Parsed Authorization header.");
+                $tokenString = $tokenHeaderValue[1]; // xxxxx.yyyyy.zzzzz
+            } else {
+                $this->logger->info("Malformed Authorization header. Unauthorized.");
+                return false;
+            }
+        } catch(Exception $e) {
+            $this->logger->info("Failed to parse Authorization header.");
             return false;
         }
 
-        // Step 1: Validate the assertions in the JWT
+        // Step 2. parse JWT
 
+        $this->logger->info("Attempting to parse JWT.");
+        $parser = new Parser();
+
+        try {
+            $token = $parser->parse($tokenString);
+        } catch(Exception $e) {
+            // Token parsing failed, bad token assumed.
+            $this->logger->info("Could not parse JWT: Malformed or missing.");
+            return false;
+        }
+
+        // Step 3. Validate the assertions in the JWT
         $tokenSettings = $this->container->get('settings')['token'];
 
         $issuer   = $tokenSettings['iss'];
@@ -86,7 +103,7 @@ class Auth {
             return false;
         }
 
-        // Step 2. Verify signature
+        // Step 4. Verify signature
         // [NOTA BENE] don't let JWT assert algorithm.
         // Use predetermined algorithm and key for verification.
         $signer = new Signer();
