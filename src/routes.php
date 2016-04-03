@@ -137,7 +137,6 @@ $app->post('/api/lessons', function($req, $res, $args) {
   $lesson_name = @$form['lesson_name'];
   $creator_id = @$form['creator_id'];
   $published = @$form['published'];
-
   $users = \Pond\User::all();
   $userObj = [];
 
@@ -157,12 +156,11 @@ $app->post('/api/lessons', function($req, $res, $args) {
       $stat = new \Pond\StatusContainer($lesson);
       $stat->success();
       $stat->message("Lesson created");
-      $res = $res->withStatus(200);
       return $res->withJson($stat);
 
-  } else{
+  } else {
       $stat = new \Pond\StatusContainer($lesson);
-      $stat->error("Lesson not created.");
+      $stat->error("LessonInfoError");
       $stat->message("Lesson not created. Fill out the fields.");
       $res = $res->withStatus(400);
       return $res->withJson($stat);
