@@ -37,7 +37,7 @@ function($scope, $http, $location, $cookies, settings) {
         // to the current scope (the child scope in this case, because submitLogin()
         // is therein triggered).
 
-        var loginData = { 'username' : this.loginUsername, 'password' : this.loginPassword };
+        var loginData = { 'email' : this.loginEmail, 'password' : this.loginPassword };
 
         $http({
             'method': 'POST',
