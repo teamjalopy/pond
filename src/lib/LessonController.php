@@ -33,11 +33,23 @@ class LessonController {
 
         $this->logger->info("GET /api/lessons/{lesson_id} Handler");
 
-        // TODO: return lesson either if published or if owned
+        // Retrieve the lesson by ID #
         try {
             $lesson = Lesson::findOrFail( $req->getAttribute('lesson_id') );
         } catch(ModelNotFoundException $e) {
             return self::lessonNotFoundError($res);
+        }
+
+        // If the lesson is not published, it must be owned by the requester,
+        // otherwise, behave as if it does not exist (like GitHub with private repos)
+        $authUID = $this->auth->getAuthorizedUserID($req);
+        $uidMismatch = ($lesson->creator_id != $authUID);
+
+        if(!$lesson->published && $uidMismatch) {
+            $this->logger->info("The lesson is not published, and the creator ID (#"
+            .$lesson->creator_id.") does not match the current user (#". $authUID .")");
+
+            return self::lessonNotFoundErrorStatus($res);
         }
 
         $stat = new StatusContainer($lesson);
