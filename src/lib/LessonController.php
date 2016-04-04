@@ -28,22 +28,18 @@ class LessonController {
         $this->logger = $this->container->get('logger');
     }
 
+
     function getLessonHandler(Request $req, Response $res): Response {
         try{
             $lessons = Lesson::findOrFail( $req->getAttribute('lesson_id') );
-            $stat = new StatusContainer($lessons);
-            $stat->success();
-            $stat->message("Here is the requested lesson");
-            $res = $res->withStatus(200);
-            return $res->withJson($stat);
+        } catch(ModelNotFoundException $e){
+            return self::lessonNotFoundError($res);
         }
-        catch(ModelNotFoundException $e){
-            $stat = new StatusContainer($lessons);
-            $stat->error("Lesson Not Found");
-            $stat->message('Lesson not found.');
-            $res = $res->withStatus(404);
-            return $res->withJson($stat);
-        }
+
+        $stat = new StatusContainer($lessons);
+        $stat->success();
+        $stat->message("Here is the requested lesson");
+        return $res->withJson($stat);
     } // getLessonHandler
 
 
@@ -126,11 +122,8 @@ class LessonController {
 
 
     function postLessonHandler(Request $req, Response $res): Response {
-        $lesson = new \Pond\Lesson();
+        $lesson = new Lesson();
         $form = $req->getParsedBody();
-        $lesson_name = @$form['lesson_name'];
-        $creator_id = @$form['creator_id'];
-        $published = @$form['published'];
         $users = \Pond\User::all();
         $userObj = [];
 
@@ -152,12 +145,28 @@ class LessonController {
             $stat->message("Lesson created");
             return $res->withJson($stat);
         } else {
-            $stat = new \Pond\StatusContainer($lesson);
-            $stat->error("LessonInfoError");
-            $stat->message("Lesson not created. Fill out the fields.");
-            $res = $res->withStatus(400);
-            return $res->withJson($stat);
+            return self::lessonInfoError($res);
         }
     } // postLessonHandler
+
+
+    static function lessonNotFoundError(Response $res): Response {
+        $stat = new StatusContainer($lessons);
+        $stat->error("LessonNotFoundError");
+        $stat->message('Lesson not found.');
+
+        $res = $res->withStatus(404);
+        return $res->withJson($stat);
+    } // lessonNotFoundError
+
+
+    static function lessonInfoError(Response $res): Response {
+        $stat = new \Pond\StatusContainer($lesson);
+        $stat->error("LessonInfoError");
+        $stat->message("Please provide all required fields.");
+
+        $res = $res->withStatus(400);
+        return $res->withJson($stat);
+    } // lessonInfoError
 
 }
