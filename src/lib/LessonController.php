@@ -116,6 +116,7 @@ class LessonController {
 
         $this->logger->info("GET /api/lessons/ Handler");
 
+        // TODO: also include unpublished, owned lessons
         $lessons = Lesson::where("published",true)->get();
         $lessonObj = $lessons->toArray();
 
