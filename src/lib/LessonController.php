@@ -30,7 +30,7 @@ class LessonController {
 
     function getLessonHandler(Request $req, Response $res): Response {
         try{
-            $lessons = Lesson::findOrFail($args['lesson_id']);
+            $lessons = Lesson::findOrFail( $req->getAttribute('lesson_id') );
             $stat = new StatusContainer($lessons);
             $stat->success();
             $stat->message("Here is the requested lesson");
@@ -50,7 +50,7 @@ class LessonController {
     function putLessonHandler(Request $req, Response $res): Response {
         $auth = new Auth($this);
         try{
-            $lessons = Lesson::findOrFail($args['lesson_id']);
+            $lessons = Lesson::findOrFail( $req->getAttribute('lesson_id') );
             $creator_id = $lessons->creator_id;
             $isAuth = $auth->isRequestAuthorized($req,$creator_id);
             if(!$isAuth) {
@@ -90,7 +90,7 @@ class LessonController {
     function deleteLessonHandler(Request $req, Response $res): Response {
         $auth = new Auth($this);
         try{
-            $lessons = Lesson::findOrFail($args['lesson_id']);
+            $lessons = Lesson::findOrFail( $req->getAttribute('lesson_id') );
             $creator_id = $lessons->creator_id;
             if(!$auth->isRequestAuthorized($req,$creator_id)) {
                 return $res->withStatus(401);

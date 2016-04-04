@@ -19,7 +19,7 @@ $app->get('/api/auth/{user_id}', function ($req, $res) {
 // User Endpoints
 
 $app->get('/api/users/{user_id}', function($req, $res, $args) {
-    $users = Pond\User::find($args['user_id']);
+    $users = Pond\User::find( $req->getAttribute('user_id') );
     $stat = new \Pond\StatusContainer($users);
     $stat->success();
     $stat->message("Here is requested user");
