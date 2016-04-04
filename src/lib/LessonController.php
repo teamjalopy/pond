@@ -42,11 +42,16 @@ class LessonController {
 
         // If the lesson is not published, it must be owned by the requester,
         // otherwise, behave as if it does not exist (like GitHub with private repos)
-        $authUID = $this->auth->getAuthorizedUserID($req);
+        try {
+            $authUID = $this->auth->getAuthorizedUserID($req);
+        } catch(Exception $e) {
+            $authUID = -1;
+        }
+
         $uidMismatch = ($lesson->creator_id != $authUID);
 
         if(!$lesson->published && $uidMismatch) {
-            $this->logger->info("The lesson is not published, and the creator ID (#"
+            $this->logger->info("getLessonHandler: The lesson is not published, and the creator ID (#"
             .$lesson->creator_id.") does not match the current user (#". $authUID .")");
 
             return self::lessonNotFoundErrorStatus($res);
@@ -63,28 +68,39 @@ class LessonController {
         $this->logger->info("PUT /api/lessons/{lesson_id} Handler");
 
         try {
-            $lessons = Lesson::findOrFail( $req->getAttribute('lesson_id') );
+            $lesson = Lesson::findOrFail( $req->getAttribute('lesson_id') );
         } catch(ModelNotFoundException $e) {
             return self::lessonNotFoundError($req);
         }
 
-        if(!$this->auth->isRequestAuthorized($req,$creator_id)) {
-            $res->withStatus(401); // Unauthorized
+        try {
+            $authUID = $this->auth->getAuthorizedUserID($req);
+        } catch(Exception $e) {
+            $authUID = -1;
+        }
+
+        $uidMismatch = ($lesson->creator_id != $authUID);
+
+        if($uidMismatch) {
+            $this->logger->info("putLessonHandler: This lesson's creator ID (#"
+            .$lesson->creator_id.") does not match the current user (#". $authUID .")");
+
+            return $res->withStatus(401); // Unauthorized
         }
 
         $form = $req->getParsedBody();
 
         if( isset($form['lesson_name']) ) {
-            $lessons->lesson_name = $form['lesson_name'];
+            $lesson->lesson_name = $form['lesson_name'];
         }
 
         if( isset($form['published']) ) {
-            $lessons->published = $form['published'];
+            $lesson->published = $form['published'];
         }
 
-        $lessons->save();
+        $lesson->save();
 
-        return self::lessonUpdatedStatus($res);
+        return self::lessonUpdatedStatus($res, $lesson);
     } // putLessonHandler
 
 
@@ -200,8 +216,8 @@ class LessonController {
     } // lessonInfoError
 
 
-    static function lessonUpdatedStatus(Response $res): Response {
-        $stat = new StatusContainer();
+    static function lessonUpdatedStatus(Response $res, Lesson $lesson): Response {
+        $stat = new StatusContainer($lesson);
         $stat->success();
         $stat->message("The lesson has been updated.");
         return $res->withJson($stat);
