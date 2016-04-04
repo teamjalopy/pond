@@ -112,6 +112,8 @@ class Auth {
             throw new RuntimeException("There is no authorized user.",1);
         }
 
+        $tokenString = $this->getJWTFromHeader($req);
+
         $this->logger->info("Attempting to parse JWT.");
         $parser = new Parser();
 
@@ -123,8 +125,8 @@ class Auth {
             return false;
         }
 
-        $this->logger->info(var_export($token));
-        return 0;
+        $this->logger->info("UID claim read: " . $token->getClaim('uid'));
+        return $token->getClaim('uid');
     }
 
     private function authenticate($email, $password) {

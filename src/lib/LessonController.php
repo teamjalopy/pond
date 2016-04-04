@@ -30,12 +30,14 @@ class LessonController {
 
 
     function getLessonHandler(Request $req, Response $res): Response {
-        try{
+
+        $this->logger->info("GET /api/lessons/{lesson_id} Handler");
+
+        try {
             $lessons = Lesson::findOrFail( $req->getAttribute('lesson_id') );
-        } catch(ModelNotFoundException $e){
+        } catch(ModelNotFoundException $e) {
             return self::lessonNotFoundError($res);
         }
-
 
         $stat = new StatusContainer($lesson);
         $stat->success();
@@ -45,6 +47,8 @@ class LessonController {
 
 
     function putLessonHandler(Request $req, Response $res): Response {
+        $this->logger->info("PUT /api/lessons/{lesson_id} Handler");
+
         try {
             $lessons = Lesson::findOrFail( $req->getAttribute('lesson_id') );
         } catch(ModelNotFoundException $e) {
@@ -72,6 +76,9 @@ class LessonController {
 
 
     function deleteLessonHandler(Request $req, Response $res): Response {
+
+        $this->logger->info("DELETE /api/lessons/{lesson_id} Handler");
+
         if(!$this->auth->isRequestAuthorized($req,$lesson->creator_id)) {
             return $res->withStatus(401);
         }
@@ -93,6 +100,9 @@ class LessonController {
 
 
     function getLessonCollectionHandler(Request $req, Response $res): Response {
+
+        $this->logger->info("GET /api/lessons/ Handler");
+
         $lessons = Lesson::where("published",true)->get();
         $lessonObj = $lessons->toArray();
 
@@ -105,38 +115,59 @@ class LessonController {
 
 
     function postLessonHandler(Request $req, Response $res): Response {
-        $lesson = new Lesson();
-        $form = $req->getParsedBody();
-        $users = \Pond\User::all();
-        $userObj = [];
 
-        foreach($users as $user){
-            if($user->type == 'TEACHER')
-                array_push($userObj,$user->user_id);
+        $this->logger->info("POST /api/lessons/ Handler");
+
+        $form = $req->getParsedBody();
+
+        // Get the currently authenticated user, return failure state (401)
+        // if unauth.
+        try {
+            $creator_id = $this->auth->getAuthorizedUserID($req);
+        } catch(RuntimeException $e) {
+            return $res->withStatus(401); // Unauthorized
         }
 
-        if(isset($creator_id) and isset($lesson_name) and in_array($creator_id,$userObj)){
-            $lesson->creator_id = $creator_id;
-            $lesson->lesson_name = $lesson_name;
-            $lesson->save();
+        // Get the corresponding user model or fail
+        try {
+            $creator = \Pond\User::findOrFail($creator_id);
+        } catch(ModelNotFoundException $e) {
+            $this->logger->info("postLessonHandler: user with ID '$creator_id' not found.");
+            return $res->withStatus(400); // Bad Request
+        }
 
-            if(isset($published) and ($published == '1' or $published == '0')){
-                $lesson->published = $published;
-                $lesson->save();
-            }
+        // Check that the user is a teacher
+        if($creator->type != "TEACHER") {
+            $this->logger->info("postLessonHandler: bad creator type '$creator->type'.");
+            return $res->withStatus(400); // Bad Request
+        }
 
-            $stat = new \Pond\StatusContainer($lesson);
-            $stat->success();
-            $stat->message("Lesson created");
-            return $res->withJson($stat);
-        } else {
+        // Require the lesson name at a minimum
+        if(!isset($form['lesson_name'])) {
             return self::lessonInfoErrorStatus($res);
         }
+
+        // Create a Lesson model
+        $lesson = new Lesson();
+
+        $lesson->lesson_name = $form['lesson_name'];
+        $lesson->published = false;
+
+        if(isset($form['published'])) {
+            $lesson->published = (bool)$form['published'];
+        }
+
+        $creator->lessons()->save($lesson);
+
+        $stat = new \Pond\StatusContainer($lesson);
+        $stat->success();
+        $stat->message("Lesson created");
+        return $res->withJson($stat);
     } // postLessonHandler
 
 
     static function lessonNotFoundErrorStatus(Response $res): Response {
-        $stat = new StatusContainer($lessons);
+        $stat = new StatusContainer();
         $stat->error("LessonNotFoundError");
         $stat->message('Lesson not found.');
 
@@ -146,7 +177,7 @@ class LessonController {
 
 
     static function lessonInfoErrorStatus(Response $res): Response {
-        $stat = new StatusContainer($lesson);
+        $stat = new StatusContainer();
         $stat->error("LessonInfoError");
         $stat->message("Please provide all required fields.");
 
@@ -156,7 +187,7 @@ class LessonController {
 
 
     static function lessonUpdatedStatus(Response $res): Response {
-        $stat = new StatusContainer($lessons);
+        $stat = new StatusContainer();
         $stat->success();
         $stat->message("The lesson has been updated.");
         return $res->withJson($stat);
