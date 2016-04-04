@@ -51,14 +51,14 @@ $app->get('/api/lessons/{lesson_id}', function($req, $res, $args) {
 });
 
 $app->put('/api/lessons/{lesson_id}', function($req, $res, $args) {
-    //$auth = new \Pond\Auth($this);
+    $auth = new \Pond\Auth($this);
     try{
         $lessons = Pond\Lesson::findOrFail($args['lesson_id']);
-        //$creator_id = $lessons->creator_id;
-        //$isAuth = $auth->isRequestAuthorized($req,$creator_id);
-        //if(!$isAuth) {
-        //    $res->withStatus(401); // Unauthorized
-        //} else {
+        $creator_id = $lessons->creator_id;
+        $isAuth = $auth->isRequestAuthorized($req,$creator_id);
+        if(!$isAuth) {
+            $res->withStatus(401); // Unauthorized
+        } else {
         $form = $req->getParsedBody();
         $lesson_name = @$form['lesson_name'];
         $published = @$form['published'];
@@ -76,9 +76,8 @@ $app->put('/api/lessons/{lesson_id}', function($req, $res, $args) {
             $stat = new \Pond\StatusContainer($lessons);
             $stat->success();
             $stat->message("The lesson has been updated.");
-            $res = $res->withStatus(200);
             return $res->withJson($stat);
-        //}
+        }
 
     }
     catch(ModelNotFoundException $e){
@@ -103,7 +102,6 @@ $app->delete('/api/lessons/{lesson_id}', function($req, $res, $args) {
         $stat->success();
         $lessons->delete();
         $stat->message("The lesson has been deleted");
-        $res = $res->withStatus(200);
         return $res->withJson($stat);
     }
     catch(ModelNotFoundException $e){
