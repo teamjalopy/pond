@@ -11,9 +11,7 @@ use Respect\Validation\Exceptions\ValidationException;
 use Respect\Validation\Exceptions\NestedValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use \RuntimeException;
-
-use Pond\User;
-use Pond\Auth;
+use \Exception;
 
 use Slim\Container;
 
@@ -22,10 +20,12 @@ class LessonController {
 
     private $container;
     private $logger;
+    private $auth;
 
     function __construct(Container $c){
         $this->container = $c;
         $this->logger = $this->container->get('logger');
+        $this->auth = new Auth($this->container);
     }
 
 
@@ -36,7 +36,8 @@ class LessonController {
             return self::lessonNotFoundError($res);
         }
 
-        $stat = new StatusContainer($lessons);
+
+        $stat = new StatusContainer($lesson);
         $stat->success();
         $stat->message("Here is the requested lesson");
         return $res->withJson($stat);
@@ -44,68 +45,50 @@ class LessonController {
 
 
     function putLessonHandler(Request $req, Response $res): Response {
-        $auth = new Auth($this);
-        try{
+        try {
             $lessons = Lesson::findOrFail( $req->getAttribute('lesson_id') );
-            $creator_id = $lessons->creator_id;
-            $isAuth = $auth->isRequestAuthorized($req,$creator_id);
-            if(!$isAuth) {
-                $res->withStatus(401); // Unauthorized
-            } else {
-                $form = $req->getParsedBody();
-                $lesson_name = @$form['lesson_name'];
-                $published = @$form['published'];
-                if(isset($lesson_name)){
-                    $lessons->lesson_name = @$form['lesson_name'];
-                    $lessons->save();
-                }
-                if(isset($published)){
-                    if($published == '1' or $published == '0'){
-                        $lessons->published = @$form['published'];
-                        $lessons->save();
-                    }
-                }
-
-                $stat = new StatusContainer($lessons);
-                $stat->success();
-                $stat->message("The lesson has been updated.");
-                return $res->withJson($stat);
-            }
-
+        } catch(ModelNotFoundException $e) {
+            return self::lessonNotFoundError($req);
         }
-        catch(ModelNotFoundException $e){
-            $stat = new StatusContainer($lessons);
-            $stat->error("Lesson Not Found");
-            $stat->message('Lesson not found.');
-            $res = $res->withStatus(404);
-            return $res->withJson($stat);
+
+        if(!$this->auth->isRequestAuthorized($req,$creator_id)) {
+            $res->withStatus(401); // Unauthorized
         }
+
+        $form = $req->getParsedBody();
+
+        if( isset($form['lesson_name']) ) {
+            $lessons->lesson_name = $form['lesson_name'];
+        }
+
+        if( isset($form['published']) ) {
+            $lessons->published = $form['published'];
+        }
+
+        $lessons->save();
+
+        return self::lessonUpdatedStatus($res);
     } // putLessonHandler
 
 
     function deleteLessonHandler(Request $req, Response $res): Response {
-        $auth = new Auth($this);
-        try{
-            $lessons = Lesson::findOrFail( $req->getAttribute('lesson_id') );
-            $creator_id = $lessons->creator_id;
-            if(!$auth->isRequestAuthorized($req,$creator_id)) {
-                return $res->withStatus(401);
-            }
-
-            $lessons->delete();
-
-            $stat = new StatusContainer($lessons);
-            $stat->success();
-            $stat->message("The lesson has been deleted");
-            return $res->withJson($stat);
+        if(!$this->auth->isRequestAuthorized($req,$lesson->creator_id)) {
+            return $res->withStatus(401);
         }
-        catch(ModelNotFoundException $e){
-            $stat = new StatusContainer($lessons);
-            $stat->error("Lesson Not Found");
-            $stat->message('Lesson not found.');
-            $res = $res->withStatus(404);
-            return $res->withJson($stat);
+
+        try {
+            $lesson = Lesson::findOrFail( $req->getAttribute('lesson_id') );
+        } catch(ModelNotFoundException $e){
+            return self::lessonNotFoundError($res);
         }
+
+        $lesson->delete();
+
+        $stat = new StatusContainer();
+        $stat->success();
+        $stat->message("The lesson has been deleted");
+
+        return $res->withJson($stat);
     } // deleteLessonHandler
 
 
@@ -136,21 +119,23 @@ class LessonController {
             $lesson->creator_id = $creator_id;
             $lesson->lesson_name = $lesson_name;
             $lesson->save();
+
             if(isset($published) and ($published == '1' or $published == '0')){
                 $lesson->published = $published;
                 $lesson->save();
             }
+
             $stat = new \Pond\StatusContainer($lesson);
             $stat->success();
             $stat->message("Lesson created");
             return $res->withJson($stat);
         } else {
-            return self::lessonInfoError($res);
+            return self::lessonInfoErrorStatus($res);
         }
     } // postLessonHandler
 
 
-    static function lessonNotFoundError(Response $res): Response {
+    static function lessonNotFoundErrorStatus(Response $res): Response {
         $stat = new StatusContainer($lessons);
         $stat->error("LessonNotFoundError");
         $stat->message('Lesson not found.');
@@ -160,13 +145,21 @@ class LessonController {
     } // lessonNotFoundError
 
 
-    static function lessonInfoError(Response $res): Response {
-        $stat = new \Pond\StatusContainer($lesson);
+    static function lessonInfoErrorStatus(Response $res): Response {
+        $stat = new StatusContainer($lesson);
         $stat->error("LessonInfoError");
         $stat->message("Please provide all required fields.");
 
         $res = $res->withStatus(400);
         return $res->withJson($stat);
     } // lessonInfoError
+
+
+    static function lessonUpdatedStatus(Response $res): Response {
+        $stat = new StatusContainer($lessons);
+        $stat->success();
+        $stat->message("The lesson has been updated.");
+        return $res->withJson($stat);
+    } // lessonUpdated
 
 }

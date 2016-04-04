@@ -45,20 +45,10 @@ class Auth {
         // Step 1. check for Authorization: Bearer [token]
         // header
 
-        $tokenString = "";
-
         try {
-            $tokenHeader = $req->getHeader('Authorization')[0]; // Bearer xxxxx.yyyyy.zzzzz
-            $tokenHeaderValue = explode(' ', $tokenHeader); // ['Bearer', 'xxxxx.yyyyy.zzzzz']
-            if(isset($tokenHeaderValue[1])) {
-                $this->logger->info("Parsed Authorization header.");
-                $tokenString = $tokenHeaderValue[1]; // xxxxx.yyyyy.zzzzz
-            } else {
-                $this->logger->info("Malformed Authorization header. Unauthorized.");
-                return false;
-            }
+            $tokenString = $this->getJWTFromHeader($req);
         } catch(Exception $e) {
-            $this->logger->info("Failed to parse Authorization header.");
+            $this->logger->info("getJWTFromHeader threw exception: ".$e->getMessage());
             return false;
         }
 
@@ -116,6 +106,27 @@ class Auth {
         }
     }
 
+    // Returns user id or throws exception
+    public function getAuthorizedUserID(Request $req): int {
+        if(!$this->isRequestAuthorized($req)) {
+            throw new RuntimeException("There is no authorized user.",1);
+        }
+
+        $this->logger->info("Attempting to parse JWT.");
+        $parser = new Parser();
+
+        try {
+            $token = $parser->parse($tokenString);
+        } catch(Exception $e) {
+            // Token parsing failed, bad token assumed.
+            $this->logger->info("Could not parse JWT: Malformed or missing.");
+            return false;
+        }
+
+        $this->logger->info(var_export($token));
+        return 0;
+    }
+
     private function authenticate($email, $password) {
         // Email format validation
         try {
@@ -168,6 +179,23 @@ class Auth {
                                  ->getToken();
             $this->logger->info('Building token');
             return $token;
+        }
+    }
+
+    private function getJWTFromHeader(Request $req): string {
+        try {
+            $tokenHeader = $req->getHeader('Authorization')[0]; // Bearer xxxxx.yyyyy.zzzzz
+            $tokenHeaderValue = explode(' ', $tokenHeader); // ['Bearer', 'xxxxx.yyyyy.zzzzz']
+            if(isset($tokenHeaderValue[1])) {
+                $this->logger->info("Parsed Authorization header.");
+                return $tokenHeaderValue[1]; // xxxxx.yyyyy.zzzzz
+            } else {
+                $this->logger->info("Malformed Authorization header. Unauthorized.");
+                throw new InvalidArgumentException("Authorization header malformed.", 1);
+            }
+        } catch(Exception $e) {
+            $this->logger->info("Failed to parse Authorization header.");
+            throw new InvalidArgumentException("Could not parse Authorization header.", 1);
         }
     }
 
