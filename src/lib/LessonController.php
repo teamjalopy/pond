@@ -114,17 +114,13 @@ class LessonController {
 
 
     function getLessonCollectionHandler(Request $req, Response $res): Response {
-        $lessonObj = [];
-        $lessons = Lesson::all();
+        $lessons = Lesson::where("published",true)->get();
+        $lessonObj = $lessons->toArray();
 
-        foreach($lessons as $lesson){
-            array_push($lessonObj, $lesson->toArray());
-        }
-
-        $stat = new \Pond\StatusContainer($lessonObj);
+        $stat = new StatusContainer($lessonObj);
         $stat->success();
         $stat->message("Here are the lessons");
-        $res = $res->withStatus(200);
+
         return $res->withJson($stat);
     } // getLessonCollectionHandler
 
