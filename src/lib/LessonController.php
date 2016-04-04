@@ -33,8 +33,9 @@ class LessonController {
 
         $this->logger->info("GET /api/lessons/{lesson_id} Handler");
 
+        // TODO: return lesson either if published or if owned
         try {
-            $lessons = Lesson::findOrFail( $req->getAttribute('lesson_id') );
+            $lesson = Lesson::findOrFail( $req->getAttribute('lesson_id') );
         } catch(ModelNotFoundException $e) {
             return self::lessonNotFoundError($res);
         }
