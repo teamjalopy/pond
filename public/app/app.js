@@ -8,6 +8,8 @@ angular.module('pond', [
     'vcRecaptcha',
     'pond.HomeView',
     'pond.LoginView',
+    'pond.StudentDash',
+    'pond.TeacherDash'
     'pond.DashboardView'
 ])
 .config(['$routeProvider', function($routeProvider) {

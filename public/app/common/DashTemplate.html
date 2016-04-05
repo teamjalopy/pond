@@ -1,0 +1,22 @@
+<!--Dash View Common-->
+
+<!--stylesheet link to be changed-->
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+<!--Common navbar, needs to be edited in order to determine if student or teacher used-->
+<div class="container-fluid">
+	<nav class="navbar navbar-light bg-faded">
+		<!-- Brand -->
+		<a class="navbar-brand" style="padding:10px"><img src="assets/img/pond.png" height="30"></a>
+		<!-- Links -->
+		<ul class="nav navbar-nav navbar-right navbar-default" style="margin-right:80px">
+			<li class="nav-item dropdown">
+				<a class="nav-link" ng-click="settings()" role="button">Settings</a>
+				<a class="nav-link" ng-click="logOut()" role="button">Log out</a>
+			</li>
+		</ul>
+	</nav>
+</div>
+
+<!--this is where the page for the users differ-->
+<ng-include src="pagePartial"></ng-include>
