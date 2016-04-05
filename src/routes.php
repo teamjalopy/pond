@@ -10,7 +10,6 @@ $app->post('/api/auth', function ($req, $res, $args) {
 });
 
 // User Endpoints
-
 $app->any('/api/users[/{user_id}]', '\Pond\UserController');
 
 // Lesson Endpoints
