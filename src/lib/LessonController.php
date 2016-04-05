@@ -28,6 +28,46 @@ class LessonController {
         $this->auth = new Auth($this->container);
     }
 
+    function __invoke(Request $req, Response $res): Response {
+        // Accepts all endpoints of the form
+        //
+        //  api/lessons[/{lesson_id}]
+        //
+        // where the part in square brackets is
+        // optional.
+
+        if( null !== $req->getAttribute('lesson_id') ) {
+            // api/lessons/{lesson_id}
+            return $this->lessonHandler($req,$res);
+        } else {
+            // api/lessons
+            return $this->lessonCollectionHandler($req,$res);
+        }
+    }
+
+    function lessonHandler(Request $req, Response $res): Response {
+        switch ($req->getMethod()) {
+        case 'GET':
+            return $this->getLessonHandler($req,$res);
+        case 'PUT':
+            return $this->putLessonHandler($req,$res);
+        case 'DELETE':
+            return $this->deleteLessonHandler($req,$res);
+        default:
+            return $res->withStatus(405); // Method Not Allowed
+        }
+    }
+
+    function lessonCollectionHandler(Request $req, Response $res): Response {
+        switch ($req->getMethod()) {
+        case 'GET':
+            return $this->getLessonCollectionHandler($req,$res);
+        case 'POST':
+            return $this->postLessonCollectionHandler($req,$res);
+        default:
+            return $res->withStatus(405); // Method Not Allowed
+        }
+    }
 
     function getLessonHandler(Request $req, Response $res): Response {
 
@@ -144,7 +184,7 @@ class LessonController {
     } // getLessonCollectionHandler
 
 
-    function postLessonHandler(Request $req, Response $res): Response {
+    function postLessonCollectionHandler(Request $req, Response $res): Response {
 
         $this->logger->info("POST /api/lessons/ Handler");
 
