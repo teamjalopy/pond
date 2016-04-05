@@ -26,7 +26,53 @@ class UserController
     }
 
 
-    public function registrationHandler(Request $req, Response $res): Response {
+    function __invoke(Request $req, Response $res): Response {
+        // Accepts all endpoints of the form
+        //
+        //  api/users[/{user_id}]
+        //
+        // where the part in square brackets is
+        // optional.
+        if( null !== $req->getAttribute('user_id') ) {
+            // api/users/{user_id}
+            return $this->userHandler($req,$res);
+        } else {
+            // api/users
+            return $this->userCollectionHandler($req,$res);
+        }
+    }
+
+    function userHandler(Request $req, Response $res): Response {
+        switch ($req->getMethod()) {
+        case 'GET':
+            return $this->getUserHandler($req,$res);
+        default:
+            return $res->withStatus(405); // Method Not Allowed
+        }
+    }
+
+    function userCollectionHandler(Request $req, Response $res): Response {
+        switch ($req->getMethod()) {
+        case 'POST':
+            return $this->postUserCollectionHandler($req,$res);
+        default:
+            return $res->withStatus(405); // Method Not Allowed
+        }
+    }
+
+    public function getUserHandler(Request $req, Response $res): Response {
+        $users = User::find( $req->getAttribute('user_id') );
+
+        $stat = new StatusContainer($users);
+        $stat->success();
+        $stat->message("Here is requested user");
+        return $res->withJson($stat);
+    }
+
+    public function postUserCollectionHandler(Request $req, Response $res): Response {
+
+        $this->logger->info("POST /api/users Handler");
+
         $user = new \Pond\User();
         $form = $req->getParsedBody();
 
