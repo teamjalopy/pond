@@ -8,7 +8,9 @@ angular.module('pond', [
     'vcRecaptcha',
     'pond.HomeView',
     'pond.LoginView',
-    'pond.DashboardView'
+    'pond.StudentDash',
+    'pond.TeacherDash'
+    //'pond.DashboardView'
 ])
 .config(['$routeProvider', function($routeProvider) {
         $routeProvider.otherwise({ redirectTo: '/' });
