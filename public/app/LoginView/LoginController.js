@@ -51,7 +51,7 @@ function($scope, $http, $location, $cookies, settings) {
                 console.log(response.data.data.token);
                 $cookies.put('token', response.data.data.token);
                 // Redirect to dashboard
-                $location.path('/dashboard');
+                $location.path('/student-dash');
             },
             function errorCallback(response) {
                 $scope.submitEnabled = true;
