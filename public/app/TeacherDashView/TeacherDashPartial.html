@@ -11,7 +11,7 @@
 		</div>
 
 		<div class="col-lg-4"> 
-			<a ng-click="logOut()" role="button">Create Class</a>
+			<a ng-click="createClass()" role="button">Create Class</a>
 		</div>
 	</div>
 	<div class="row">
@@ -43,6 +43,7 @@
 							<th>Completion</th-->
 						</tr>
 					</thead>
+
 					<tbody>
 						<!--link to the lesson array with all the lessons-->
 						<tr ng-repeat="l in lessons">
@@ -52,6 +53,7 @@
 							
 						</tr>
 					</tbody>
+
 				</table>
 			</div>
 		</div>
