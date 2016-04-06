@@ -1,3 +1,56 @@
 <!--Student View HTML-->
-<html>
-</html>
+<div class="container" style="margin-top: 20px">
+	<div class="row">
+		<div class="col-lg-4">
+			<!--dummy profile pic added-->
+			<img src="http://www.freelanceme.net/Images/default%20profile%20picture.png" class="img-circle center-block" alt="Cinque Terre" width="100" height="100">
+		</div>
+		<div class="col-lg-8">
+			<h4>COURSES</h4>
+		</div>
+	</div>
+	<div class="row">
+		<!--Student view-->
+		<div class="col-lg-4">
+			<div class="card">
+				<div class="card-header text-xs-center">
+					<!--display student name-->
+					{{student.name}}
+					
+				</div>
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item">Courses</li>
+					<li class="list-group-item">Certificates</li>
+				</ul>
+			</div>
+		</div>
+		<!--Course List-->
+		<div class="col-lg-8">
+			<div class="card">
+				<!--Essentially it would be a table NOT a card-->
+				<table class="table">
+					<!--top of the table-->
+					<thead>
+						<tr>
+							<th colspan="2">Courses</th>
+							<th>Description</th>
+							<th>Completion</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<!--essentially these will link to the courses home page-->
+							<td colspan="2"><a href="#" class="card-link">Course 1</a></td>
+							<td>lorem ipsum</td>
+							<td>100%</td>
+						</tr>
+						<tr>
+							<td colspan="2"><a href="#" class="card-link">Course 2</a></td>
+							<td>lorem ipsum</td>
+							<td>50%</td>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
