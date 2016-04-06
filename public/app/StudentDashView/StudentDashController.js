@@ -23,7 +23,7 @@ angular.module('pond.StudentDashView', ['ngRoute'])
         'data': name
     })
     .then( function(response){
-    	$scope.student = reponse.data.name
+    	$scope.student = reponse.data.name;
     }
     );
 
