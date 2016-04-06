@@ -9,8 +9,7 @@ angular.module('pond', [
     'pond.HomeView',
     'pond.LoginView',
     'pond.StudentDash',
-    'pond.TeacherDash'
-    'pond.DashboardView'
+    'pond.TeacherDash'   
 ])
 .config(['$routeProvider', function($routeProvider) {
         $routeProvider.otherwise({ redirectTo: '/' });
