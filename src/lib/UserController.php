@@ -97,7 +97,17 @@ class UserController
         };
 
         $user->email = $email;
-        $user->type = $type;
+
+        //changes type to match ENUM in users table
+        if($type == 'teacher'){
+            $user->type = 'TEACHER';
+        }
+
+        else{
+            $user->type = 'STUDENT';
+        }
+
+        $this->logger->info($user->type);
         $user->password = $crypto->getHash();
         $user->salt = $crypto->getSalt();
         $user->save();
