@@ -26,7 +26,7 @@
 				<ul class="list-group list-group-flush">
 					<li class="list-group-item">Courses</li>
 					<!--Will eventually use gathered data to record the number of students-->
-					<li class="list-group-item">Number of Students</li>
+					<li class="list-group-item">Number of Students <span class="badge">5</span></li>
 				</ul>
 			</div>
 		</div>
@@ -39,21 +39,18 @@
 					<thead>
 						<tr>
 							<th colspan="2">Courses</th>
-							<th>Description</th>
-							<th>Completion</th>
+							<!--th>Description</th>
+							<th>Completion</th-->
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
+						<!--link to the lesson array with all the lessons-->
+						<tr ng-repeat="l in lessons">
 							<!--essentially these will link to the courses home page-->
-							<td colspan="2"><a href="#" class="card-link">Course 1</a></td>
-							<td>lorem ipsum</td>
-							<td>100%</td>
+							<!--DISPLAY ONLY NAME IN LESSON RIGHT NOW-->
+							<td colspan="2"><a href="#" class="card-link">{{l.name}}</a></td>
+							
 						</tr>
-						<tr>
-							<td colspan="2"><a href="#" class="card-link">Course 2</a></td>
-							<td>lorem ipsum</td>
-							<td>50%</td>
 					</tbody>
 				</table>
 			</div>
