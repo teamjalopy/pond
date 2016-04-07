@@ -11,6 +11,5 @@ angular.module('pond.TeacherDashView', ['ngRoute'])
 
 .controller('TeacherDashController', ['$scope', 'settings',
 function($scope, settings) {
-    $scope.viewName = 'TeacherDashView';
     $scope.pagePartial = "/app/TeacherDashView/TeacherDashPartial.html";
 }]);

@@ -15,11 +15,14 @@
 		<div class="col-md-4">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<span class="subtle-head">{{username}}</span>
+					<div ng-cloak style="height:24px">
+						<span class="subtle-head">{{username}}</span>
+						<span class="label label-primary label-caps">{{user.type}}</span>
+					</div>
 				</div>
 				<ul class="list-group list-group-flush">
-					<li class="list-group-item">Courses</li>
-					<li class="list-group-item">Certificates</li>
+					<a href class="list-group-item">Courses</a>
+					<a href class="list-group-item">Certificates</a>
 				</ul><!-- /.list-group.list-group-flush -->
 			</div><!-- /.panel.panel-default -->
 		</div><!-- /.col-md-4 -->

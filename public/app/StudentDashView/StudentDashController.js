@@ -28,13 +28,23 @@ function($scope, $http, $location, $cookies, settings) {
     		function successCallback(response) {
     			//get the user data name
                 $scope.user = response.data.data;
-                console.log($scope.user);
+
                 $scope.username = $scope.user.name;
                 if($scope.username == '' || $scope.username == null){
                     $scope.username = $scope.user.email;
                 }
-                console.log($scope.username);
 
+                $scope.user.type = (function(){
+                    if($scope.user.is_teacher) {
+                        return 'Teacher';
+                    }
+                    else if($scope.user.is_student) {
+                        return 'Student';
+                    }
+                    else {
+                        console.error("Unknown user type!");
+                    }
+                })();
             },
             function errorCallback(response) {
                 console.log('Getting username unsuccessful')
