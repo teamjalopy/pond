@@ -1,0 +1,169 @@
+<!-- Teacher View HTML -->
+<div class="container">
+
+	<!-- Profile icon & dash header -->
+	<div class="row">
+		<div class="col-md-4 visible-md-block visible-lg-block">
+			<img src="assets/img/profile-default.png" class="img-circle center-block user-icon" width="100" height="100">
+		</div><!-- /.col-md-4 -->
+        <div class="col-md-8">
+            <!-- above card table -->
+        </div><!-- /.col-md-4 -->
+	</div><!-- /.row -->
+
+	<!-- main row -->
+	<div class="row">
+
+		<!-- sidebar -->
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div ng-cloak style="height:24px">
+						<span class="subtle-head">{{username}}</span>
+						<span class="label label-primary label-caps">{{user.type}}</span>
+					</div>
+				</div>
+				<ul class="list-group list-group-flush">
+					<a href class="list-group-item">Courses</a>
+					<a href class="list-group-item">Certificates</a>
+				</ul><!-- /.list-group.list-group-flush -->
+			</div><!-- /.panel.panel-default -->
+		</div><!-- /.col-md-4 -->
+
+        <!-- Edit course modal -->
+        <!--
+            NG-TEMPLATE
+        -->
+        <script type="text/ng-template" id="editLessonModal.html">
+            <header class="modal-header">
+                <h3 class="modal-title">Edit Lesson</h3>
+            </header><!-- .modal-header -->
+            <main class="modal-body">
+                <form name="EditLessonForm">
+                    <div class="form-group">
+                        <label for="EditLessonName">Lesson Name</label>
+                        <input type="text" class="form-control" id="EditLessonName" placeholder="Lesson Name"
+                         ng-model="lesson.lesson_name" name="EditLessonName">
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="lesson.published" name="EditLessonPublished"> Published
+                        </label>
+                    </div>
+                </form>
+            </main><!-- .modal-body -->
+            <footer class="modal-footer">
+                <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+                <button class="btn btn-primary" ng-click="save()">Save</button>
+            </footer><!-- .modal-footer -->
+        </script>
+        <!--
+            END NG-TEMPLATE
+        -->
+
+        <!-- Delete course modal -->
+        <!--
+            NG-TEMPLATE
+        -->
+        <script type="text/ng-template" id="deleteLessonModal.html">
+            <header class="modal-header">
+                <h3 class="modal-title">Delete Lesson</h3>
+                <span class="label label-danger">Danger Zone</span>
+            </header><!-- .modal-header -->
+            <main class="modal-body">
+                <p>Are you sure you want to delete this lesson? This cannot be undone. If you want to make the lesson private, you can <em>unpublish</em> it.</p>
+            </main><!-- .modal-body -->
+            <footer class="modal-footer">
+                <button class="btn btn-danger" ng-click="confirm()">
+                    <i class="fa fa-trash"></i> Confirm deletion
+                </button>
+                <button class="btn btn-success" ng-click="cancel()">
+                    <i class="fa fa-undo"></i> Never mind
+                </button>
+            </footer><!-- .modal-footer -->
+        </script>
+        <!--
+            END NG-TEMPLATE
+        -->
+
+		<!-- course cards -->
+		<div class="col-md-8">
+			<div class="row" id="lesson-list" aria-label="Lessons you've authored" role="list">
+                <!-- course card repeat element -->
+				<div class="col-md-6" ng-repeat="lesson in lessons" role="presentation">
+					<div class="course-card" aria-label="Lesson" role="listitem"
+                     ng-class="{'unpublished': !lesson.published}"
+                    >
+
+						<h3 class="course-card-title">
+							<span>{{lesson.lesson_name}}</span><br>
+							<small>{{lesson.creator.name || lesson.creator.email}}</small>
+						</h3>
+
+                        <div class="btn-toolbar" role="toolbar" aria-label="Lesson actions">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-link"
+                                ng-click="editLesson(lesson)" role="button">
+                                    Edit
+                                </button>
+                                <button type="button" class="btn btn-link btn-link-danger"
+                                ng-click="deleteLesson(lesson)" role="button">
+                                    Delete
+                                </button>
+                            </div><!-- /.btn-group -->
+                        </div><!-- /.btn-toolbar -->
+
+                        <span ng-if="!lesson.published" class="unpublished-flag">
+                            <i class="fa fa-eye-slash"></i>
+                            Unpublished
+                        </span><!-- /.unpublished-flag -->
+
+					</div><!-- /.course-card -->
+				</div><!-- /.col-md-6 -->
+
+                <!-- COURSE ADD CARD -->
+                <div class="col-md-6" ng-repeat="lesson in lessons" role="presentation">
+					<div class="course-card" aria-label="Lesson" role="listitem"
+                     ng-class="{'unpublished': !lesson.published}"
+                     ng-show="showNewLessonForm">
+                     
+                        <form name="NewLessonForm">
+    						<h3 class="course-card-title">
+    							<span>
+                                    <input class="course-card-title-input" placeholder="New lesson" name="NewLessonName">
+                                </span><br>
+    							<small>{{user.name || user.email}}</small>
+    						</h3>
+
+                            <div class="btn-toolbar" role="toolbar" aria-label="New lesson options">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-link btn-link-danger"
+                                    ng-click="showNewLessonForm=false" role="button">
+                                        Cancel
+                                    </button>
+                                    <button type="button" class="btn btn-link btn-link-success"
+                                    ng-click="saveNewLesson()" role="button">
+                                        Save
+                                    </button>
+                                </div><!-- /.btn-group -->
+                            </div><!-- /.btn-toolbar -->
+                        </form>
+
+					</div><!-- /.course-card -->
+				</div><!-- /.col-md-6 -->
+                <!-- END COURSE ADD CARD -->
+
+                <!-- add course placeholder card -->
+                <div class="col-md-6" role="presentation">
+					<button class="course-card-add" aria-label="Create a new lesson"
+                     ng-click="showNewLessonForm=true">
+                        <i class="fa fa-2x fa-plus"></i>
+					</button><!-- /.course-card-add -->
+				</div><!-- /.col-md-6 -->
+                <!-- end add card -->
+
+			</div><!-- /.row -->
+		</div><!-- /.col-md-8 -->
+
+	</div><!-- /.row -->
+</div><!-- /.container -->

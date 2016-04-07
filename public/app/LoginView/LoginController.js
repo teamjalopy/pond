@@ -48,10 +48,17 @@ function($scope, $http, $location, $cookies, settings) {
         .then(
             function successCallback(response) {
                 // Store token
-                console.log(response.data.data.token);
+                console.log(response.data);
                 $cookies.put('token', response.data.data.token);
                 // Redirect to dashboard
-                $location.path('/dashboard');
+                if(response.data.data.user.is_student) {
+                    $location.path('/student-dash');
+                } else if(response.data.data.user.is_teacher) {
+                    $location.path('/teacher-dash');
+                } else {
+                    console.error("Unknown user type on redirect to dash!");
+                }
+
             },
             function errorCallback(response) {
                 $scope.submitEnabled = true;

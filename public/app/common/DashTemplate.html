@@ -1,0 +1,33 @@
+<!--Dash View Common-->
+
+<!--Common navbar, needs to be edited in order to determine if student or teacher used-->
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+		<!-- Brand -->
+		<a class="navbar-brand" ng-href="{{user.is_teacher ? '#/teacher-dash' : '#/student-dash'}}" style="padding:10px">
+			<img src="assets/img/pond.png" height="30">
+		</a>
+		<!-- Links -->
+		</div>
+
+		<ul class="nav navbar-nav navbar-right" role="menu">
+			<li role="presentation">
+				<a href="#/settings" aria-label="Settings" role="menuitem">
+					<i class="fa fa-cog" aria-hidden></i>
+					<span class="visible-xs-inline" aria-hidden>Settings</span>
+				</a>
+			</li>
+			<li role="presentation">
+				<a href ng-click="logOut()" aria-label="Log out" role="menuitem">
+					<i class="fa fa-power-off" aria-hidden></i>
+					<span class="visible-xs-inline" aria-hidden>Log out</span>
+				</a>
+			</li>
+		</ul><!-- /.nav.navbar-nav.navbar-right -->
+
+	</div>
+</nav>
+
+<!--this is where the page for the users differ-->
+<ng-include src="pagePartial"></ng-include>
