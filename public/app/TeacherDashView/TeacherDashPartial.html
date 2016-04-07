@@ -11,7 +11,8 @@
 		</div>
 
 		<div class="col-lg-4"> 
-			<a ng-click="logOut()" role="button">Create Class</a>
+			<!--button to create class-->
+			<a class="glyphicon glyphicon-plus" ng-click="createClass()" role="button">Create Class</a>
 		</div>
 	</div>
 	<div class="row">
@@ -20,7 +21,7 @@
 			<div class="card">
 				<div class="card-header text-xs-center">
 					<!--display student name-->
-					{{teacher.name}}
+					{{username}}
 					
 				</div>
 				<ul class="list-group list-group-flush">
@@ -43,6 +44,7 @@
 							<th>Completion</th-->
 						</tr>
 					</thead>
+
 					<tbody>
 						<!--link to the lesson array with all the lessons-->
 						<tr ng-repeat="l in lessons">
@@ -52,6 +54,7 @@
 							
 						</tr>
 					</tbody>
+
 				</table>
 			</div>
 		</div>
