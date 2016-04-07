@@ -12,7 +12,7 @@ angular.module('pond.StudentDashView', ['ngRoute'])
 
 .controller('StudentDashController', ['$scope', '$http', '$location', '$cookies', 'settings', 
 function($scope, $http, $location, $cookies, settings) {
-    $scope.pagePartial = "/app/StudentDashView/StudentDashPartial.html";
+    $scope.pagePartial = '/app/StudentDashView/StudentDashPartial.html';
 
     $scope.username = '';
 
@@ -37,7 +37,7 @@ function($scope, $http, $location, $cookies, settings) {
                     'message': response.data.message
                 });
             }
-    }
+    
     );
 
 }]);
