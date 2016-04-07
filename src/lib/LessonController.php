@@ -32,6 +32,7 @@ class LessonController {
         // Accepts all endpoints of the form
         //
         //  api/lessons[/{lesson_id}]
+        //  api/users/{user_id}/lessons
         //
         // where the part in square brackets is
         // optional.
@@ -67,6 +68,33 @@ class LessonController {
         default:
             return $res->withStatus(405); // Method Not Allowed
         }
+    }
+
+    function getUserLessonsHandler(Request $req, Response $res): Response {
+        $this->logger->info("GET /api/users/{user_id}/lessons Handler");
+
+        try {
+            $uid = UserController::getUID($req,$this->auth);
+        } catch(RuntimeException $e) {
+            // User ID was 'me' but not authenticated
+            return $res->withStatus(401); // Unauthorized
+        }
+
+        // If you said 'me' as the user id, show unpublished lessons too.
+        if($req->getAttribute('user_id') == 'me') {
+            $lessons = Lesson::where("creator_id",$uid)->get();
+        } else {
+            $lessons = Lesson::where("creator_id",$uid)::where("published",true)->get();
+        }
+
+        $lessonObj = $lessons->toArray();
+
+        $stat = new StatusContainer($lessonObj);
+        $stat->success();
+        $stat->message("Here are the lessons");
+
+        return $res->withJson($stat);
+
     }
 
     function getLessonHandler(Request $req, Response $res): Response {
@@ -148,14 +176,14 @@ class LessonController {
 
         $this->logger->info("DELETE /api/lessons/{lesson_id} Handler");
 
-        if(!$this->auth->isRequestAuthorized($req,$lesson->creator_id)) {
-            return $res->withStatus(401);
-        }
-
         try {
             $lesson = Lesson::findOrFail( $req->getAttribute('lesson_id') );
         } catch(ModelNotFoundException $e){
             return self::lessonNotFoundError($res);
+        }
+
+        if(!$this->auth->isRequestAuthorized($req,$lesson->creator_id)) {
+            return $res->withStatus(401);
         }
 
         $lesson->delete();
@@ -222,12 +250,13 @@ class LessonController {
 
         $lesson->lesson_name = $form['lesson_name'];
         $lesson->published = false;
+        $lesson->creator_id = $creator_id;
 
         if(isset($form['published'])) {
             $lesson->published = (bool)$form['published'];
         }
 
-        $creator->lessons()->save($lesson);
+        $lesson->save();
 
         $stat = new \Pond\StatusContainer($lesson);
         $stat->success();
