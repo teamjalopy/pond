@@ -17,7 +17,7 @@ function($scope, $http, $location, $cookies, settings) {
     $scope.username = '';
 
     $http({
-        'method': 'POST',
+        'method': 'GET',
         'url': settings.baseURI + 'api/users/me',
         'headers': { 
         	'Content-Type' : 'application/json',
@@ -28,18 +28,17 @@ function($scope, $http, $location, $cookies, settings) {
     .then( 
     		function successCallback(response) {
     			//get the user data name
-                $scope.username = reponse.data.data.name;
-    			console.log($scope.user);
-                //assign username the email if no name available
-                if(response.data.data.name==null){
-                    $scope.username = response.data.data.email;
+                $scope.user = response.data.data;
+                console.log($scope.user);
+                $scope.username = $scope.user.name;
+                if($scope.username == '' || $scope.username == null){
+                    $scope.username = $scope.user.email;
                 }
+                console.log($scope.username);
+                
             },
             function errorCallback(response) {
-                //$scope.submitEnabled = true;
-                $scope.errors.push({
-                    'message': response.data.message
-                });
+                console.log('Getting username unsuccessful')
             }
     
     );
