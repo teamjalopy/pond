@@ -1,17 +1,24 @@
 <!--Dash View Common-->
 
 <!--Common navbar, needs to be edited in order to determine if student or teacher used-->
-<div class="container-fluid">
-	<nav class="navbar navbar-light bg-faded">
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
 		<!-- Brand -->
 		<a class="navbar-brand" style="padding:10px"><img src="assets/img/pond.png" height="30"></a>
 		<!-- Links -->
-		<ul class="nav navbar-nav navbar-right navbar-default" style="margin-right:80px">
-			<li class="nav-link">Settings</li>
-			<a class="nav-link" ng-click="logOut()" role="button">Log out</a>
+		</div>
+
+		<ul class="nav navbar-nav navbar-right" style="margin-right:80px">
+			<!--li class="nav-link">Settings</li-->
+		<ul>
+		<ul class="nav navbar-nav navbar-right">
+			<li>
+				<a class="nav-link" ng-click="logOut()" role="button">Log out</a>
+			</li>
 		</ul>
-	</nav>
-</div>
+	</div>
+</nav>
 
 <!--this is where the page for the users differ-->
 <ng-include src="pagePartial"></ng-include>
