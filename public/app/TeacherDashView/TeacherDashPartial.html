@@ -6,6 +6,9 @@
 		<div class="col-md-4 visible-md-block visible-lg-block">
 			<img src="assets/img/profile-default.png" class="img-circle center-block user-icon" width="100" height="100">
 		</div><!-- /.col-md-4 -->
+        <div class="col-md-8">
+            <!-- above card table -->
+        </div><!-- /.col-md-4 -->
 	</div><!-- /.row -->
 
 	<!-- main row -->
@@ -28,25 +31,52 @@
 		</div><!-- /.col-md-4 -->
 
         <!-- Edit course modal -->
+        <!--
+            NG-TEMPLATE
+        -->
         <script type="text/ng-template" id="editLessonModal.html">
             <header class="modal-header">
-
+                <h3 class="modal-title">Edit Lesson</h3>
             </header><!-- .modal-header -->
             <main class="modal-body">
                 <p>Modal Body</p>
             </main><!-- .modal-body -->
             <footer class="modal-footer">
-                <button class="btn btn-primary" ng-click="ok()">OK</button>
+                <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+                <button class="btn btn-primary" ng-click="save()">Save</button>
             </footer><!-- .modal-footer -->
         </script>
+        <!--
+            END NG-TEMPLATE
+        -->
+
+        <!-- Delete course modal -->
+        <!--
+            NG-TEMPLATE
+        -->
+        <script type="text/ng-template" id="deleteLessonModal.html">
+            <header class="modal-header">
+                <h3 class="modal-title">Delete Lesson</h3>
+                <span class="label label-danger">Danger Zone</span>
+            </header><!-- .modal-header -->
+            <main class="modal-body">
+                <p>Modal Body</p>
+            </main><!-- .modal-body -->
+            <footer class="modal-footer">
+                <button class="btn btn-danger" ng-click="confirm()">Confirm deletion</button>
+                <button class="btn btn-success" ng-click="cancel()">Never mind</button>
+            </footer><!-- .modal-footer -->
+        </script>
+        <!--
+            END NG-TEMPLATE
+        -->
 
 		<!-- course cards -->
 		<div class="col-md-8">
 			<div class="row" id="lesson-list" aria-label="Lessons you've authored" role="list">
-
+                <!-- course card repeat element -->
 				<div class="col-md-6" ng-repeat="lesson in lessons" role="presentation">
 					<div class="course-card" aria-label="Lesson" role="listitem">
-
 						<h3 class="course-card-title">
 							<span>{{lesson.lesson_name}}</span><br>
 							<small>{{lesson.creator.name || lesson.creator.email}}</small>
@@ -63,9 +93,16 @@
                                 </button>
                             </div><!-- /.btn-group -->
                         </div><!-- /.btn-toolbar -->
-
 					</div><!-- /.course-card -->
 				</div><!-- /.col-md-6 -->
+
+                <!-- add course placeholder card -->
+                <div class="col-md-6" role="presentation">
+					<button class="course-card-add" aria-label="Create a new lesson">
+                        <i class="fa fa-2x fa-plus"></i>
+					</button><!-- /.course-card-add -->
+				</div><!-- /.col-md-6 -->
+                <!-- end add card -->
 
 			</div><!-- /.row -->
 		</div><!-- /.col-md-8 -->

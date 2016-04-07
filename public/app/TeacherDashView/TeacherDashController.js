@@ -78,12 +78,62 @@ function($scope, settings, $location, $cookies, $http, $uibModal) {
 
     $scope.editLesson = function(lesson) {
         console.log("Edit lesson: "+lesson.lesson_name);
+        var modal = $uibModal.open({
+            animation: true,
+            templateUrl: 'editLessonModal.html',
+            controller: 'editLessonModalController',
+            size: null,
+            resolve : {
+                lesson: function() {
+                    return lesson;
+                }
+            }
+        });
     }
 
     $scope.deleteLesson = function(lesson) {
         console.log("Delete lesson: "+lesson.lesson_name);
+        var modal = $uibModal.open({
+            animation: true,
+            templateUrl: 'deleteLessonModal.html',
+            controller: 'deleteLessonModalController',
+            size: null,
+            resolve : {
+                lesson: function() {
+                    return lesson;
+                }
+            }
+        });
     }
-}]);
+}])
 
 // Modal for editing lessons
 // Template: editLessonModal.html
+.controller('editLessonModalController', function($scope, $uibModalInstance, lesson) {
+
+    $scope.result = {};
+
+    $scope.save = function() {
+        console.log("dummy lesson edit save button press")
+        $uibModalInstance.close($scope.result);
+    };
+    $scope.cancel = function() {
+        $uibModalInstance.dismiss('cancel');
+    };
+})
+
+
+// Modal for deleting lessons
+// Template: deleteLessonModal.html
+.controller('deleteLessonModalController', function($scope, $uibModalInstance, lesson) {
+
+    $scope.result = {};
+
+    $scope.confirm = function() {
+        console.log("Dummy delete confirm button");
+        $uibModalInstance.close($scope.result);
+    };
+    $scope.cancel = function() {
+        $uibModalInstance.dismiss('cancel');
+    };
+});
