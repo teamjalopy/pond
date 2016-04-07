@@ -2,7 +2,7 @@
 
 angular.module('myApp.TeacherView', ['$scope','settings'])
 
-.config(['$routeProvider', function($routeProvider) {
+.config(['$routeProvider'], function($routeProvider) {
     $routeProvider.when('/second-view', {
         templateUrl: 'app/common/DashTemplate.html',
         controller: 'TeacherController'
