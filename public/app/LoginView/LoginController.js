@@ -51,13 +51,13 @@ function($scope, $http, $location, $cookies, settings) {
                 console.log(response.data.data.token);
                 $cookies.put('token', response.data.data.token);
                 // Redirect to dashboard
-                if(!response.data.data.is_teacher){
+                if(!response.data.data.is_teacher) {
                     $location.path('/student-dash');
                 }
-                else{
+                else {
                     $location.path('/teacher-dash');
                 }
-                
+
             },
             function errorCallback(response) {
                 $scope.submitEnabled = true;

@@ -1,15 +1,15 @@
 'use strict';
 
-angular.module('myApp.TeacherView', ['$scope','settings'])
+angular.module('pond.TeacherDashView', ['ngRoute'])
 
-.config(['$routeProvider'], function($routeProvider) {
-    $routeProvider.when('/second-view', {
+.config(['$routeProvider', function($routeProvider) {
+    $routeProvider.when('/teacher-dash', {
         templateUrl: 'app/common/DashTemplate.html',
-        controller: 'TeacherController'
+        controller: 'TeacherDashController'
     });
 }])
 
-.controller('TeacherDashController', ['$scope', 'settings'],
+.controller('TeacherDashController', ['$scope', 'settings',
 function($scope, settings) {
     $scope.viewName = 'TeacherDashView';
     $scope.pagePartial = "/app/TeacherDashView/TeacherDashPartial.html";

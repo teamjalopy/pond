@@ -172,12 +172,12 @@ html, body {
 .user-icon {
     margin-top: 10px;
     margin-bottom:10px;
-    display: none;
 }
 
-@media (min-width: 1200px) { 
-
-    .user-icon{
-        display: block;
-    }
+.subtle-head {
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-size: 0.8em;
+    color: #777;
+    text-transform: uppercase;
 }
