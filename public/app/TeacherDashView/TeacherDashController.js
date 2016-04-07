@@ -113,6 +113,9 @@ function($scope, settings, $location, $cookies, $http, $uibModal) {
 
     $scope.result = {};
 
+    $scope.lesson = lesson;
+    console.log($scope.lesson);
+
     $scope.save = function() {
         console.log("dummy lesson edit save button press")
         $uibModalInstance.close($scope.result);
@@ -128,6 +131,9 @@ function($scope, settings, $location, $cookies, $http, $uibModal) {
 .controller('deleteLessonModalController', function($scope, $uibModalInstance, lesson) {
 
     $scope.result = {};
+
+    $scope.lesson = lesson;
+    console.log($scope.lesson);
 
     $scope.confirm = function() {
         console.log("Dummy delete confirm button");

@@ -39,7 +39,18 @@
                 <h3 class="modal-title">Edit Lesson</h3>
             </header><!-- .modal-header -->
             <main class="modal-body">
-                <p>Modal Body</p>
+                <form>
+                    <div class="form-group">
+                        <label for="editLessonName">Lesson Name</label>
+                        <input type="text" class="form-control" id="editLessonName" placeholder="Lesson Name"
+                         ng-model="lesson.lesson_name">
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="lesson.published"> Published
+                        </label>
+                    </div>
+                </form>
             </main><!-- .modal-body -->
             <footer class="modal-footer">
                 <button class="btn btn-default" ng-click="cancel()">Cancel</button>
