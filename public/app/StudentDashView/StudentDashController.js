@@ -28,10 +28,10 @@ function($scope, $http, $location, $cookies, settings) {
     .then( 
     		function successCallback(response) {
     			//get the user data name
-                $scope.username = reponse.data.data;
+                $scope.username = reponse.data.data.name;
     			console.log($scope.user);
                 //assign username the email if no name available
-                if($scope.username==''){
+                if(response.data.data.name==null){
                     $scope.username = response.data.data.email;
                 }
             },
