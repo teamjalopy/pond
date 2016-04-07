@@ -49,7 +49,7 @@
 
 						<h3 class="course-card-title">
 							<span>{{lesson.lesson_name}}</span><br>
-							<small>{{lesson.creator_id}}</small>
+							<small>{{lesson.creator.name || lesson.creator.email}}</small>
 						</h3>
                         <div class="btn-toolbar" role="toolbar" aria-label="Lesson actions">
                             <div class="btn-group" role="group">
