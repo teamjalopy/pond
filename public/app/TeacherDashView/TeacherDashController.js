@@ -9,8 +9,8 @@ angular.module('pond.TeacherDashView', ['ngRoute'])
     });
 }])
 
-.controller('TeacherDashController', ['$scope', 'settings', '$location', '$cookies', '$http',
-function($scope, settings, $location, $cookies, $http) {
+.controller('TeacherDashController', ['$scope', 'settings', '$location', '$cookies', '$http', '$uibModal',
+function($scope, settings, $location, $cookies, $http, $uibModal) {
     $scope.pagePartial = "/app/TeacherDashView/TeacherDashPartial.html";
 
     $scope.username = '';
@@ -76,3 +76,6 @@ function($scope, settings, $location, $cookies, $http) {
         $location.path('/log-in');
     }
 }]);
+
+// Modal for editing lessons
+// Template: editLessonModal.html

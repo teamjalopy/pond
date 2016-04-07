@@ -6,6 +6,7 @@ angular.module('pond', [
     'ngAnimate',
     'ngCookies',
     'vcRecaptcha',
+    'ui.bootstrap',
     'pond.HomeView',
     'pond.LoginView',
     'pond.StudentDashView',

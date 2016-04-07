@@ -27,6 +27,19 @@
 			</div><!-- /.panel.panel-default -->
 		</div><!-- /.col-md-4 -->
 
+        <!-- Edit course modal -->
+        <script type="text/ng-template" id="editLessonModal.html">
+            <header class="modal-header">
+
+            </header><!-- .modal-header -->
+            <main class="modal-body">
+                <p>Modal Body</p>
+            </main><!-- .modal-body -->
+            <footer class="modal-footer">
+                <button class="btn btn-primary" ng-click="ok()">OK</button>
+            </footer><!-- .modal-footer -->
+        </script>
+
 		<!-- course cards -->
 		<div class="col-md-8">
 			<div class="row" id="lesson-list" aria-label="Lessons you've authored" role="list">
@@ -36,11 +49,13 @@
 
 						<h3 class="course-card-title">
 							<span>{{lesson.lesson_name}}</span><br>
-							<small>Teacher Name</small>
+							<small>{{lesson.creator_id}}</small>
 						</h3>
                         <div class="btn-toolbar" role="toolbar" aria-label="Lesson actions">
-                            <div class="btn-group" role="group" aria-label="">
-                                <button type="button" class="btn btn-default">Edit</button>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default" aria-label="Edit lesson" title="Edit lesson">
+                                    <i class="fa fa-lg fa-ellipsis-h"></i>
+                                </button>
                             </div><!-- /.btn-group -->
                         </div><!-- /.btn-toolbar -->
 
