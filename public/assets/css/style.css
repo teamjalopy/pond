@@ -2,6 +2,7 @@ html, body {
     box-sizing: border-box;
     font-size: 13pt;
     -webkit-font-smoothing: antialiased; /* fixes animation flicker */
+    -moz-osx-font-smoothing: grayscale; /* fixes over-bold fonts in OS X firefox */
     font-family: "Lato", sans-serif;
 }
 
