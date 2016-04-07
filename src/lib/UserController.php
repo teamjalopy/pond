@@ -61,12 +61,22 @@ class UserController
     }
 
     public function getUserHandler(Request $req, Response $res): Response {
-        $users = User::find( $req->getAttribute('user_id') );
+        $users = User::find( $req->getAttribute('user_id'));
 
-        $stat = new StatusContainer($users);
-        $stat->success();
-        $stat->message("Here is requested user");
-        return $res->withJson($stat);
+        if($users == NULL){
+            $stat = new StatusContainer($users);
+            $stat->error("InvalidUser");
+            $stat->message("Please make sure user is valid");
+
+            $res = $res->withStatus(404); // not found
+            return $res->withJson($stat);
+        }
+        else{
+            $stat = new StatusContainer($users);
+            $stat->success();
+            $stat->message("Here is requested user");
+            return $res->withJson($stat);
+        }
     }
 
     public function postUserCollectionHandler(Request $req, Response $res): Response {
@@ -101,7 +111,6 @@ class UserController
             $user->type = 'STUDENT';
         }
 
-        $this->logger->info($user->type);
         $user->password = $crypto->getHash();
         $user->salt = $crypto->getSalt();
         $user->save();
