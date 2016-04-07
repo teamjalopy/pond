@@ -3,18 +3,16 @@
 	<div class="row">
 		<div class="col-lg-4">
 			<!--dummy profile pic added-->
-			<img src="http://www.freelanceme.net/Images/default%20profile%20picture.png" class="img-circle center-block" alt="Cinque Terre" width="100" height="100">
-		</div>
-		<div class="col-lg-8">
-			<h4>COURSES</h4>
+			<img src="http://www.freelanceme.net/Images/default%20profile%20picture.png" class="img-circle center-block user-icon" alt="Cinque Terre" width="100" height="100">
 		</div>
 	</div>
 	<div class="row">
 		<!--Student view-->
 		<div class="col-lg-4">
-			<div class="card">
+			<div class="panel panel-default">
+				<div class="panel-heading">{{username}}</div>
+					
 				<ul class="list-group list-group-flush">
-					<li class="list-group-item">{{username}}</li>
 					<li class="list-group-item">Courses</li>
 					<li class="list-group-item">Certificates</li>
 				</ul>
@@ -22,13 +20,15 @@
 		</div>
 		<!--Course List-->
 		<div class="col-lg-8">
+			<h4>COURSES</h4>
+			
 			<div class="card">
 				<!--Essentially it would be a table NOT a card-->
 				<table class="table">
 					<!--top of the table-->
 					<thead>
 						<tr>
-							<th colspan="2">Courses</th>
+							<th colspan="2"></th>
 							<th>Description</th>
 							<th>Completion</th>
 						</tr>
