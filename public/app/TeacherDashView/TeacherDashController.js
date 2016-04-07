@@ -107,12 +107,23 @@ function($scope, settings, $location, $cookies, $http, $uibModal) {
                 }
             }
         });
+
+        modal.result.then(function(success) {
+            if(success) {
+                console.log("Removing lesson from list...");
+                var index = $scope.lessons.indexOf(lesson);
+                $scope.lessons.splice(index, 1);
+            } else {
+                console.log("Did not receive success signal from Delete action");
+            }
+        });
     }
 }])
 
 // Modal for editing lessons
 // Template: editLessonModal.html
-.controller('editLessonModalController', function($scope, $uibModalInstance, lesson, $http, settings, $cookies) {
+.controller('editLessonModalController',
+function($scope, $uibModalInstance, lesson, $http, settings, $cookies) {
 
     $scope.lesson = angular.copy(lesson);
 
@@ -152,16 +163,31 @@ function($scope, settings, $location, $cookies, $http, $uibModal) {
 
 // Modal for deleting lessons
 // Template: deleteLessonModal.html
-.controller('deleteLessonModalController', function($scope, $uibModalInstance, lesson) {
-
-    $scope.result = {};
+.controller('deleteLessonModalController',
+function($scope, $uibModalInstance, lesson, $http, settings, $cookies) {
 
     $scope.lesson = lesson;
     console.log($scope.lesson);
 
     $scope.confirm = function() {
-        console.log("Dummy delete confirm button");
-        $uibModalInstance.close($scope.result);
+        $http({
+            'method': 'DELETE',
+            'url': settings.baseURI + 'api/lessons/' + $scope.lesson.lesson_id,
+            'headers': {
+                'Content-Type' : 'application/json',
+                'Authorization' : 'Bearer ' + $cookies.get('token')
+            }
+        })
+        .then(
+            function successCallback(response) {
+                console.log('Delete Success');
+                $uibModalInstance.close(true);
+            },
+            function errorCallback(response) {
+                console.error('Lesson Delete form action failed.');
+                $uibModalInstance.close(false);
+            }
+        );
     };
     $scope.cancel = function() {
         $uibModalInstance.dismiss('cancel');

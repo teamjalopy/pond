@@ -176,14 +176,14 @@ class LessonController {
 
         $this->logger->info("DELETE /api/lessons/{lesson_id} Handler");
 
-        if(!$this->auth->isRequestAuthorized($req,$lesson->creator_id)) {
-            return $res->withStatus(401);
-        }
-
         try {
             $lesson = Lesson::findOrFail( $req->getAttribute('lesson_id') );
         } catch(ModelNotFoundException $e){
             return self::lessonNotFoundError($res);
+        }
+
+        if(!$this->auth->isRequestAuthorized($req,$lesson->creator_id)) {
+            return $res->withStatus(401);
         }
 
         $lesson->delete();
