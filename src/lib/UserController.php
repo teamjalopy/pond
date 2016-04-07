@@ -59,8 +59,8 @@ class UserController
             return $res->withStatus(405); // Method Not Allowed
         }
     }
+ public function getUserHandler(Request $req, Response $res): Response {
 
-    public function getUserHandler(Request $req, Response $res): Response {
         $users = User::find( $req->getAttribute('user_id'));
 
         if($users == NULL){
@@ -77,8 +77,9 @@ class UserController
             $stat->message("Here is requested user");
             return $res->withJson($stat);
         }
-    }
-
+	}
+        
+        
     public function postUserCollectionHandler(Request $req, Response $res): Response {
 
         $this->logger->info("POST /api/users Handler");
