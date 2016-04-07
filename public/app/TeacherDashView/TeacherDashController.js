@@ -75,6 +75,14 @@ function($scope, settings, $location, $cookies, $http, $uibModal) {
         $location.search('e','didLogOut');
         $location.path('/log-in');
     }
+
+    $scope.editLesson = function(lesson) {
+        console.log("Edit lesson: "+lesson.lesson_name);
+    }
+
+    $scope.deleteLesson = function(lesson) {
+        console.log("Delete lesson: "+lesson.lesson_name);
+    }
 }]);
 
 // Modal for editing lessons

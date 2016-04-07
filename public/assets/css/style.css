@@ -2,6 +2,7 @@ html, body {
     box-sizing: border-box;
     font-size: 13pt;
     -webkit-font-smoothing: antialiased; /* fixes animation flicker */
+    font-family: "Lato", sans-serif;
 }
 
 .full-force {
@@ -200,16 +201,25 @@ html, body {
     margin: 0 0 20px;
 }
 
-@media only screen and (min-width : 992px) {
+/*@media only screen and (min-width : 992px) {
     .course-card {
         height: 250px;
     }
-}
+}*/
 
 .course-card-title {
     margin-bottom: 50px;
+    padding: 0 10px 0;
 }
 
 .course-card-title span {
-    font-weight: 300;
+    font-weight: 400;
+}
+
+.btn-link-danger {
+    color: #c9302c;
+}
+
+.btn-link-danger:hover {
+    color: #ac2925;
 }

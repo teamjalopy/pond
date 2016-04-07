@@ -53,8 +53,13 @@
 						</h3>
                         <div class="btn-toolbar" role="toolbar" aria-label="Lesson actions">
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-default" aria-label="Edit lesson" title="Edit lesson">
-                                    <i class="fa fa-lg fa-ellipsis-h"></i>
+                                <button type="button" class="btn btn-link"
+                                ng-click="editLesson(lesson)" role="button">
+                                    Edit
+                                </button>
+                                <button type="button" class="btn btn-link btn-link-danger"
+                                ng-click="deleteLesson(lesson)" role="button">
+                                    Delete
                                 </button>
                             </div><!-- /.btn-group -->
                         </div><!-- /.btn-toolbar -->
