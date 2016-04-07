@@ -77,7 +77,6 @@ function($scope, settings, $location, $cookies, $http, $uibModal) {
     }
 
     $scope.editLesson = function(lesson) {
-        console.log("Edit lesson: "+lesson.lesson_name);
         var modal = $uibModal.open({
             animation: true,
             templateUrl: 'editLessonModal.html',
@@ -88,6 +87,10 @@ function($scope, settings, $location, $cookies, $http, $uibModal) {
                     return lesson;
                 }
             }
+        });
+
+        modal.result.then(function(lesson) {
+            // nothing
         });
     }
 
@@ -109,17 +112,38 @@ function($scope, settings, $location, $cookies, $http, $uibModal) {
 
 // Modal for editing lessons
 // Template: editLessonModal.html
-.controller('editLessonModalController', function($scope, $uibModalInstance, lesson) {
+.controller('editLessonModalController', function($scope, $uibModalInstance, lesson, $http, settings, $cookies) {
 
-    $scope.result = {};
-
-    $scope.lesson = lesson;
-    console.log($scope.lesson);
+    $scope.lesson = angular.copy(lesson);
 
     $scope.save = function() {
-        console.log("dummy lesson edit save button press")
-        $uibModalInstance.close($scope.result);
+
+        var editLessonData = {
+            'lesson_name' : $scope.lesson.lesson_name,
+            'published' : $scope.lesson.published
+        };
+
+        $http({
+            'method': 'PUT',
+            'url': settings.baseURI + 'api/lessons/' + $scope.lesson.lesson_id,
+            'headers': {
+                'Content-Type' : 'application/json',
+                'Authorization' : 'Bearer ' + $cookies.get('token')
+            },
+            'data': editLessonData
+        })
+        .then(
+            function successCallback(response) {
+                console.log('Success');
+                angular.copy(response.data.data, lesson);
+                $uibModalInstance.close();
+            },
+            function errorCallback(response) {
+                console.error('Lesson Edit form save action failed.');
+            }
+        );
     };
+
     $scope.cancel = function() {
         $uibModalInstance.dismiss('cancel');
     };

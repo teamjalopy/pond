@@ -223,6 +223,13 @@ html, body {
 .course-card-title {
     margin-bottom: 50px;
     padding: 0 10px 0;
+    
+    overflow: hidden;
+    word-wrap: break-word;
+
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
 }
 
 .course-card-title span {
@@ -235,4 +242,23 @@ html, body {
 
 .btn-link-danger:hover {
     color: #ac2925;
+}
+
+.course-card.unpublished {
+    opacity: 0.6;
+}
+
+.unpublished-flag {
+    color: #777;
+    font-size: 14px;
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+}
+
+@media only screen and (min-width : 992px) {
+    .unpublished-flag {
+        right: 23px;
+        bottom: 23px;
+    }
 }

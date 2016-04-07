@@ -39,15 +39,15 @@
                 <h3 class="modal-title">Edit Lesson</h3>
             </header><!-- .modal-header -->
             <main class="modal-body">
-                <form>
+                <form name="EditLessonForm">
                     <div class="form-group">
-                        <label for="editLessonName">Lesson Name</label>
-                        <input type="text" class="form-control" id="editLessonName" placeholder="Lesson Name"
-                         ng-model="lesson.lesson_name">
+                        <label for="EditLessonName">Lesson Name</label>
+                        <input type="text" class="form-control" id="EditLessonName" placeholder="Lesson Name"
+                         ng-model="lesson.lesson_name" name="EditLessonName">
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" ng-model="lesson.published"> Published
+                            <input type="checkbox" ng-model="lesson.published" name="EditLessonPublished"> Published
                         </label>
                     </div>
                 </form>
@@ -71,11 +71,15 @@
                 <span class="label label-danger">Danger Zone</span>
             </header><!-- .modal-header -->
             <main class="modal-body">
-                <p>Modal Body</p>
+                <p>Are you sure you want to delete this lesson? This cannot be undone. If you want to make the lesson private, you can <em>unpublish</em> it.</p>
             </main><!-- .modal-body -->
             <footer class="modal-footer">
-                <button class="btn btn-danger" ng-click="confirm()">Confirm deletion</button>
-                <button class="btn btn-success" ng-click="cancel()">Never mind</button>
+                <button class="btn btn-danger" ng-click="confirm()">
+                    <i class="fa fa-trash"></i> Confirm deletion
+                </button>
+                <button class="btn btn-success" ng-click="cancel()">
+                    <i class="fa fa-undo"></i> Never mind
+                </button>
             </footer><!-- .modal-footer -->
         </script>
         <!--
@@ -87,11 +91,15 @@
 			<div class="row" id="lesson-list" aria-label="Lessons you've authored" role="list">
                 <!-- course card repeat element -->
 				<div class="col-md-6" ng-repeat="lesson in lessons" role="presentation">
-					<div class="course-card" aria-label="Lesson" role="listitem">
+					<div class="course-card" aria-label="Lesson" role="listitem"
+                     ng-class="{'unpublished': !lesson.published}"
+                    >
+
 						<h3 class="course-card-title">
 							<span>{{lesson.lesson_name}}</span><br>
 							<small>{{lesson.creator.name || lesson.creator.email}}</small>
 						</h3>
+
                         <div class="btn-toolbar" role="toolbar" aria-label="Lesson actions">
                             <div class="btn-group" role="group">
                                 <button type="button" class="btn btn-link"
@@ -104,6 +112,12 @@
                                 </button>
                             </div><!-- /.btn-group -->
                         </div><!-- /.btn-toolbar -->
+
+                        <span ng-if="!lesson.published" class="unpublished-flag">
+                            <i class="fa fa-eye-slash"></i>
+                            Unpublished
+                        </span><!-- /.unpublished-flag -->
+
 					</div><!-- /.course-card -->
 				</div><!-- /.col-md-6 -->
 
