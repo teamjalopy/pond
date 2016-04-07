@@ -78,11 +78,9 @@ function($scope, $http, $location, $cookies, settings) {
         }
     ];
 
-    //logout test function
     $scope.logOut = function() {
         $cookies.remove('token');
         $location.search('e','didLogOut');
         $location.path('/log-in');
     }
-
 }]);

@@ -1,1 +1,54 @@
-<h1>Teacher Dash</h1>
+<!-- Teacher View HTML -->
+<div class="container">
+
+	<!-- Profile icon & dash header -->
+	<div class="row">
+		<div class="col-md-4 visible-md-block visible-lg-block">
+			<img src="assets/img/profile-default.png" class="img-circle center-block user-icon" width="100" height="100">
+		</div><!-- /.col-md-4 -->
+	</div><!-- /.row -->
+
+	<!-- main row -->
+	<div class="row">
+
+		<!-- sidebar -->
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div ng-cloak style="height:24px">
+						<span class="subtle-head">{{username}}</span>
+						<span class="label label-primary label-caps">{{user.type}}</span>
+					</div>
+				</div>
+				<ul class="list-group list-group-flush">
+					<a href class="list-group-item">Courses</a>
+					<a href class="list-group-item">Certificates</a>
+				</ul><!-- /.list-group.list-group-flush -->
+			</div><!-- /.panel.panel-default -->
+		</div><!-- /.col-md-4 -->
+
+		<!-- course cards -->
+		<div class="col-md-8">
+			<div class="row" id="lesson-list" aria-label="Lessons you've authored" role="list">
+
+				<div class="col-md-6" ng-repeat="lesson in lessons" role="presentation">
+					<div class="course-card" aria-label="Lesson" role="listitem">
+
+						<h3 class="course-card-title">
+							<span>{{lesson.lesson_name}}</span><br>
+							<small>Teacher Name</small>
+						</h3>
+                        <div class="btn-toolbar" role="toolbar" aria-label="Lesson actions">
+                            <div class="btn-group" role="group" aria-label="">
+                                <button type="button" class="btn btn-default">Edit</button>
+                            </div><!-- /.btn-group -->
+                        </div><!-- /.btn-toolbar -->
+
+					</div><!-- /.course-card -->
+				</div><!-- /.col-md-6 -->
+
+			</div><!-- /.row -->
+		</div><!-- /.col-md-8 -->
+
+	</div><!-- /.row -->
+</div><!-- /.container -->
