@@ -13,4 +13,5 @@ $app->post('/api/auth', function ($req, $res, $args) {
 $app->any('/api/users[/{user_id}]', '\Pond\UserController');
 
 // Lesson Endpoints
+$app->get('/api/users/{user_id}/lessons', '\Pond\LessonController:getUserLessonsHandler');
 $app->any('/api/lessons[/{lesson_id}]', '\Pond\LessonController');
