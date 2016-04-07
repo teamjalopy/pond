@@ -17,6 +17,8 @@ function($scope, settings, $location, $cookies, $http, $uibModal) {
 
     $scope.lessons = [];
 
+    $scope.showNewLessonForm = false;
+
     $http({
         'method': 'GET',
         'url': settings.baseURI + 'api/users/me',
@@ -117,6 +119,30 @@ function($scope, settings, $location, $cookies, $http, $uibModal) {
                 console.log("Did not receive success signal from Delete action");
             }
         });
+    }
+
+    $scope.saveNewLesson = function() {
+        var data = {'lesson_name': NewLessonForm.NewLessonName.value };
+        console.log(data);
+        $http({
+            'method': 'POST',
+            'url': settings.baseURI + 'api/lessons',
+            'headers': {
+                'Content-Type' : 'application/json',
+                'Authorization' : 'Bearer ' + $cookies.get('token')
+            },
+            'data': data
+        })
+        .then(
+            function successCallback(response) {
+                console.log('New Lesson Success');
+                $scope.lessons.push(response.data.data);
+                $scope.showNewLessonForm = false;
+            },
+            function errorCallback(response) {
+                console.error('Lesson Edit form save action failed.');
+            }
+        );
     }
 }])
 

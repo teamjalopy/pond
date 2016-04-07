@@ -121,9 +121,42 @@
 					</div><!-- /.course-card -->
 				</div><!-- /.col-md-6 -->
 
+                <!-- COURSE ADD CARD -->
+                <div class="col-md-6" ng-repeat="lesson in lessons" role="presentation">
+					<div class="course-card" aria-label="Lesson" role="listitem"
+                     ng-class="{'unpublished': !lesson.published}"
+                     ng-show="showNewLessonForm">
+                     
+                        <form name="NewLessonForm">
+    						<h3 class="course-card-title">
+    							<span>
+                                    <input class="course-card-title-input" placeholder="New lesson" name="NewLessonName">
+                                </span><br>
+    							<small>{{user.name || user.email}}</small>
+    						</h3>
+
+                            <div class="btn-toolbar" role="toolbar" aria-label="New lesson options">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-link btn-link-danger"
+                                    ng-click="showNewLessonForm=false" role="button">
+                                        Cancel
+                                    </button>
+                                    <button type="button" class="btn btn-link btn-link-success"
+                                    ng-click="saveNewLesson()" role="button">
+                                        Save
+                                    </button>
+                                </div><!-- /.btn-group -->
+                            </div><!-- /.btn-toolbar -->
+                        </form>
+
+					</div><!-- /.course-card -->
+				</div><!-- /.col-md-6 -->
+                <!-- END COURSE ADD CARD -->
+
                 <!-- add course placeholder card -->
                 <div class="col-md-6" role="presentation">
-					<button class="course-card-add" aria-label="Create a new lesson">
+					<button class="course-card-add" aria-label="Create a new lesson"
+                     ng-click="showNewLessonForm=true">
                         <i class="fa fa-2x fa-plus"></i>
 					</button><!-- /.course-card-add -->
 				</div><!-- /.col-md-6 -->

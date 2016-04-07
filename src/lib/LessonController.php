@@ -250,12 +250,13 @@ class LessonController {
 
         $lesson->lesson_name = $form['lesson_name'];
         $lesson->published = false;
+        $lesson->creator_id = $creator_id;
 
         if(isset($form['published'])) {
             $lesson->published = (bool)$form['published'];
         }
 
-        $creator->lessons()->save($lesson);
+        $lesson->save();
 
         $stat = new \Pond\StatusContainer($lesson);
         $stat->success();
