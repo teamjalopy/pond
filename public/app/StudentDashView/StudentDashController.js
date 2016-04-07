@@ -30,6 +30,10 @@ function($scope, $http, $location, $cookies, settings) {
     			//get the user data name
                 $scope.username = reponse.data.data;
     			console.log($scope.user);
+                //assign username the email if no name available
+                if($scope.username==''){
+                    $scope.username = response.data.data.email;
+                }
             },
             function errorCallback(response) {
                 //$scope.submitEnabled = true;
@@ -39,5 +43,12 @@ function($scope, $http, $location, $cookies, settings) {
             }
     
     );
+
+    //logout test function
+    $scope.logOut = function() {
+        $cookies.remove('token');
+        $location.search('e','didLogOut');
+        $location.path('/log-in');
+    }
 
 }]);
