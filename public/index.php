@@ -15,6 +15,12 @@ require __DIR__ . '/../src/lib/autoload.php';
 $settings = require __DIR__ . '/../src/settings.php';
 $app = new \Slim\App($settings);
 
+// Set up dependencies
+require __DIR__ . '/../src/dependencies.php';
+
+// Register middleware
+require __DIR__ . '/../src/middleware.php';
+
 // Errors to log rather than to end user
 $c = $app->getContainer();
 $c['errorHandler'] = function ($c) {
@@ -39,12 +45,6 @@ $capsule->addConnection($settings['settings']['eloquent']);
 use Illuminate\Container\Container;
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
-
-// Set up dependencies
-require __DIR__ . '/../src/dependencies.php';
-
-// Register middleware
-require __DIR__ . '/../src/middleware.php';
 
 // Register routes
 require __DIR__ . '/../src/routes.php';

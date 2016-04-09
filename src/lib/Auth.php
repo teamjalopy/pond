@@ -24,6 +24,8 @@ class Auth {
     private $container;
     private $logger;
 
+    public $cachedUser;
+
     function __construct(Container $c) {
         $this->container = $c;
         $this->logger = $this->container->get('logger');
@@ -35,7 +37,7 @@ class Auth {
         if(! $token = self::authenticate(@$form['email'],@$form['password']) ) {
             return self::badAuthResponse($res);
         } else {
-            return self::tokenResponse($res,$token);
+            return self::tokenResponse($res,$token,$this->cachedUser);
         }
 
     } // loginHandler
@@ -149,6 +151,7 @@ class Auth {
         // Try to get the requested User or throw an exception
         try {
             $reqUser = User::where('email', $email)->firstOrFail();
+            $this->cachedUser = $reqUser;
         } catch(ModelNotFoundException $e) {
             $this->logger->info('User model retrieval fail');
             return null;
@@ -210,8 +213,8 @@ class Auth {
         return $res->withJson($stat);
     }
 
-    static function tokenResponse(Response $res, Token $t): Response {
-        $stat = new \Pond\StatusContainer( ['token' => (string)$t] );
+    static function tokenResponse(Response $res, Token $t, User $u): Response {
+        $stat = new \Pond\StatusContainer( ['token' => (string)$t, 'user' => $u] );
         $stat->success();
         $stat->message('Successfully logged in.');
 
