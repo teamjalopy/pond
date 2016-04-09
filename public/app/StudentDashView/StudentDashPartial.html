@@ -1,52 +1,53 @@
-<!--Student View HTML-->
-<div class="container" style="margin-top: 20px">
+<!-- Student View HTML -->
+<div class="container">
+
+	<!-- Profile icon & dash header -->
 	<div class="row">
-		<div class="col-lg-4">
-			<!--dummy profile pic added-->
-			<img src="http://www.freelanceme.net/Images/default%20profile%20picture.png" class="img-circle center-block" alt="Cinque Terre" width="100" height="100">
-		</div>
-		<div class="col-lg-8">
-			<h4>COURSES</h4>
-		</div>
-	</div>
+		<div class="col-md-4 visible-md-block visible-lg-block">
+			<img src="assets/img/profile-default.png" class="img-circle center-block user-icon" width="100" height="100">
+		</div><!-- /.col-md-4 -->
+	</div><!-- /.row -->
+
+	<!-- main row -->
 	<div class="row">
-		<!--Student view-->
-		<div class="col-lg-4">
-			<div class="card">
+
+		<!-- sidebar -->
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div ng-cloak style="height:24px">
+						<span class="subtle-head">{{username}}</span>
+						<span class="label label-primary label-caps">{{user.type}}</span>
+					</div>
+				</div>
 				<ul class="list-group list-group-flush">
-					<li class="list-group-item">{{username}}</li>
-					<li class="list-group-item">Courses</li>
-					<li class="list-group-item">Certificates</li>
-				</ul>
-			</div>
-		</div>
-		<!--Course List-->
-		<div class="col-lg-8">
-			<div class="card">
-				<!--Essentially it would be a table NOT a card-->
-				<table class="table">
-					<!--top of the table-->
-					<thead>
-						<tr>
-							<th colspan="2">Courses</th>
-							<th>Description</th>
-							<th>Completion</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<!--essentially these will link to the courses home page-->
-							<td colspan="2"><a href="#" class="card-link">Course 1</a></td>
-							<td>lorem ipsum</td>
-							<td>100%</td>
-						</tr>
-						<tr>
-							<td colspan="2"><a href="#" class="card-link">Course 2</a></td>
-							<td>lorem ipsum</td>
-							<td>50%</td>
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div>
-</div>
+					<a href class="list-group-item">Courses</a>
+					<a href class="list-group-item">Certificates</a>
+				</ul><!-- /.list-group.list-group-flush -->
+			</div><!-- /.panel.panel-default -->
+		</div><!-- /.col-md-4 -->
+
+		<!-- course cards -->
+		<div class="col-md-8">
+			<div class="row">
+
+				<div class="col-md-6" ng-repeat="lesson in lessons">
+					<div class="course-card">
+						<h3 class="course-card-title">
+							<span>{{lesson.lesson_name}}</span><br>
+							<small>Teacher Name</small>
+						</h3>
+
+						<div class="progress">
+							<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+								<span class="sr-only">40% Complete</span>
+							</div>
+						</div><!-- /.progress -->
+					</div><!-- /.course-card -->
+				</div><!-- /.col-md-6 -->
+
+			</div><!-- /.row -->
+		</div><!-- /.col-md-8 -->
+
+	</div><!-- /.row -->
+</div><!-- /.container -->
