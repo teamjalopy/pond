@@ -5,11 +5,11 @@ angular.module('pond.StudentCourseTest', ['ngRoute'])
 .config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/student-course-test', {
         templateUrl: 'app/common/DashTemplate.html',
-        controller: 'StudentCourseTest'
+        controller: 'StudentCourseTestController'
     });
 }])
 
-.controller('StudentDashController', ['$scope', '$http', '$location', '$cookies', 'settings',
+.controller('StudentCourseTestController', ['$scope', '$http', '$location', '$cookies', 'settings',
 function($scope, $http, $location, $cookies, settings) {
     $scope.pagePartial = '/app/StudentCoursePages/StudentCourseTest.html';
 
