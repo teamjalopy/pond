@@ -62,22 +62,28 @@ class UserController
 
  public function getUserHandler(Request $req, Response $res): Response {
 
-        $users = User::find( $req->getAttribute('user_id'));
-
-        if($users == NULL){
+        try {
+            $user = User::findOrFail( self::getUID($req, new Auth($this->container)) );
+        } catch(ModelNotFoundException $e) { // user not found
             $stat = new StatusContainer($users);
             $stat->error("InvalidUser");
             $stat->message("Please make sure user is valid");
 
             $res = $res->withStatus(404); // not found
             return $res->withJson($stat);
-        }
-        else{
+        } catch(RuntimeException $e) { // there is no authorized user
             $stat = new StatusContainer($users);
-            $stat->success();
-            $stat->message("Here is requested user");
+            $stat->error("InvalidUser");
+            $stat->message("Please make sure user is valid");
+
+            $res = $res->withStatus(401); // not found
             return $res->withJson($stat);
         }
+
+        $stat = new StatusContainer($user);
+        $stat->success();
+        $stat->message("Here is requested user");
+        return $res->withJson($stat);
 	}
 
 
