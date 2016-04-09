@@ -59,6 +59,7 @@ class UserController
             return $res->withStatus(405); // Method Not Allowed
         }
     }
+
  public function getUserHandler(Request $req, Response $res): Response {
 
         $users = User::find( $req->getAttribute('user_id'));
@@ -78,8 +79,8 @@ class UserController
             return $res->withJson($stat);
         }
 	}
-        
-        
+
+
     public function postUserCollectionHandler(Request $req, Response $res): Response {
 
         $this->logger->info("POST /api/users Handler");
@@ -108,7 +109,7 @@ class UserController
             $user->type = 'TEACHER';
         }
 
-        else{
+        else if($type == 'student'){
             $user->type = 'STUDENT';
         }
 
