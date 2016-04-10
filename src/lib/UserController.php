@@ -60,20 +60,32 @@ class UserController
         }
     }
 
-    public function getUserHandler(Request $req, Response $res): Response {
+ public function getUserHandler(Request $req, Response $res): Response {
+
         try {
             $user = User::findOrFail( self::getUID($req, new Auth($this->container)) );
         } catch(ModelNotFoundException $e) { // user not found
-            return $res->withStatus(404);
+            $stat = new StatusContainer($users);
+            $stat->error("InvalidUser");
+            $stat->message("Please make sure user is valid");
+
+            $res = $res->withStatus(404); // not found
+            return $res->withJson($stat);
         } catch(RuntimeException $e) { // there is no authorized user
-            return $res->withStatus(401);
+            $stat = new StatusContainer($users);
+            $stat->error("InvalidUser");
+            $stat->message("Please make sure user is valid");
+
+            $res = $res->withStatus(401); // not found
+            return $res->withJson($stat);
         }
 
         $stat = new StatusContainer($user);
         $stat->success();
         $stat->message("Here is requested user");
         return $res->withJson($stat);
-    }
+	}
+
 
     public function postUserCollectionHandler(Request $req, Response $res): Response {
 
@@ -103,11 +115,10 @@ class UserController
             $user->type = 'TEACHER';
         }
 
-        else{
+        else if($type == 'student'){
             $user->type = 'STUDENT';
         }
 
-        $this->logger->info($user->type);
         $user->password = $crypto->getHash();
         $user->salt = $crypto->getSalt();
         $user->save();
