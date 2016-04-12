@@ -16,7 +16,7 @@
         }
 
         public function enrolledLessons() {
-            return $this->hasManyThrough('Pond\Lesson','Pond\Enrollment');
+            return $this->belongsToMany('Pond\Lesson','enrollment','student_id');
         }
 
         protected $casts = [

@@ -3,6 +3,8 @@
 
     class Enrollment extends \Illuminate\Database\Eloquent\Model {
 
+        protected $table = "enrollment";
+
         protected $casts = [
             'complete' => 'boolean',
         ];
