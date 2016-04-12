@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.47-0ubuntu0.14.04.1)
 # Database: pond
-# Generation Time: 2016-04-08 22:33:48 +0000
+# Generation Time: 2016-04-12 01:51:51 +0000
 # ************************************************************
 
 
@@ -24,18 +24,20 @@
 # ------------------------------------------------------------
 
 CREATE TABLE `enrollment` (
-  `enrollment_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `lesson_id` int(11) unsigned NOT NULL,
   `student_id` int(11) unsigned NOT NULL,
   `current_module` int(11) unsigned DEFAULT NULL,
   `complete` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`enrollment_id`),
+  PRIMARY KEY (`id`),
   KEY `for_lesson` (`lesson_id`),
   KEY `student` (`student_id`),
-  CONSTRAINT `student` FOREIGN KEY (`student_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `for_lesson` FOREIGN KEY (`lesson_id`) REFERENCES `lessons` (`id`)
+  KEY `current_module` (`current_module`),
+  CONSTRAINT `current_module` FOREIGN KEY (`current_module`) REFERENCES `modules` (`id`),
+  CONSTRAINT `for_lesson` FOREIGN KEY (`lesson_id`) REFERENCES `lessons` (`id`),
+  CONSTRAINT `student` FOREIGN KEY (`student_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
