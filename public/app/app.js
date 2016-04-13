@@ -9,9 +9,14 @@ angular.module('pond', [
     'ui.bootstrap',
     'pond.HomeView',
     'pond.LoginView',
+    'pond.DashController',
     'pond.StudentDashView',
     'pond.TeacherDashView',
-    'pond.SettingsView'
+    'pond.SettingsView',
+    'pond.StudentArticleView',
+    'pond.StudentTestView',
+    'pond.StudentVideoView',
+    'pond.LessonView'
 ])
 .config(['$routeProvider', function($routeProvider) {
         $routeProvider.otherwise({ redirectTo: '/' });

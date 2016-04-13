@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('pond.TeacherDashView', ['ngRoute'])
+angular.module('pond.TeacherDashView', ['ngRoute', 'pond.DashController'])
 
 .config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/teacher-dash', {
@@ -9,8 +9,13 @@ angular.module('pond.TeacherDashView', ['ngRoute'])
     });
 }])
 
-.controller('TeacherDashController', ['$scope', 'settings', '$location', '$cookies', '$http', '$uibModal',
-function($scope, settings, $location, $cookies, $http, $uibModal) {
+.controller('TeacherDashController',
+function($scope, settings, $location, $cookies, $http, $uibModal, $controller) {
+
+    // Inherit DashController
+    $controller('DashController', {$scope: $scope});
+    console.log($scope.baseController);
+
     $scope.pagePartial = "/app/TeacherDashView/TeacherDashPartial.html";
 
     $scope.username = '';
@@ -97,7 +102,7 @@ function($scope, settings, $location, $cookies, $http, $uibModal) {
     }
 
     $scope.deleteLesson = function(lesson) {
-        console.log("Delete lesson: "+lesson.lesson_name);
+        console.log("Delete lesson: "+lesson.name);
         var modal = $uibModal.open({
             animation: true,
             templateUrl: 'deleteLessonModal.html',
@@ -122,7 +127,7 @@ function($scope, settings, $location, $cookies, $http, $uibModal) {
     }
 
     $scope.saveNewLesson = function() {
-        var data = {'lesson_name': NewLessonForm.NewLessonName.value };
+        var data = {'name': NewLessonForm.NewLessonName.value };
         console.log(data);
         $http({
             'method': 'POST',
@@ -144,7 +149,7 @@ function($scope, settings, $location, $cookies, $http, $uibModal) {
             }
         );
     }
-}])
+})
 
 // Modal for editing lessons
 // Template: editLessonModal.html
@@ -156,7 +161,7 @@ function($scope, $uibModalInstance, lesson, $http, settings, $cookies) {
     $scope.save = function() {
 
         var editLessonData = {
-            'lesson_name' : $scope.lesson.lesson_name,
+            'name' : $scope.lesson.name,
             'published' : $scope.lesson.published
         };
 
@@ -193,12 +198,13 @@ function($scope, $uibModalInstance, lesson, $http, settings, $cookies) {
 function($scope, $uibModalInstance, lesson, $http, settings, $cookies) {
 
     $scope.lesson = lesson;
+    console.log("Lesson for deletion:");
     console.log($scope.lesson);
 
     $scope.confirm = function() {
         $http({
             'method': 'DELETE',
-            'url': settings.baseURI + 'api/lessons/' + $scope.lesson.lesson_id,
+            'url': settings.baseURI + 'api/lessons/' + $scope.lesson.id,
             'headers': {
                 'Content-Type' : 'application/json',
                 'Authorization' : 'Bearer ' + $cookies.get('token')
@@ -211,6 +217,7 @@ function($scope, $uibModalInstance, lesson, $http, settings, $cookies) {
             },
             function errorCallback(response) {
                 console.error('Lesson Delete form action failed.');
+                console.error(response);
                 $uibModalInstance.close(false);
             }
         );
