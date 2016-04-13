@@ -56,32 +56,25 @@ function($scope, $http, $location, $cookies, settings, $controller) {
             }
     );
 
-    $scope.lessons = [
-        {
-            id:   1,
-            creator_id:  1,
-            lesson_name: "Lesson One",
-            published: true,
-            created_at: "2016-04-04 19:23:34",
-            updated_at: "2016-04-05 14:10:40"
-        },
-        {
-            id:   2,
-            creator_id:  1,
-            lesson_name: "Lesson Two",
-            published: true,
-            created_at: "2016-04-04 19:23:34",
-            updated_at: "2016-04-05 14:10:40"
-        },
-        {
-            id:   3,
-            creator_id:  1,
-            lesson_name: "Lesson Three",
-            published: true,
-            created_at: "2016-04-04 19:23:34",
-            updated_at: "2016-04-05 14:10:40"
+    $scope.enrolled = [];
+
+    $http({
+        'method': 'GET',
+        'url': settings.baseURI + 'api/users/me/enrolled',
+        'headers': {
+        	'Content-Type' : 'application/json',
+        	'Authorization' : 'Bearer ' + $cookies.get('token')
         }
-    ];
+    }).then(
+        function successCallback(response) {
+            console.log(response.data);
+            $scope.enrolled = response.data.data;
+        },
+        function errorCallback(response) {
+            console.error('Failed to load enrolled lessons');
+            console.log(response);
+        }
+    );
 
     $scope.logOut = function() {
         $cookies.remove('token');
