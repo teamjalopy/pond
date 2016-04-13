@@ -17,7 +17,7 @@
         }
 
         public function students() {
-            return $this->belongsToMany('Pond\User','enrollment','lesson_id');
+            return $this->belongsToMany('Pond\User','enrollment','lesson_id','student_id');
         }
 
         protected $appends = ['creator'];
