@@ -115,6 +115,37 @@ class LessonController {
         return $res->withJson($stat);
     }
 
+    function postLessonStudentsHandler(Request $req, Response $res): Response {
+        $this->logger->info("GET /api/lessons/{lesson_id}/students Handler");
+
+        // The provided data is an object with key `emails`, where the value is an
+        // array of email addresses (one or more).
+
+        $form = $req->getParsedBody();
+
+        // Get the currently authenticated user, return failure state (401)
+        // if unauth.
+        try {
+            $creator_id = $this->auth->getAuthorizedUserID($req);
+        } catch(RuntimeException $e) {
+            return $res->withStatus(401); // Unauthorized
+        }
+
+        // Get the corresponding creator user model or fail
+        try {
+            $creator = \Pond\User::findOrFail($creator_id);
+        } catch(ModelNotFoundException $e) {
+            $this->logger->info("postLessonStudentsHandler: user with ID '$creator_id' not found.");
+            return $res->withStatus(400); // Bad Request
+        }
+
+        $stat = new StatusContainer( $enrolled->toArray() );
+        $stat->success();
+        $stat->message("Dummy response from enrollment handler");
+
+        return $res->withJson($stat);
+    }
+
     function getLessonHandler(Request $req, Response $res): Response {
 
         $this->logger->info("GET /api/lessons/{lesson_id} Handler");
