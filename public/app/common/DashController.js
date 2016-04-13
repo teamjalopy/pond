@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('pond.DashController')
-.controller(function($scope){
+angular.module('pond.DashController', [])
+.controller('DashController', function($scope){
     $scope.baseController = "DashController";
 });

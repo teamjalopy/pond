@@ -9,6 +9,7 @@ angular.module('pond', [
     'ui.bootstrap',
     'pond.HomeView',
     'pond.LoginView',
+    'pond.DashController',
     'pond.StudentDashView',
     'pond.TeacherDashView',
     'pond.SettingsView',

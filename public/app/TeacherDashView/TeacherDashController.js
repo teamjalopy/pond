@@ -9,11 +9,12 @@ angular.module('pond.TeacherDashView', ['ngRoute', 'pond.DashController'])
     });
 }])
 
-.controller('TeacherDashController', ['$scope', 'settings', '$location', '$cookies', '$http', '$uibModal',
-function($scope, settings, $location, $cookies, $http, $uibModal) {
+.controller('TeacherDashController',
+function($scope, settings, $location, $cookies, $http, $uibModal, $controller) {
 
     // Inherit DashController
     $controller('DashController', {$scope: $scope});
+    console.log($scope.baseController);
 
     $scope.pagePartial = "/app/TeacherDashView/TeacherDashPartial.html";
 
@@ -148,7 +149,7 @@ function($scope, settings, $location, $cookies, $http, $uibModal) {
             }
         );
     }
-}])
+})
 
 // Modal for editing lessons
 // Template: editLessonModal.html
