@@ -269,7 +269,7 @@ html, body {
     bottom: 20px;
 }
 
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width : 48em) {
     .unpublished-flag {
         right: 23px;
         bottom: 23px;
@@ -281,4 +281,40 @@ html, body {
 .navbar-toggle {
     padding-top: 4px;
     padding-bottom: 4px;
+}
+
+.module-group-item h4 {
+    font-weight: bold;
+    font-size: 1.2em;
+    display: inline;
+}
+
+.module-icon, .module-description {
+    display: inline;
+}
+
+.module-complete-flag {
+    color: green;
+}
+
+@media only screen and (min-width: 48em) {
+    .module-group-item {
+        display: flex;
+        padding: 1em;
+    }
+    .module-icon {
+        display: block;
+        width: 50px;
+        height: 50px;
+        border: 2px solid #333;
+        border-radius: 25px;
+        padding: 10px 8px 0;
+    }
+    .module-group-item h4 {
+        display: block;
+    }
+    .module-description {
+        display: block;
+        padding: 0 1em 0;
+    }
 }
