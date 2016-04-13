@@ -11,6 +11,14 @@
             return $this->hasMany('Pond\Lesson','creator_id');
         }
 
+        public function enrollments() {
+            return $this->hasMany('Pond\Enrollment','student_id');
+        }
+
+        public function enrolledLessons() {
+            return $this->belongsToMany('Pond\Lesson','enrollment','student_id');
+        }
+
         protected $casts = [
             'validated' => 'boolean',
         ];
