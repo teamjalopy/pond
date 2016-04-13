@@ -94,7 +94,25 @@ class LessonController {
         $stat->message("Here are the lessons");
 
         return $res->withJson($stat);
+    }
 
+    function getEnrolledLessonsHandler(Request $req, Response $res): Response {
+        $this->logger->info("GET /api/users/{user_id}/enrolled Handler");
+
+        try {
+            $uid = UserController::getUID($req,$this->auth);
+        } catch(RuntimeException $e) {
+            // User ID was 'me' but not authenticated
+            return $res->withStatus(401); // Unauthorized
+        }
+
+        $enrolled = User::find($uid)->enrolledLessons()->get();
+
+        $stat = new StatusContainer( $enrolled->toArray() );
+        $stat->success();
+        $stat->message("Here are this user's enrolled lessons");
+
+        return $res->withJson($stat);
     }
 
     function getLessonHandler(Request $req, Response $res): Response {
