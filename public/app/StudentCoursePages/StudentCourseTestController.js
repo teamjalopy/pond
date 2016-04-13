@@ -13,4 +13,13 @@ angular.module('pond.StudentCourseTest', ['ngRoute'])
 function($scope, $http, $location, $cookies, settings) {
     $scope.pagePartial = '/app/StudentCoursePages/StudentCourseTest.html';
 
+    $scope.back = function() {
+    	$location.path('/student-course-video');
+    };
+    
+    //this might be disabled
+    $scope.next = function() {
+    	$location.path('/student-course-cert');
+    };
+
 }]);
