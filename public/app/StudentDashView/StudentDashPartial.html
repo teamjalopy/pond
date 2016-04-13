@@ -35,7 +35,7 @@
 					<div class="course-card">
 						<h3 class="course-card-title">
 							<span>{{lesson.name}}</span><br>
-							<small>Teacher Name</small>
+							<small>{{lesson.creator.name || lesson.creator.email}}</small>
 						</h3>
 
 						<div class="progress">
