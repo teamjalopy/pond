@@ -35,6 +35,14 @@ return [
             'iss' => 'http://pondedu.me',
             'aud' => 'http://pondedu.me',
             'lifetime' => 1 * 7 * 24 * 60 * 60, // 1 week
+        ],
+
+        //AWS settings
+        'Ses' => [
+            'profile' => 'default',
+            'region' => 'us-west-2',
+            'aws-access_key_id' => $env['AWS_ACCESS_KEY_ID'],
+            'aws-secret_access_key' => $env['AWS_SECRET_ACCESS_KEY'],
         ]
 
     ],

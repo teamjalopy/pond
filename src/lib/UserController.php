@@ -91,6 +91,10 @@ class UserController
 
         $this->logger->info("POST /api/users Handler");
 
+        $email = new \Pond\Email();
+        $email->sendEmail();
+        var_dump($email);
+
         $user = new \Pond\User();
         $form = $req->getParsedBody();
 
