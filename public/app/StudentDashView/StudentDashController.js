@@ -79,10 +79,4 @@ function($scope, $http, $location, $cookies, settings, $controller) {
     $scope.goToLesson = function(){
         $location.path('/lesson');
     }
-
-    $scope.logOut = function() {
-        $cookies.remove('token');
-        $location.search('e','didLogOut');
-        $location.path('/log-in');
-    }
 });
