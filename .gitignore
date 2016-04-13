@@ -1,5 +1,8 @@
 # Based on a combination of github/gitignore templates.
 
+# ENV FILE
+env.php
+
 # COMPOSER
 composer.phar
 /vendor/
@@ -88,5 +91,3 @@ Temporary Items
 
 # Linux trash folder which might appear on any partition or disk
 .Trash-*
-
-
