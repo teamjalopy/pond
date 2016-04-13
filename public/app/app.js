@@ -15,7 +15,7 @@ angular.module('pond', [
     'pond.StudentArticleView',
     'pond.StudentTestView',
     'pond.StudentVideoView',
-    'pond.LessonView'
+
 ])
 .config(['$routeProvider', function($routeProvider) {
         $routeProvider.otherwise({ redirectTo: '/' });
