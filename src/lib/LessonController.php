@@ -176,8 +176,8 @@ class LessonController {
 
         $form = $req->getParsedBody();
 
-        if( isset($form['lesson_name']) ) {
-            $lesson->lesson_name = $form['lesson_name'];
+        if( isset($form['name']) ) {
+            $lesson->name = $form['name'];
         }
 
         if( isset($form['published']) ) {
@@ -259,14 +259,14 @@ class LessonController {
         }
 
         // Require the lesson name at a minimum
-        if(!isset($form['lesson_name'])) {
+        if(!isset($form['name'])) {
             return self::lessonInfoErrorStatus($res);
         }
 
         // Create a Lesson model
         $lesson = new Lesson();
 
-        $lesson->lesson_name = $form['lesson_name'];
+        $lesson->name = $form['name'];
         $lesson->published = false;
         $lesson->creator_id = $creator_id;
 

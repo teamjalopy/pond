@@ -122,10 +122,9 @@
 				</div><!-- /.col-md-6 -->
 
                 <!-- COURSE ADD CARD -->
-                <div class="col-md-6" ng-repeat="lesson in lessons" role="presentation">
-					<div class="course-card" aria-label="Lesson" role="listitem"
-                     ng-class="{'unpublished': !lesson.published}"
-                     ng-show="showNewLessonForm">
+                <div class="col-md-6" role="presentation">
+					<div class="course-card add-course-form" aria-label="Lesson" role="listitem"
+                     ng-show="showNewLessonForm" ng-cloak>
 
                         <form name="NewLessonForm">
     						<h3 class="course-card-title">

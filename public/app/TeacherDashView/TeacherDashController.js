@@ -102,7 +102,7 @@ function($scope, settings, $location, $cookies, $http, $uibModal, $controller) {
     }
 
     $scope.deleteLesson = function(lesson) {
-        console.log("Delete lesson: "+lesson.lesson_name);
+        console.log("Delete lesson: "+lesson.name);
         var modal = $uibModal.open({
             animation: true,
             templateUrl: 'deleteLessonModal.html',
@@ -127,7 +127,7 @@ function($scope, settings, $location, $cookies, $http, $uibModal, $controller) {
     }
 
     $scope.saveNewLesson = function() {
-        var data = {'lesson_name': NewLessonForm.NewLessonName.value };
+        var data = {'name': NewLessonForm.NewLessonName.value };
         console.log(data);
         $http({
             'method': 'POST',
@@ -142,7 +142,9 @@ function($scope, settings, $location, $cookies, $http, $uibModal, $controller) {
             function successCallback(response) {
                 console.log('New Lesson Success');
                 $scope.lessons.push(response.data.data);
-                $scope.showNewLessonForm = false;
+                $scope.$apply(function(){
+                    $scope.showNewLessonForm = false;
+                });
             },
             function errorCallback(response) {
                 console.error('Lesson Edit form save action failed.');
@@ -161,7 +163,7 @@ function($scope, $uibModalInstance, lesson, $http, settings, $cookies) {
     $scope.save = function() {
 
         var editLessonData = {
-            'lesson_name' : $scope.lesson.lesson_name,
+            'name' : $scope.lesson.name,
             'published' : $scope.lesson.published
         };
 
