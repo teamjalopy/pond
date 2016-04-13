@@ -22,13 +22,13 @@
 
 		<ul class="nav navbar-nav navbar-right navbar-collapse" role="menu">
 			<li role="presentation">
-				<a href="#/settings" aria-label="Settings" role="menuitem">
+				<a ng-href="#/settings" aria-label="Settings" role="menuitem" ng-click="navCollapsed=true">
 					<i class="fa fa-cog" aria-hidden></i>
 					<span class="visible-xs-inline" aria-hidden>Settings</span>
 				</a>
 			</li>
 			<li role="presentation">
-				<a href ng-click="logOut()" aria-label="Log out" role="menuitem">
+				<a href ng-click="logOut();navCollapsed=true" aria-label="Log out" role="menuitem">
 					<i class="fa fa-power-off" aria-hidden></i>
 					<span class="visible-xs-inline" aria-hidden>Log out</span>
 				</a>

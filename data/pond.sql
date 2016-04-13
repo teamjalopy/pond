@@ -29,8 +29,6 @@ CREATE TABLE `enrollment` (
   `student_id` int(11) unsigned NOT NULL,
   `current_module` int(11) unsigned DEFAULT NULL,
   `complete` tinyint(1) NOT NULL DEFAULT '0',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `for_lesson` (`lesson_id`),
   KEY `student` (`student_id`),

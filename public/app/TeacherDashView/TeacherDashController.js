@@ -77,12 +77,6 @@ function($scope, settings, $location, $cookies, $http, $uibModal, $controller) {
         }
     );
 
-    $scope.logOut = function() {
-        $cookies.remove('token');
-        $location.search('e','didLogOut');
-        $location.path('/log-in');
-    }
-
     $scope.editLesson = function(lesson) {
         var modal = $uibModal.open({
             animation: true,
