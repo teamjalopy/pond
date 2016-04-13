@@ -16,6 +16,10 @@
             return $this->creator()->get()->first();
         }
 
+        public function students() {
+            return $this->belongsToMany('Pond\User','enrollment','lesson_id');
+        }
+
         protected $appends = ['creator'];
         protected $hidden = ['creator_id'];
     }

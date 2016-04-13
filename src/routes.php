@@ -21,3 +21,4 @@ $app->any('/api/lessons[/{lesson_id}]', '\Pond\LessonController');
 
 // Enrollment Endpoints
 $app->get('/api/users/{user_id}/enrolled', '\Pond\LessonController:getEnrolledLessonsHandler');
+$app->post('/api/lessons/{lesson_id}/students', '\Pond\LessonController:postLessonStudentsHandler');
