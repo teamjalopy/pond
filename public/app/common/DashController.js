@@ -1,18 +1,14 @@
 'use strict';
 
 angular.module('pond.DashController', [])
-.controller('DashController', function($scope){
+.controller('DashController', function($scope,$cookies,$location){
     $scope.baseController = "DashController";
     $scope.navCollapsed = true;
 
-    $scope.$on('$routeChangeStart', function(event, next, current) {
-        if (typeof(current) !== 'undefined'){
-            console.log("Route change. Collapsing nav.")
-            // Forcing $scope to update
-            // [CITE] http://nathanleclaire.com/blog/2014/01/31 ...
-            // ... /banging-your-head-against-an-angularjs-issue-try-this/
-            $scope.navCollapsed = true;
-            $scope.$apply();
-        }
-    });
+    $scope.logOut = function() {
+        console.log("Logging out...");
+        $cookies.remove('token');
+        $location.search('e','didLogOut');
+        $location.path('/log-in');
+    }
 });

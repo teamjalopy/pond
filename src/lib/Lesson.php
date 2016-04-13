@@ -12,8 +12,16 @@
             return $this->belongsTo('Pond\User', 'creator_id');
         }
 
+        public function modules() {
+            return $this->hasMany('Pond\Module')->orderBy('order');
+        }
+
         public function getCreatorAttribute() {
             return $this->creator()->get()->first();
+        }
+
+        public function students() {
+            return $this->belongsToMany('Pond\User','enrollment','lesson_id','student_id');
         }
 
         protected $appends = ['creator'];

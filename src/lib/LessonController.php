@@ -123,6 +123,11 @@ class LessonController {
 
         $form = $req->getParsedBody();
 
+        if(!isset($form['emails']) || count($form['emails']) == 0) {
+            $this->logger->info("postLessonStudentsHandler: expected one or more emails in `emails` field.");
+            return $res->withStatus(400); // Bad Request
+        }
+
         // Get the currently authenticated user, return failure state (401)
         // if unauth.
         try {
@@ -139,7 +144,25 @@ class LessonController {
             return $res->withStatus(400); // Bad Request
         }
 
-        $stat = new StatusContainer( $enrolled->toArray() );
+        // Get the emails array and all their corresponding users
+        $students = User::whereIn('email', $form['emails'])->get();
+
+        if($students->count() < count($form['emails'])) {
+            $this->logger->info("postLessonStudentsHandler: one or more students could not be found.");
+            return $res->withStatus(404); // Not Found
+        }
+
+        // Get the lesson and add all the students
+        try {
+            $lesson = Lesson::findOrFail($req->getAttribute("lesson_id"));
+        } catch(ModelNotFoundException $e) {
+            $this->logger->info("postLessonStudentsHandler: could not find lesson.");
+            return $res->withStatus(404); // Not Found
+        }
+
+        $lesson->students()->saveMany($students);
+
+        $stat = new StatusContainer();
         $stat->success();
         $stat->message("Dummy response from enrollment handler");
 
