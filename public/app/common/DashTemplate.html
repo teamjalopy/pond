@@ -1,20 +1,26 @@
 <!--Dash View Common-->
 
 <!--Common navbar, needs to be edited in order to determine if student or teacher used-->
-<nav class="navbar navbar-default navbar-static-top" role="navigation">
+<nav class="navbar navbar-default navbar-fixed-top navbar-main" role="navigation"
+ ng-class="{'uncollapse': !navCollapsed}">
 	<div class="container-fluid">
 		<div class="navbar-header">
 			<!-- Brand -->
-			<a class="navbar-brand" ng-href="{{user.is_teacher ? '#/teacher-dash' : '#/student-dash'}}" style="padding:10px">
+			<!-- (desktop branding) -->
+			<a class="navbar-brand hidden-xs" ng-href="{{user.is_teacher ? '#/teacher-dash' : '#/student-dash'}}" style="padding:10px">
 				<img src="assets/img/pond.png" height="30">
 			</a>
+			<!-- (mobile branding) -->
+			<a class="navbar-brand visible-xs-block brand-center" ng-href="{{user.is_teacher ? '#/teacher-dash' : '#/student-dash'}}" ng-class="{'uncollapse': !navCollapsed}">
+				<img src="assets/img/icon.png" height="30">
+			</a>
+
 			<button class="navbar-toggle" ng-click="navCollapsed = !navCollapsed">
 				<i class="fa fa-bars fa-fw"></i>
 			</button>
 		</div><!-- /.navbar-header -->
 
-		<ul class="nav navbar-nav navbar-right navbar-collapse collapse" role="menu"
-		 uib-collapse="navCollapsed">
+		<ul class="nav navbar-nav navbar-right navbar-collapse" role="menu">
 			<li role="presentation">
 				<a href="#/settings" aria-label="Settings" role="menuitem">
 					<i class="fa fa-cog" aria-hidden></i>
@@ -33,4 +39,6 @@
 </nav>
 
 <!--this is where the page for the users differ-->
-<ng-include src="pagePartial"></ng-include>
+<div style="margin-top: 70px">
+	<ng-include src="pagePartial"></ng-include>
+</div>
