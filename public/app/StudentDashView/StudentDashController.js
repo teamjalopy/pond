@@ -1,7 +1,7 @@
 //Student Dash JS
 'use strict';
 
-angular.module('pond.StudentDashView', ['ngRoute'])
+angular.module('pond.StudentDashView', ['ngRoute', 'pond.DashController'])
 
 .config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/student-dash', {
@@ -10,8 +10,13 @@ angular.module('pond.StudentDashView', ['ngRoute'])
     });
 }])
 
-.controller('StudentDashController', ['$scope', '$http', '$location', '$cookies', 'settings',
-function($scope, $http, $location, $cookies, settings) {
+.controller('StudentDashController',
+function($scope, $http, $location, $cookies, settings, $controller) {
+
+    // Inherit DashController
+    $controller('DashController', {$scope: $scope});
+    console.log($scope.baseController);
+
     $scope.pagePartial = '/app/StudentDashView/StudentDashPartial.html';
 
     $scope.username = '';
@@ -83,4 +88,4 @@ function($scope, $http, $location, $cookies, settings) {
         $location.search('e','didLogOut');
         $location.path('/log-in');
     }
-}]);
+});
