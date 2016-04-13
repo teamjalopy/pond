@@ -58,7 +58,7 @@ function($scope, $http, $location, $cookies, settings, $controller) {
 
     $scope.lessons = [
         {
-            lesson_id:   1,
+            id:   1,
             creator_id:  1,
             lesson_name: "Lesson One",
             published: true,
@@ -66,7 +66,7 @@ function($scope, $http, $location, $cookies, settings, $controller) {
             updated_at: "2016-04-05 14:10:40"
         },
         {
-            lesson_id:   2,
+            id:   2,
             creator_id:  1,
             lesson_name: "Lesson Two",
             published: true,
@@ -74,7 +74,7 @@ function($scope, $http, $location, $cookies, settings, $controller) {
             updated_at: "2016-04-05 14:10:40"
         },
         {
-            lesson_id:   3,
+            id:   3,
             creator_id:  1,
             lesson_name: "Lesson Three",
             published: true,

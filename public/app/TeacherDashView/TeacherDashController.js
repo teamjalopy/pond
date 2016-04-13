@@ -143,7 +143,7 @@ function($scope, settings, $location, $cookies, $http, $uibModal, $controller) {
                 console.log('New Lesson Success');
                 $scope.lessons.push(response.data.data);
                 $scope.$apply(function(){
-                    $scope.showNewLessonForm = false;
+                    this.showNewLessonForm = false;
                 });
             },
             function errorCallback(response) {
@@ -200,12 +200,13 @@ function($scope, $uibModalInstance, lesson, $http, settings, $cookies) {
 function($scope, $uibModalInstance, lesson, $http, settings, $cookies) {
 
     $scope.lesson = lesson;
+    console.log("Lesson for deletion:");
     console.log($scope.lesson);
 
     $scope.confirm = function() {
         $http({
             'method': 'DELETE',
-            'url': settings.baseURI + 'api/lessons/' + $scope.lesson.lesson_id,
+            'url': settings.baseURI + 'api/lessons/' + $scope.lesson.id,
             'headers': {
                 'Content-Type' : 'application/json',
                 'Authorization' : 'Bearer ' + $cookies.get('token')
@@ -218,6 +219,7 @@ function($scope, $uibModalInstance, lesson, $http, settings, $cookies) {
             },
             function errorCallback(response) {
                 console.error('Lesson Delete form action failed.');
+                console.error(response);
                 $uibModalInstance.close(false);
             }
         );

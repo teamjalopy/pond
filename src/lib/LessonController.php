@@ -123,7 +123,7 @@ class LessonController {
         try {
             $lesson = Lesson::findOrFail( $req->getAttribute('lesson_id') );
         } catch(ModelNotFoundException $e) {
-            return self::lessonNotFoundError($res);
+            return self::LessonNotFoundErrorStatus($res);
         }
 
         // If the lesson is not published, it must be owned by the requester,
@@ -156,7 +156,7 @@ class LessonController {
         try {
             $lesson = Lesson::findOrFail( $req->getAttribute('lesson_id') );
         } catch(ModelNotFoundException $e) {
-            return self::lessonNotFoundError($req);
+            return self::LessonNotFoundErrorStatus($req);
         }
 
         try {
@@ -197,7 +197,7 @@ class LessonController {
         try {
             $lesson = Lesson::findOrFail( $req->getAttribute('lesson_id') );
         } catch(ModelNotFoundException $e){
-            return self::lessonNotFoundError($res);
+            return self::LessonNotFoundErrorStatus($res);
         }
 
         if(!$this->auth->isRequestAuthorized($req,$lesson->creator_id)) {
