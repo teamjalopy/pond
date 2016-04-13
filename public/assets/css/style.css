@@ -309,7 +309,7 @@ html, body {
 }
 
 .brand-center img {
-    transition: transform 0.2s ease-in;
+    transition: transform 0.8s ease-in-out;
 }
 
 .brand-center.uncollapse img {
@@ -326,7 +326,7 @@ html, body {
         color: #fff;
         -webkit-backdrop-filter: blur(3px);
         border: none;
-        transition: height 1s;
+        transition: height 0.8s ease-in-out;
         overflow: hidden;
     }
     .navbar-main .navbar-toggle {
