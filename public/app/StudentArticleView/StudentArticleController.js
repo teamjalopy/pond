@@ -1,17 +1,19 @@
+//Student Course Article JS
 'use strict';
 
-angular.module('pond.StudentCourseArticle', ['ngRoute'])
+angular.module('pond.StudentArticleView', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/student-course-article', {
+    $routeProvider.when('/student-article', {
         templateUrl: 'app/common/DashTemplate.html',
-        controller: 'StudentCourseArticleController'
+        controller: 'StudentArticleController'
     });
 }])
 
-.controller('StudentCourseArticleController', ['$scope', '$http', '$location', '$cookies', 'settings',
+
+.controller('StudentArticleController', ['$scope', '$http', '$location', '$cookies', 'settings',
 function($scope, $http, $location, $cookies, settings) {
-    $scope.pagePartial = '/app/StudentDashView/StudentCourseArticle.html';
+    $scope.pagePartial = '/app/StudentArticleView/StudentArticlePartial.html';
 
 
     $scope.back = function() {

@@ -12,9 +12,10 @@ angular.module('pond', [
     'pond.StudentDashView',
     'pond.TeacherDashView',
     'pond.SettingsView',
-    'pond.StudentCourseArticle',
-    'pond.StudentCourseTest',
-    'pond.StudentCourseVideo'
+    'pond.StudentArticleView',
+    'pond.StudentTestView',
+    'pond.StudentVideoView',
+    'pond.LessonView'
 ])
 .config(['$routeProvider', function($routeProvider) {
         $routeProvider.otherwise({ redirectTo: '/' });
