@@ -21,3 +21,6 @@ $app->any('/api/lessons[/{lesson_id}]', '\Pond\LessonController');
 
 // Enrollment Endpoints
 $app->get('/api/users/{user_id}/enrolled', '\Pond\LessonController:getEnrolledLessonsHandler');
+
+//Module quiz Endpoints
+$app->get('/api/lessons/{lesson_id}/quizzes', '\Pond\QuizController');
