@@ -142,9 +142,7 @@ function($scope, settings, $location, $cookies, $http, $uibModal, $controller) {
             function successCallback(response) {
                 console.log('New Lesson Success');
                 $scope.lessons.push(response.data.data);
-                $scope.$apply(function(){
-                    this.showNewLessonForm = false;
-                });
+                $scope.showNewLessonForm = false;
             },
             function errorCallback(response) {
                 console.error('Lesson Edit form save action failed.');
