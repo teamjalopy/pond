@@ -43,7 +43,7 @@
                     <div class="form-group">
                         <label for="EditLessonName">Lesson Name</label>
                         <input type="text" class="form-control" id="EditLessonName" placeholder="Lesson Name"
-                         ng-model="lesson.lesson_name" name="EditLessonName">
+                         ng-model="lesson.name" name="EditLessonName">
                     </div>
                     <div class="checkbox">
                         <label>
@@ -96,7 +96,7 @@
                     >
 
 						<h3 class="course-card-title">
-							<span>{{lesson.lesson_name}}</span><br>
+							<span>{{lesson.name}}</span><br>
 							<small>{{lesson.creator.name || lesson.creator.email}}</small>
 						</h3>
 
@@ -122,11 +122,9 @@
 				</div><!-- /.col-md-6 -->
 
                 <!-- COURSE ADD CARD -->
-                <div class="col-md-6" ng-repeat="lesson in lessons" role="presentation">
-					<div class="course-card" aria-label="Lesson" role="listitem"
-                     ng-class="{'unpublished': !lesson.published}"
-                     ng-show="showNewLessonForm">
-                     
+                <div class="col-md-6" role="presentation" ng-show="showNewLessonForm" ng-cloak>
+					<div class="course-card add-course-form" aria-label="Lesson" role="listitem">
+
                         <form name="NewLessonForm">
     						<h3 class="course-card-title">
     							<span>

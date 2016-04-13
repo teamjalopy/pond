@@ -115,6 +115,37 @@ class LessonController {
         return $res->withJson($stat);
     }
 
+    function postLessonStudentsHandler(Request $req, Response $res): Response {
+        $this->logger->info("GET /api/lessons/{lesson_id}/students Handler");
+
+        // The provided data is an object with key `emails`, where the value is an
+        // array of email addresses (one or more).
+
+        $form = $req->getParsedBody();
+
+        // Get the currently authenticated user, return failure state (401)
+        // if unauth.
+        try {
+            $creator_id = $this->auth->getAuthorizedUserID($req);
+        } catch(RuntimeException $e) {
+            return $res->withStatus(401); // Unauthorized
+        }
+
+        // Get the corresponding creator user model or fail
+        try {
+            $creator = \Pond\User::findOrFail($creator_id);
+        } catch(ModelNotFoundException $e) {
+            $this->logger->info("postLessonStudentsHandler: user with ID '$creator_id' not found.");
+            return $res->withStatus(400); // Bad Request
+        }
+
+        $stat = new StatusContainer( $enrolled->toArray() );
+        $stat->success();
+        $stat->message("Dummy response from enrollment handler");
+
+        return $res->withJson($stat);
+    }
+
     function getLessonHandler(Request $req, Response $res): Response {
 
         $this->logger->info("GET /api/lessons/{lesson_id} Handler");
@@ -123,7 +154,7 @@ class LessonController {
         try {
             $lesson = Lesson::findOrFail( $req->getAttribute('lesson_id') );
         } catch(ModelNotFoundException $e) {
-            return self::lessonNotFoundError($res);
+            return self::LessonNotFoundErrorStatus($res);
         }
 
         // If the lesson is not published, it must be owned by the requester,
@@ -156,7 +187,7 @@ class LessonController {
         try {
             $lesson = Lesson::findOrFail( $req->getAttribute('lesson_id') );
         } catch(ModelNotFoundException $e) {
-            return self::lessonNotFoundError($req);
+            return self::LessonNotFoundErrorStatus($req);
         }
 
         try {
@@ -176,8 +207,8 @@ class LessonController {
 
         $form = $req->getParsedBody();
 
-        if( isset($form['lesson_name']) ) {
-            $lesson->lesson_name = $form['lesson_name'];
+        if( isset($form['name']) ) {
+            $lesson->name = $form['name'];
         }
 
         if( isset($form['published']) ) {
@@ -197,7 +228,7 @@ class LessonController {
         try {
             $lesson = Lesson::findOrFail( $req->getAttribute('lesson_id') );
         } catch(ModelNotFoundException $e){
-            return self::lessonNotFoundError($res);
+            return self::LessonNotFoundErrorStatus($res);
         }
 
         if(!$this->auth->isRequestAuthorized($req,$lesson->creator_id)) {
@@ -259,14 +290,14 @@ class LessonController {
         }
 
         // Require the lesson name at a minimum
-        if(!isset($form['lesson_name'])) {
+        if(!isset($form['name'])) {
             return self::lessonInfoErrorStatus($res);
         }
 
         // Create a Lesson model
         $lesson = new Lesson();
 
-        $lesson->lesson_name = $form['lesson_name'];
+        $lesson->name = $form['name'];
         $lesson->published = false;
         $lesson->creator_id = $creator_id;
 

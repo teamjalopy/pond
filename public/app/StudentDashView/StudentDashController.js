@@ -1,7 +1,7 @@
 //Student Dash JS
 'use strict';
 
-angular.module('pond.StudentDashView', ['ngRoute'])
+angular.module('pond.StudentDashView', ['ngRoute', 'pond.DashController'])
 
 .config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/student-dash', {
@@ -10,8 +10,13 @@ angular.module('pond.StudentDashView', ['ngRoute'])
     });
 }])
 
-.controller('StudentDashController', ['$scope', '$http', '$location', '$cookies', 'settings',
-function($scope, $http, $location, $cookies, settings) {
+.controller('StudentDashController',
+function($scope, $http, $location, $cookies, settings, $controller) {
+
+    // Inherit DashController
+    $controller('DashController', {$scope: $scope});
+    console.log($scope.baseController);
+
     $scope.pagePartial = '/app/StudentDashView/StudentDashPartial.html';
 
     $scope.username = '';
@@ -51,32 +56,25 @@ function($scope, $http, $location, $cookies, settings) {
             }
     );
 
-    $scope.lessons = [
-        {
-            lesson_id:   1,
-            creator_id:  1,
-            lesson_name: "Lesson One",
-            published: true,
-            created_at: "2016-04-04 19:23:34",
-            updated_at: "2016-04-05 14:10:40"
-        },
-        {
-            lesson_id:   2,
-            creator_id:  1,
-            lesson_name: "Lesson Two",
-            published: true,
-            created_at: "2016-04-04 19:23:34",
-            updated_at: "2016-04-05 14:10:40"
-        },
-        {
-            lesson_id:   3,
-            creator_id:  1,
-            lesson_name: "Lesson Three",
-            published: true,
-            created_at: "2016-04-04 19:23:34",
-            updated_at: "2016-04-05 14:10:40"
+    $scope.enrolled = [];
+
+    $http({
+        'method': 'GET',
+        'url': settings.baseURI + 'api/users/me/enrolled',
+        'headers': {
+        	'Content-Type' : 'application/json',
+        	'Authorization' : 'Bearer ' + $cookies.get('token')
         }
-    ];
+    }).then(
+        function successCallback(response) {
+            console.log(response.data);
+            $scope.enrolled = response.data.data;
+        },
+        function errorCallback(response) {
+            console.error('Failed to load enrolled lessons');
+            console.log(response);
+        }
+    );
 
     $scope.goToLesson = function(){
         $location.path('/lesson');
@@ -87,4 +85,4 @@ function($scope, $http, $location, $cookies, settings) {
         $location.search('e','didLogOut');
         $location.path('/log-in');
     }
-}]);
+});

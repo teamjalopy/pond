@@ -235,6 +235,8 @@ html, body {
 .course-card-title-input {
     border: none;
     outline: none !important;
+    padding: 0;
+    margin: 0;
 }
 
 .course-card-title span {
@@ -276,6 +278,13 @@ html, body {
     }
 }
 
+/* Navbar tweaks */
+
+.navbar-toggle {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
 .module-group-item h4 {
     font-weight: bold;
     font-size: 1.2em;
@@ -290,6 +299,73 @@ html, body {
     color: green;
 }
 
+.brand-center {
+    display: block;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    margin-left: -25px;
+}
+
+.brand-center img {
+    transition: transform 0.8s ease-in-out;
+}
+
+.brand-center.uncollapse img {
+    transform: rotate(180deg);
+}
+
+/* Black navbar for mobile */
+@media only screen and (max-width: 48em) {
+    .navbar-main.uncollapse {
+        height: 100%;
+    }
+    .navbar-main {
+        background-color: rgba(0,0,0,0.85);
+        color: #fff;
+        -webkit-backdrop-filter: blur(3px);
+        border: none;
+        transition: height 0.8s ease-in-out;
+        overflow: hidden;
+    }
+    .navbar-main .navbar-toggle {
+        border: none;
+        background: none !important;
+    }
+    .navbar-main .navbar-collapse {
+        border: none;
+        position: absolute;
+        margin-top: 10px;
+        top: 40px;
+        right: 0;
+        left: 0;
+        height: 100%;
+    }
+    .navbar-main .navbar-collapse li a {
+        display: block;
+        padding: 20px;
+        color: #fff;
+    }
+    .navbar-main .navbar-collapse li a:hover {
+        color: #fff;
+    }
+    .navbar-main .navbar-collapse li {
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .navbar-main .navbar-collapse li:hover {
+        background-color: rgba(255,255,255,0.1);
+    }
+    .navbar-main .navbar-collapse li i {
+        margin-right: 10px;
+    }
+}
+
+/* Fancier, less compact module list items
+   for larger screens.
+*/
 @media only screen and (min-width: 48em) {
     .module-group-item {
         display: flex;

@@ -6,7 +6,8 @@
     <!-- meta tag hints: character set and viewport -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
+    <!-- page icon -->
+    <link rel="icon" href="assets/img/icon.png">
     <!-- Google Fonts: Lato family -->
     <link href='https://fonts.googleapis.com/css?family=Lato:400,400italic,700,300' rel='stylesheet' type='text/css'>
     <!-- Bootstrap & Font Awesome -->
@@ -15,7 +16,7 @@
     <!-- Sitewide stylesheet -->
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body ng-app="pond" class="full full-force" ng-cloak>
+<body ng-app="pond" class="full full-force" ng-cloak ontouchstart="">
 
     <div ng-view class="full full-force">
 
@@ -32,9 +33,11 @@
     <script src="app/lib/angular-ui-bootstrap.min.js"></script>
     <!-- Angular App script -->
     <script src="app/app.js"></script>
-    <!-- Controllers -->
+    <!-- Front Page Controllers -->
     <script src="app/HomeView/HomeController.js"></script>
     <script src="app/LoginView/LoginController.js"></script>
+    <!-- Dash Controllers -->
+    <script src="app/common/DashController.js"></script>
     <script src="app/StudentDashView/StudentDashController.js"></script>
     <script src="app/TeacherDashView/TeacherDashController.js"></script>
     <script src="app/SettingsView/SettingsController.js"></script>
