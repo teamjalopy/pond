@@ -235,6 +235,8 @@ html, body {
 .course-card-title-input {
     border: none;
     outline: none !important;
+    padding: 0;
+    margin: 0;
 }
 
 .course-card-title span {
