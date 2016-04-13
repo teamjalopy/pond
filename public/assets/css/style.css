@@ -275,3 +275,10 @@ html, body {
         bottom: 23px;
     }
 }
+
+/* Navbar tweaks */
+
+.navbar-toggle {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}

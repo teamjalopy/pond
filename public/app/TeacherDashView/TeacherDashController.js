@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('pond.TeacherDashView', ['ngRoute'])
+angular.module('pond.TeacherDashView', ['ngRoute', 'pond.DashController'])
 
 .config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/teacher-dash', {
@@ -11,6 +11,10 @@ angular.module('pond.TeacherDashView', ['ngRoute'])
 
 .controller('TeacherDashController', ['$scope', 'settings', '$location', '$cookies', '$http', '$uibModal',
 function($scope, settings, $location, $cookies, $http, $uibModal) {
+
+    // Inherit DashController
+    $controller('DashController', {$scope: $scope});
+
     $scope.pagePartial = "/app/TeacherDashView/TeacherDashPartial.html";
 
     $scope.username = '';
