@@ -44,7 +44,6 @@ tags-input .tags .tag-item {
   padding: 0 5px;
   display: inline-block;
   float: left;
-  font: 14px "Helvetica Neue", Helvetica, Arial, sans-serif;
   height: 26px;
   line-height: 25px;
   border: 1px solid #acacac;
@@ -77,7 +76,6 @@ tags-input .tags .input {
   padding-left: 5px;
   float: left;
   height: 26px;
-  font: 14px "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 tags-input .tags .input.invalid-tag {
   color: #ff0000;
@@ -139,7 +137,6 @@ tags-input .autocomplete .suggestion-item {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font: 16px "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #000;
   background-color: #fff;
 }
@@ -152,9 +149,6 @@ tags-input .autocomplete .suggestion-item.selected em {
   background-color: #0097cf;
 }
 tags-input .autocomplete .suggestion-item em {
-  font: normal bold 16px "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #000;
   background-color: #fff;
 }
-
-/*# sourceMappingURL=ng-tags-input.css.map */

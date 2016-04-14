@@ -392,3 +392,19 @@ html, body {
         padding: 0 1em 0;
     }
 }
+
+/* ng-tag-inputs styling */
+tags-input .tags .tag-item {
+    color: #333;
+    background: #D3E7FA;
+    border: none;
+    border-radius: 4px;
+}
+tags-input .tags .tag-item.selected {
+    color: #fff;
+    background: #6FB0EF;
+    border: none;
+}
+tags-input .tags .tag-item .remove-button {
+    display: none;
+}
