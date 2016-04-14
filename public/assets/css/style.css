@@ -22,6 +22,11 @@ html, body {
     text-decoration: line-through;
 }
 
+.in-place-message {
+    font-style: italic;
+    color: #aaa;
+}
+
 *, *:before, *:after {
     box-sizing: inherit;
 }
@@ -321,6 +326,13 @@ html, body {
 
 .brand-center.uncollapse img {
     transform: rotate(180deg);
+}
+
+.mobile-back-button {
+    color: #fff !important;
+    text-decoration: none;
+    padding: 4px 10px;
+    margin: 10px 15px 0;
 }
 
 /* Black navbar for mobile */

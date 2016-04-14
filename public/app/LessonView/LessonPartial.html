@@ -7,16 +7,23 @@
 			<div class="col-md-3"></div>
 			<div class="col-md-6">
 
-				<h1>Intro to Differentials</h1>
+				<h1>{{lesson.name}}</h1>
+				<p>
+					<span>By {{lesson.creator.name || lesson.creator.email}}</span>
+					<span class="label label-default" ng-if="user.id==lesson.creator.id">Your Lesson</span>
+				</p>
 				<div class="panel panel-default">
-					<div class="panel-body">
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed hendrerit, mi quis faucibus suscipit, metus dui iaculis neque, vitae egestas elit lacus id enim. Nunc felis risus, rhoncus ut fermentum eu, mattis vel nulla.
-						</p>
+					<div class="panel-body" ng-switch="lesson.description">
+						<span ng-switch-default>
+							{{lesson.description}}
+						</span>
+						<span ng-switch-when="null" class="in-place-message">
+							No description
+						</span>
 					</div><!-- /.panel-body -->
 				</div><!-- /.panel -->
 
-				<div class="form-group">
+				<div class="form-group" ng-if="user.is_student">
 					<button class="btn btn-primary btn-lg">Start this lesson</button>
 				</div><!-- /.form-group -->
 
@@ -29,7 +36,7 @@
 						<div class="module-description">
 		    				<h4 class="list-group-item-heading">
 								<span>Differentials: Rationale</span>
-								<i class="fa fa-check module-complete-flag"></i>
+								<!-- <i class="fa fa-check module-complete-flag"></i> -->
 							</h4>
 
 		    				<p class="list-group-item-text">
