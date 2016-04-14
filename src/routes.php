@@ -28,5 +28,5 @@ $app->post('/api/lessons/{lesson_id}/students', '\Pond\LessonController:postLess
 $app->post('/api/lessons/{lesson_id}/quizzes', '\Pond\QuizController:quizCollectionHandler');
 $app->any('/api/lessons/{lesson_id}/quizzes/{quiz_id}', '\Pond\QuizController');
 
-$app->post('/api/lessons/{lesson_id}/quizzes/questions', '\Pond\QuizController:quizCollectionHandler');
-$app->any('/api/lessons/{lesson_id}/quizzes/question/{question_id}', '\Pond\QuizController');
+$app->post('/api/lessons/{lesson_id}/quizzes/{quiz_id}/questions', '\Pond\QuizController:questionCollectionHandler');
+$app->any('/api/lessons/{lesson_id}/quizzes/{quiz_id}/questions/{question_id}', '\Pond\QuizController');
