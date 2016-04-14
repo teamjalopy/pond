@@ -6,9 +6,18 @@ angular.module('pond', [
     'ngAnimate',
     'ngCookies',
     'vcRecaptcha',
+    'ui.bootstrap',
+    'ngTagsInput',
     'pond.HomeView',
     'pond.LoginView',
-    'pond.DashboardView'
+    'pond.DashController',
+    'pond.StudentDashView',
+    'pond.TeacherDashView',
+    'pond.SettingsView',
+    'pond.StudentArticleView',
+    'pond.StudentTestView',
+    'pond.StudentVideoView',
+    'pond.LessonView'
 ])
 .config(['$routeProvider', function($routeProvider) {
         $routeProvider.otherwise({ redirectTo: '/' });

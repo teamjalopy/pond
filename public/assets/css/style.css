@@ -2,6 +2,8 @@ html, body {
     box-sizing: border-box;
     font-size: 13pt;
     -webkit-font-smoothing: antialiased; /* fixes animation flicker */
+    -moz-osx-font-smoothing: grayscale; /* fixes over-bold fonts in OS X firefox */
+    font-family: "Lato", sans-serif;
 }
 
 .full-force {
@@ -20,6 +22,11 @@ html, body {
     text-decoration: line-through;
 }
 
+.in-place-message {
+    font-style: italic;
+    color: #aaa;
+}
+
 *, *:before, *:after {
     box-sizing: inherit;
 }
@@ -27,7 +34,6 @@ html, body {
 .full {
     width: 100%;
     min-height: 100%;
-    /*height: 100%;*/
     margin: 0;
     padding: 0;
 }
@@ -165,4 +171,286 @@ html, body {
 .form-step {
     width: 300px;
     margin-right: 50px;
+}
+
+/* Dashboard */
+
+.user-icon {
+    margin-top: 10px;
+    margin-bottom:10px;
+}
+
+.label-caps, .subtle-head {
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+.subtle-head {
+    color: #777;
+}
+
+.label-caps {
+    font-size: 0.6em;
+}
+
+.course-card, .course-card-add {
+    width: 100%;
+    padding: 10px;
+    position: relative;
+    border-radius: 2px;
+    margin: 0 0 20px;
+}
+
+.course-card {
+    background: #fff;
+    box-shadow: 0px 2px 6px #ccc;
+}
+
+.course-card-details {
+    font-size: 1em;
+    color: #888;
+}
+
+.course-card-add {
+    background: #eee;
+    border: 1px solid #e9e9e9;
+    color: #888;
+}
+
+@media only screen and (min-width : 992px) {
+    .course-card, .course-card-add {
+        height: 250px;
+    }
+    .course-card .btn-toolbar {
+        position: absolute;
+        bottom: 15px;
+    }
+}
+
+.course-card-title {
+    margin-bottom: 50px;
+    padding: 0 10px 0;
+
+    overflow: hidden;
+    word-wrap: break-word;
+
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
+}
+
+.course-card-title-input {
+    border: none;
+    outline: none !important;
+    padding: 0;
+    margin: 0;
+}
+
+.course-card-title span {
+    font-weight: 400;
+}
+
+.btn-link-danger {
+    color: #c9302c;
+}
+
+.btn-link-danger:hover {
+    color: #ac2925;
+}
+
+.btn-link-success {
+    color: #449d44;
+}
+
+.btn-link-success:hover {
+    color: #398439;
+}
+
+.course-card.unpublished {
+    opacity: 0.6;
+}
+
+.unpublished-flag {
+    color: #777;
+    font-size: 14px;
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+}
+
+@media only screen and (min-width : 48em) {
+    .unpublished-flag {
+        right: 23px;
+        bottom: 23px;
+    }
+}
+
+/* Navbar tweaks */
+
+.navbar-brand {
+    padding: 8px 10px;
+}
+
+.navbar-toggle {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.module-group-item h4 {
+    font-weight: bold;
+    font-size: 1.2em;
+    display: inline;
+}
+
+.module-icon, .module-description {
+    display: inline;
+}
+
+.module-complete-flag {
+    color: green;
+}
+
+.brand-center {
+    display: block;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    margin-left: -25px;
+}
+
+.brand-center img {
+    transition: transform 0.8s ease-in-out;
+}
+
+.brand-center.uncollapse img {
+    transform: rotate(180deg);
+}
+
+.mobile-back-button {
+    color: #fff !important;
+    text-decoration: none;
+    padding: 4px 10px;
+    margin: 10px 15px 0;
+}
+
+/* Black navbar for mobile */
+@media only screen and (max-width: 48em) {
+    .navbar-main.uncollapse {
+        height: 100%;
+    }
+    .navbar-main {
+        background-color: rgba(0,0,0,0.85);
+        color: #fff;
+        -webkit-backdrop-filter: blur(3px);
+        border: none;
+        transition: height 0.8s ease-in-out;
+        overflow: hidden;
+    }
+    .navbar-main .navbar-toggle {
+        border: none;
+        background: none !important;
+    }
+    .navbar-main .navbar-collapse {
+        border: none;
+        position: absolute;
+        margin-top: 10px;
+        top: 40px;
+        right: 0;
+        left: 0;
+        height: 100%;
+    }
+    .navbar-main .navbar-collapse li a {
+        display: block;
+        padding: 20px;
+        color: #fff;
+    }
+    .navbar-main .navbar-collapse li a:hover {
+        color: #fff;
+    }
+    .navbar-main .navbar-collapse li {
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .navbar-main .navbar-collapse li:hover {
+        background-color: rgba(255,255,255,0.1);
+    }
+    .navbar-main .navbar-collapse li i {
+        margin-right: 10px;
+    }
+}
+
+/* Fancier, less compact module list items
+   for larger screens.
+*/
+@media only screen and (min-width: 48em) {
+    .module-group-item {
+        display: flex;
+        padding: 1em;
+    }
+    .module-icon {
+        display: block;
+        width: 50px;
+        height: 50px;
+        flex: 0 0 50px;
+        border: 2px solid #333;
+        border-radius: 25px;
+        padding: 10px 8px 0 !important;
+    }
+    .module-group-item h4 {
+        display: block;
+    }
+    .module-description {
+        display: block;
+        padding: 0 1em 0;
+    }
+}
+
+/* ng-tag-inputs styling */
+tags-input .tags .tag-item {
+    color: #333;
+    background: #D3E7FA;
+    border: none;
+    border-radius: 4px;
+}
+tags-input .tags .tag-item.selected {
+    color: #fff;
+    background: #6FB0EF;
+    border: none;
+}
+tags-input .tags .tag-item .remove-button {
+    display: none;
+}
+
+/* Modal tweaks on mobile */
+@media only screen and (max-width: 48em) {
+    .modal-dialog {
+        margin: 0;
+        height: 100%;
+    }
+    .modal-dialog .modal-content {
+        box-shadow: none;
+        border: none;
+        border-radius: 0px;
+        height: 100%;
+
+        flex-direction: column;
+        display: flex;
+    }
+    .modal-body {
+        flex: 1;
+        overflow: scroll;
+    }
+}
+
+td .progress {
+    margin: 0;
+}
+
+.table>tbody>tr.vmid>td {
+    vertical-align: middle;
 }

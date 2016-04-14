@@ -1,0 +1,133 @@
+<!-- Course View HTML -->
+<div class="container">
+
+	<!--Lessons-->
+	<div class="row">
+		<div class="col-md-12">
+			<h1>{{lesson.name}}</h1>
+			<p>
+				<span>By {{lesson.creator.name || lesson.creator.email}}</span>
+				<span class="label label-default" ng-if="user.id==lesson.creator.id">Your Lesson</span>
+			</p>
+		</div><!-- /.col-md-12 -->
+	</div><!-- /.row -->
+	<div class="row">
+		<div class="col-md-6">
+			<div class="panel panel-default">
+				<div class="panel-body" ng-switch="lesson.description">
+					<span ng-switch-default>
+						{{lesson.description}}
+					</span>
+					<span ng-switch-when="null" class="in-place-message">
+						No description
+					</span>
+				</div><!-- /.panel-body -->
+			</div><!-- /.panel -->
+
+			<div class="form-group" ng-if="user.is_student">
+				<button class="btn btn-primary btn-lg">Start this lesson</button>
+			</div><!-- /.form-group -->
+			<div class="form-group" ng-if="user.is_teacher">
+				<button class="btn btn-default btn-lg"
+				 ng-click="showStudents(lesson,students)">
+				 	Students <span class="badge">{{students.length}}</span>
+				</button>
+			</div><!-- /.form-group -->
+		</div><!-- /.col-md-6 -->
+
+		<div class="col-md-6">
+			<div class="list-group">
+
+  				<a href class="list-group-item module-group-item">
+					<div class="module-icon">
+						<i class="fa fa-video-camera fa-fw fa-lg"></i>
+					</div>
+					<div class="module-description">
+	    				<h4 class="list-group-item-heading">
+							<span>The Fundamental Theorem of Calculus</span>
+							<!-- <i class="fa fa-check module-complete-flag"></i> -->
+						</h4>
+
+	    				<p class="list-group-item-text">
+							Calculus is based on a group of operations: integration and differentiation. The way these operations relate are outlined in this theorem.
+						</p>
+					</div><!-- /.module-description -->
+  				</a><!-- /.module-group-item -->
+
+				<a href class="list-group-item module-group-item">
+					<div class="module-icon">
+						<i class="fa fa-video-camera fa-fw fa-lg"></i>
+					</div>
+					<div class="module-description">
+	    				<h4 class="list-group-item-heading">
+							<span>Riemann Sums</span>
+							<!-- <i class="fa fa-check module-complete-flag"></i> -->
+						</h4>
+
+	    				<p class="list-group-item-text">
+							Integrals become easy to understand when you visualize a Riemann sum.
+						</p>
+					</div><!-- /.module-description -->
+  				</a><!-- /.module-group-item -->
+
+
+			</div><!--/.list-group-->
+		</div><!-- /.col-md-6 -->
+
+	</div><!-- /.row -->
+</div><!-- /.container -->
+
+<!-- Students modal -->
+<!--
+	NG-TEMPLATE
+-->
+<script type="text/ng-template" id="studentsModal.html">
+	<header class="modal-header">
+		<h3 class="modal-title">Students</h3>
+	</header><!-- .modal-header -->
+	<main class="modal-body">
+
+		<!-- Add students form -->
+		<form name="NewStudentForm">
+			<div class="form-group">
+				<label for="EditLessonName">Add Students</label>
+				<tags-input ng-model="newStudentEmails" type="email" spellcheck="false"
+				 allowed-tags-pattern=".+@.+" min-tags="1" placeholder="Student email">
+			 	</tags-input>
+			</div><!-- /.form-group -->
+			<div class="form-group">
+				<button class="btn btn-primary" ng-click="addNewStudents()">Add</button>
+			</div><!-- /.form-group -->
+		</form>
+
+		<table class="table">
+			<thead>
+				<th>Name</th><th>Progress</th><th></th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="student in students" class="vmid">
+					<td>{{student.name || student.email}}</td>
+					<td>
+						<div class="progress">
+							<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+								<span class="sr-only">40% Complete</span>
+							</div>
+						</div><!-- /.progress -->
+					</td>
+					<td>
+						<button type="button" class="btn btn-s btn-link btn-link-danger" role="button">
+							Remove
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</main><!-- .modal-body -->
+	<footer class="modal-footer">
+		<button class="btn btn-default" ng-click="close()">OK</button>
+	</footer><!-- .modal-footer -->
+</script>
+<!--
+	END NG-TEMPLATE
+-->

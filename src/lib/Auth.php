@@ -7,7 +7,9 @@ use Slim\Http\Response;
 
 use Respect\Validation\Exceptions\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use \Exception;
 use \RuntimeException;
+use \InvalidArgumentException;
 
 use Slim\Container;
 
@@ -22,6 +24,8 @@ class Auth {
     private $container;
     private $logger;
 
+    public $cachedUser;
+
     function __construct(Container $c) {
         $this->container = $c;
         $this->logger = $this->container->get('logger');
@@ -33,32 +37,37 @@ class Auth {
         if(! $token = self::authenticate(@$form['email'],@$form['password']) ) {
             return self::badAuthResponse($res);
         } else {
-            return self::tokenResponse($res,$token);
+            return self::tokenResponse($res,$token,$this->cachedUser);
         }
 
     } // loginHandler
 
     public function isRequestAuthorized(Request $req, $forUID = null): bool {
-        // First, check for Authorization: Bearer [token]
+
+        // Step 1. check for Authorization: Bearer [token]
         // header
 
-        if(!$req->hasHeader('Authorization')) {
+        try {
+            $tokenString = $this->getJWTFromHeader($req);
+        } catch(Exception $e) {
+            $this->logger->info("getJWTFromHeader threw exception: ".$e->getMessage());
             return false;
         }
 
-        $tokenHeader = $req->getHeader('Authorization')[0]; // Bearer xxxxx.yyyyy.zzzzz
-        $tokenString = explode(' ', $tokenHeader)[1]; // xxxxx.yyyyy.zzzzz
+        // Step 2. parse JWT
+
+        $this->logger->info("Attempting to parse JWT.");
+        $parser = new Parser();
 
         try {
-            $parser = new Parser();
             $token = $parser->parse($tokenString);
-        } catch(RuntimeException $e) {
+        } catch(Exception $e) {
             // Token parsing failed, bad token assumed.
+            $this->logger->info("Could not parse JWT: Malformed or missing.");
             return false;
         }
 
-        // Step 1: Validate the assertions in the JWT
-
+        // Step 3. Validate the assertions in the JWT
         $tokenSettings = $this->container->get('settings')['token'];
 
         $issuer   = $tokenSettings['iss'];
@@ -86,7 +95,7 @@ class Auth {
             return false;
         }
 
-        // Step 2. Verify signature
+        // Step 4. Verify signature
         // [NOTA BENE] don't let JWT assert algorithm.
         // Use predetermined algorithm and key for verification.
         $signer = new Signer();
@@ -97,6 +106,29 @@ class Auth {
             $this->logger->info("Could not verify token signature.");
             return false;
         }
+    }
+
+    // Returns user id or throws exception
+    public function getAuthorizedUserID(Request $req): int {
+        if(!$this->isRequestAuthorized($req)) {
+            throw new RuntimeException("There is no authorized user.",1);
+        }
+
+        $tokenString = $this->getJWTFromHeader($req);
+
+        $this->logger->info("Attempting to parse JWT.");
+        $parser = new Parser();
+
+        try {
+            $token = $parser->parse($tokenString);
+        } catch(Exception $e) {
+            // Token parsing failed, bad token assumed.
+            $this->logger->info("Could not parse JWT: Malformed or missing.");
+            return false;
+        }
+
+        $this->logger->info("UID claim read: " . $token->getClaim('uid'));
+        return $token->getClaim('uid');
     }
 
     private function authenticate($email, $password) {
@@ -119,6 +151,7 @@ class Auth {
         // Try to get the requested User or throw an exception
         try {
             $reqUser = User::where('email', $email)->firstOrFail();
+            $this->cachedUser = $reqUser;
         } catch(ModelNotFoundException $e) {
             $this->logger->info('User model retrieval fail');
             return null;
@@ -154,6 +187,23 @@ class Auth {
         }
     }
 
+    private function getJWTFromHeader(Request $req): string {
+        try {
+            $tokenHeader = $req->getHeader('Authorization')[0]; // Bearer xxxxx.yyyyy.zzzzz
+            $tokenHeaderValue = explode(' ', $tokenHeader); // ['Bearer', 'xxxxx.yyyyy.zzzzz']
+            if(isset($tokenHeaderValue[1])) {
+                $this->logger->info("Parsed Authorization header.");
+                return $tokenHeaderValue[1]; // xxxxx.yyyyy.zzzzz
+            } else {
+                $this->logger->info("Malformed Authorization header. Unauthorized.");
+                throw new InvalidArgumentException("Authorization header malformed.", 1);
+            }
+        } catch(Exception $e) {
+            $this->logger->info("Failed to parse Authorization header.");
+            throw new InvalidArgumentException("Could not parse Authorization header.", 1);
+        }
+    }
+
     static function badAuthResponse(Response $res): Response {
         $stat = new \Pond\StatusContainer();
         $stat->error('BadAuth');
@@ -163,8 +213,8 @@ class Auth {
         return $res->withJson($stat);
     }
 
-    static function tokenResponse(Response $res, Token $t): Response {
-        $stat = new \Pond\StatusContainer( ['token' => (string)$t] );
+    static function tokenResponse(Response $res, Token $t, User $u): Response {
+        $stat = new \Pond\StatusContainer( ['token' => (string)$t, 'user' => $u] );
         $stat->success();
         $stat->message('Successfully logged in.');
 
