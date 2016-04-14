@@ -123,7 +123,7 @@
 
                 <!-- COURSE ADD CARD -->
                 <div class="col-md-6" role="presentation" ng-show="showNewLessonForm" ng-cloak>
-					<div class="course-card add-course-form" aria-label="Lesson" role="listitem">
+					<div class="course-card add-course-form" aria-label="Lesson" role="listitem" ng-click="goToLesson()">
 
                         <form name="NewLessonForm">
     						<h3 class="course-card-title">
@@ -133,14 +133,14 @@
     							<small>{{user.name || user.email}}</small>
     						</h3>
 
-                            <div class="btn-toolbar" role="toolbar" aria-label="New lesson options">
+                            <div class="btn-toolbar" role="toolbar" aria-label="New module options">
                                 <div class="btn-group" role="group">
                                     <button type="button" class="btn btn-link btn-link-danger"
-                                    ng-click="showNewLessonForm=false" role="button">
+                                    ng-click="showNewModuleForm=false" role="button">
                                         Cancel
                                     </button>
                                     <button type="button" class="btn btn-link btn-link-success"
-                                    ng-click="saveNewLesson()" role="button">
+                                    ng-click="saveNewModule()" role="button">
                                         Save
                                     </button>
                                 </div><!-- /.btn-group -->
@@ -152,12 +152,12 @@
                 <!-- END COURSE ADD CARD -->
 
                 <!-- add course placeholder card -->
-                <div class="col-md-6" role="presentation">
-					<button class="course-card-add" aria-label="Create a new lesson"
-                     ng-click="showNewLessonForm=true">
+                <div class="row" role="presentation">
+					<button class="course-card-add" aria-label="Create a new module"
+                     ng-click="showNewModuleForm=true">
                         <i class="fa fa-2x fa-plus"></i>
 					</button><!-- /.course-card-add -->
-				</div><!-- /.col-md-6 -->
+				</div><!-- /.row -->
                 <!-- end add card -->
 
 			</div><!-- /.row -->
