@@ -51,7 +51,12 @@ Class QuizController{
             return $this->individualQuizHandler($req, $res);
         }
         else {
-            return $this->postQuizHandler($req,$res);
+            switch ($req->getMethod()) {
+            case 'POST':
+                return $this->postQuizHandler($req,$res);
+            default:
+                return $res->withStatus(405);
+            }
         }
     }
 
@@ -59,13 +64,6 @@ Class QuizController{
         //Creates an empty post and returns the quiz id
         $this->logger->info("POST /api/postQuizHandler");
 
-        //makes sure user is authenticated
-        try {
-            $creator_id = $this->auth->getAuthorizedUserID($req);
-        } catch(RuntimeException $e) {
-            $this->logger->info("postQuizHandler: User was unauthorized");
-            return $res->withStatus(401); // Unauthorized
-        }
 
         //makes sure lesson exists
         try {
@@ -78,9 +76,8 @@ Class QuizController{
         $quiz = new \Pond\Quiz();
         $quiz->save();
 
-        $stat = new StatusContainer();
+        $stat = new StatusContainer($quiz);
         $stat->success();
-        $stat->data($quiz->getQuizId());
         $stat->message('Quiz successfully created.');
         $res = $res->withStatus(200);
 
