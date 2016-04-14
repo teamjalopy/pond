@@ -7,6 +7,7 @@ angular.module('pond', [
     'ngCookies',
     'vcRecaptcha',
     'ui.bootstrap',
+    'ngTagsInput',
     'pond.HomeView',
     'pond.LoginView',
     'pond.DashController',
