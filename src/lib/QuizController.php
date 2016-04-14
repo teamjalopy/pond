@@ -44,14 +44,52 @@ Class QuizController{
     }
 
     function quizHandler(Request $req, Response $res): Response{
+
         if(null !== $req->getAttribute('quiz_id')){
-            return $this->studentQuizHandler($req, $res);
+            return $this->individualQuizHandler($req, $res);
         }
         else {
-
+            switch ($req->getMethod()) {
+            case 'POST':
+                return $this->postQuizHandler($req,$res);
+            default:
+                return $res->withStatus(405); // Method Not Allowed
+            }
         }
 
     }
+
+    function postQuizHandler(Request $req, Response $res): Response{
+        
+    }
+
+    function individualQuizHandler(Request $req, Response $res): Response{
+
+        switch ($req->getMethod()) {
+        case 'GET':
+            return $this->getQuizHandler($req,$res);
+        case 'PUT':
+            return $this->putQuizHandler($req,$res);
+        case 'DELETE':
+            return $this->deleteQuizHandler($req, $res);
+        default:
+            return $res->withStatus(405); // Method Not Allowed
+
+        }
+    }
+
+    function getQuizHandler(Request $req, Response $res): Response{
+
+    }
+
+    function putQuizHandler(Request $req, Response $res): Response{
+
+    }
+
+    function deleteQuizHandler(Request $req, Response $res): Response{
+
+    }
+
 
     function questionHandler(Request $req, Response $res): Response{
 
