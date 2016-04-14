@@ -290,6 +290,10 @@ html, body {
 
 /* Navbar tweaks */
 
+.navbar-brand {
+    padding: 8px 10px;
+}
+
 .navbar-toggle {
     padding-top: 4px;
     padding-bottom: 4px;
@@ -419,4 +423,24 @@ tags-input .tags .tag-item.selected {
 }
 tags-input .tags .tag-item .remove-button {
     display: none;
+}
+
+/* Modal tweaks on mobile */
+@media only screen and (max-width: 48em) {
+    .modal-dialog {
+        margin: 0;
+        height: 100%;
+    }
+    .modal-dialog .modal-content {
+        box-shadow: none;
+        border: none;
+        border-radius: 0px;
+        height: 100%;
+
+        flex-direction: column;
+        display: flex;
+    }
+    .modal-body {
+        flex: 1;
+    }
 }

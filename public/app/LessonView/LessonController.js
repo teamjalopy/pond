@@ -11,7 +11,7 @@ angular.module('pond.LessonView', ['ngRoute'])
 }])
 
 .controller('LessonController',
-function($scope, $http, $location, $cookies, $routeParams, $controller, settings) {
+function($scope, $http, $location, $cookies, $routeParams, $controller, settings, $uibModal) {
     $scope.pagePartial = '/app/LessonView/LessonPartial.html';
 
     // Inherit DashController
@@ -40,4 +40,29 @@ function($scope, $http, $location, $cookies, $routeParams, $controller, settings
             console.log(response);
         }
     );
+
+    $scope.showStudents = function(lesson) {
+        var modal = $uibModal.open({
+            animation: true,
+            templateUrl: 'studentsModal.html',
+            controller: 'studentsModalController',
+            size: null,
+            resolve : {
+                lesson: function() {
+                    return lesson;
+                }
+            }
+        });
+    }; // showStudents
+
+})
+
+// Modal for adding students to lessons
+// Template: studentsModal.html
+.controller('studentsModalController',
+function($scope, $uibModalInstance, lesson, $http, settings, $cookies) {
+
+    $scope.lesson = lesson;
+    $scope.close = function() { $uibModalInstance.close(); };
+
 });

@@ -23,7 +23,7 @@
 				<ul class="list-group list-group-flush">
 					<a href class="list-group-item">Courses</a>
 					<a href class="list-group-item">Certificates</a>
-					<a href class="list-group-item">Inbox<span class="badge">{{classinvites}}</span></a>
+					<a href class="list-group-item">Inbox <span class="badge">0</span></a>
 				</ul><!-- /.list-group.list-group-flush -->
 			</div><!-- /.panel.panel-default -->
 		</div><!-- /.col-md-4 -->
@@ -31,6 +31,10 @@
 		<!-- course cards -->
 		<div class="col-md-8">
 			<div class="row">
+
+				<div ng-hide="enrolled.length" class="col-md-12">
+					<p class="in-place-message text-center" style="padding:4em 0;">You are not enrolled in any classes</p>
+				</div>
 
 				<div class="col-md-6" ng-repeat="lesson in enrolled">
 					<div class="course-card" ng-click="goToLesson()">
