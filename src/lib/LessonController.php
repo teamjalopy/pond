@@ -115,8 +115,35 @@ class LessonController {
         return $res->withJson($stat);
     }
 
-    function postLessonStudentsHandler(Request $req, Response $res): Response {
+    function getLessonStudentsHandler(Request $req, Response $res): Response {
         $this->logger->info("GET /api/lessons/{lesson_id}/students Handler");
+
+        // Get the currently authenticated user, return failure state (401)
+        // if unauth.
+        try {
+            $creator_id = $this->auth->getAuthorizedUserID($req);
+        } catch(RuntimeException $e) {
+            return $res->withStatus(401); // Unauthorized
+        }
+
+        // Get the lesson and its students
+        try {
+            $lesson = Lesson::findOrFail($req->getAttribute("lesson_id"));
+            $students = $lesson->students()->get();
+        } catch(ModelNotFoundException $e) {
+            $this->logger->info("getLessonStudentsHandler: could not find lesson.");
+            return $res->withStatus(404); // Not Found
+        }
+
+        $stat = new StatusContainer($students);
+        $stat->success();
+        $stat->message("Here are the students for the given lesson.");
+
+        return $res->withJson($stat);
+    }
+
+    function postLessonStudentsHandler(Request $req, Response $res): Response {
+        $this->logger->info("POST /api/lessons/{lesson_id}/students Handler");
 
         // The provided data is an object with key `emails`, where the value is an
         // array of email addresses (one or more).
@@ -156,7 +183,7 @@ class LessonController {
         try {
             $lesson = Lesson::findOrFail($req->getAttribute("lesson_id"));
         } catch(ModelNotFoundException $e) {
-            $this->logger->info("postLessonStudentsHandler: could not find lesson.");
+            $this->logger->info("postLessonStudentsHandler: could not find lesson with ID " . $req->getAttribute("lesson_id") . ".");
             return $res->withStatus(404); // Not Found
         }
 
@@ -164,7 +191,7 @@ class LessonController {
 
         $stat = new StatusContainer();
         $stat->success();
-        $stat->message("Dummy response from enrollment handler");
+        $stat->message("Successfully enrolled student(s)");
 
         return $res->withJson($stat);
     }

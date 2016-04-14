@@ -442,5 +442,14 @@ tags-input .tags .tag-item .remove-button {
     }
     .modal-body {
         flex: 1;
+        overflow: scroll;
     }
+}
+
+td .progress {
+    margin: 0;
+}
+
+.table>tbody>tr.vmid>td {
+    vertical-align: middle;
 }

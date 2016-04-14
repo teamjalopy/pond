@@ -23,6 +23,7 @@ function($scope, $http, $location, $cookies, $routeParams, $controller, settings
         console.log($scope.backPage);
     });
 
+    // Load lessons
     $http({
         'method': 'GET',
         'url': settings.baseURI + 'api/lessons/' + $routeParams.lessonID,
@@ -34,6 +35,7 @@ function($scope, $http, $location, $cookies, $routeParams, $controller, settings
         function successCallback(response) {
             console.log(response.data);
             $scope.lesson = response.data.data;
+            $scope.loadStudents();
         },
         function errorCallback(response) {
             console.error('Failed to load lesson');
@@ -41,7 +43,29 @@ function($scope, $http, $location, $cookies, $routeParams, $controller, settings
         }
     );
 
-    $scope.showStudents = function(lesson) {
+    // Load students
+    $scope.loadStudents = function() {
+        $http({
+            'method': 'GET',
+            'url': settings.baseURI + 'api/lessons/' + $scope.lesson.id + '/students',
+            'headers': {
+                'Content-Type' : 'application/json',
+                'Authorization' : 'Bearer ' + $cookies.get('token')
+            }
+        })
+        .then(
+            function successCallback(response) {
+                console.log('Got the students for this lesson');
+                $scope.students = response.data.data;
+            },
+            function errorCallback(response) {
+                console.error('Could not load the students for this lesson.');
+                console.error(response);
+            }
+        );
+    };
+
+    $scope.showStudents = function(lesson,students) {
         var modal = $uibModal.open({
             animation: true,
             templateUrl: 'studentsModal.html',
@@ -50,6 +74,9 @@ function($scope, $http, $location, $cookies, $routeParams, $controller, settings
             resolve : {
                 lesson: function() {
                     return lesson;
+                },
+                students: function() {
+                    return students;
                 }
             }
         });
@@ -60,9 +87,35 @@ function($scope, $http, $location, $cookies, $routeParams, $controller, settings
 // Modal for adding students to lessons
 // Template: studentsModal.html
 .controller('studentsModalController',
-function($scope, $uibModalInstance, lesson, $http, settings, $cookies) {
+function($scope, $uibModalInstance, $http, $cookies, settings, lesson, students) {
 
     $scope.lesson = lesson;
+    $scope.students = students;
+
     $scope.close = function() { $uibModalInstance.close(); };
+
+    $scope.addNewStudents = function() {
+        var newStudentsData = {
+            'emails' : $scope.newStudentEmails
+        };
+
+        $http({
+            'method': 'POST',
+            'url': settings.baseURI + 'api/lessons/' + $scope.lesson.id + '/students',
+            'headers': {
+                'Content-Type' : 'application/json',
+                'Authorization' : 'Bearer ' + $cookies.get('token')
+            },
+            'data': newStudentsData
+        })
+        .then(
+            function successCallback(response) {
+                console.log('Successful adding of new students');
+            },
+            function errorCallback(response) {
+                console.error('Could not add new students.');
+            }
+        );
+    };
 
 });
