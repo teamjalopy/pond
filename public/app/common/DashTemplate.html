@@ -7,7 +7,7 @@
 		<div class="navbar-header">
 			<!-- Brand -->
 			<!-- (desktop branding) -->
-			<a class="navbar-brand hidden-xs" ng-href="{{user.is_teacher ? '#/teacher-dash' : '#/student-dash'}}" style="padding:10px">
+			<a class="navbar-brand hidden-xs" ng-href="{{user.is_teacher ? '#/teacher-dash' : '#/student-dash'}}">
 				<img src="assets/img/pond.png" height="30">
 			</a>
 			<!-- (mobile branding) -->
@@ -15,10 +15,23 @@
 				<img src="assets/img/icon.png" height="30">
 			</a>
 
-			<button class="navbar-toggle" ng-click="navCollapsed = !navCollapsed">
-				<i class="fa fa-bars fa-fw"></i>
+			<button class="navbar-toggle" ng-click="navCollapsed = !navCollapsed" ng-switch="navCollapsed">
+				<i class="fa fa-bars fa-fw" ng-switch-when="true" ng-cloak></i>
+                <i class="fa fa-times fa-fw" ng-switch-when="false" ng-cloak></i>
 			</button>
+
+            <a ng-href="{{backPage}}" role="menuitem" class="visible-xs-block mobile-back-button" aria-label="Back Button" ng-if="backPage">
+                <i class="fa fa-chevron-left" aria-hidden></i>
+            </a>
 		</div><!-- /.navbar-header -->
+
+        <ul class="nav navbar-nav navbar-left hidden-xs" role="menu">
+            <li role="presentation" ng-if="backPage">
+                <a ng-href="{{backPage}}" role="menuitem" aria-label="Back Button">
+                    <i class="fa fa-chevron-left fa-fw" aria-hidden></i>
+                </a>
+            </li>
+        </ul>
 
 		<ul class="nav navbar-nav navbar-right navbar-collapse" role="menu">
 			<li role="presentation">
@@ -40,5 +53,6 @@
 
 <!--this is where the page for the users differ-->
 <div style="margin-top: 70px">
+    <!-- Page Partial content -->
 	<ng-include src="pagePartial"></ng-include>
 </div>
