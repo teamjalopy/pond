@@ -143,6 +143,10 @@ function($scope, settings, $location, $cookies, $http, $uibModal, $controller) {
             }
         );
     }
+
+    $scope.goToLesson = function(){
+        $location.path('/teacher-lesson');
+    }
 })
 
 // Modal for editing lessons
