@@ -8,4 +8,8 @@
             return $this->hasMany('Pond\Question');
         }
 
+        public function getQuizId(){
+            return $this->attributes['id'];
+        }
+
     }
