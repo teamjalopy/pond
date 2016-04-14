@@ -23,7 +23,7 @@ Class QuizController{
     public function __construct(Container $c){
         $this->container = $c;
         $this->logger = $this->container->get('logger');
-        $auth = new Auth($this->container);
+        $this->auth = new Auth($this->container);
     }
 
     function __invoke(Request $req, Response $res): Response{
@@ -62,7 +62,7 @@ Class QuizController{
 
     function postQuizHandler(Request $req, Response $res): Response{
         //Creates an empty post and returns the quiz id
-        $this->logger->info("POST /api/postQuizHandler");
+        $this->logger->info("POST /api/lessons/{lesson_id}/quizzes");
 
 
         //makes sure lesson exists
@@ -71,6 +71,14 @@ Class QuizController{
         } catch(ModelNotFoundException $e) {
             $this->logger->info("postQuizHandler: could not find lesson.");
             return $res->withStatus(404); // Not Found
+        }
+
+        //var_dump($req);
+        //make sure user is authorized
+        try {
+            $creator_id = $this->auth->getAuthorizedUserID($req);
+        } catch(RuntimeException $e) {
+            return $res->withStatus(401); // Unauthorized
         }
 
         $quiz = new \Pond\Quiz();
