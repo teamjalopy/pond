@@ -25,4 +25,4 @@ $app->get('/api/users/{user_id}/enrolled', '\Pond\LessonController:getEnrolledLe
 $app->post('/api/lessons/{lesson_id}/students', '\Pond\LessonController:postLessonStudentsHandler');
 
 //Module quiz Endpoints
-$app->any('/api/lessons/{lesson_id}/quizzes', '\Pond\QuizController');
+$app->any('/api/lessons/{lesson_id}/quizzes/{quiz_id}', '\Pond\QuizController');
