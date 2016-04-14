@@ -169,6 +169,39 @@ class LessonController {
         return $res->withJson($stat);
     }
 
+    function deleteLessonStudentsHandler(Request $req, Response $res): Response {
+        $this->logger->info("DELETE /api/lessons/{lesson_id}/students/{user_id} Handler");
+
+        // Get the lesson or fail
+        try {
+            $lesson = Lesson::findOrFail( $req->getAttribute('lesson_id') );
+        } catch(ModelNotFoundException $e){
+            return self::LessonNotFoundErrorStatus($res);
+        }
+
+        // Authorization (general)
+        if(!$this->auth->isRequestAuthorized($req)) {
+            return $res->withStatus(401);
+        }
+
+        // Authorization (specific: is user the student or the authoring teacher?)
+        try {
+            $uid = UserController::getUID($req,$this->auth);
+            $student = User::findOrFail($uid);
+            $creator = $lesson->creator();
+        } catch(ModelNotFoundException $e){
+            return $res->withStatus(404);
+        }
+
+        $lesson->students()->detach($student);
+
+        $stat = new StatusContainer();
+        $stat->success();
+        $stat->message("The enrollment record has been detached");
+
+        return $res->withJson($stat);
+    }
+
     function getLessonHandler(Request $req, Response $res): Response {
 
         $this->logger->info("GET /api/lessons/{lesson_id} Handler");
