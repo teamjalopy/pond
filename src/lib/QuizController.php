@@ -36,7 +36,7 @@ Class QuizController{
         // with the items in the square brackets being optional
 
         if(null !== $req->getAttribute('questions')){
-            return $this->questionHandler($req, $res);
+            return $this->questionCollectionHandler($req, $res);
         }
         else{
             return $this->quizCollectionHandler($req, $res);
@@ -73,10 +73,19 @@ Class QuizController{
             return $res->withStatus(404); // Not Found
         }
 
-        //make sure user is authorized
+        //make sure user had authorization to update quiz
         try {
-            $user_id = $this->auth->getAuthorizedUserID($req);
-        } catch(RuntimeException $e) {
+            $authUID = $this->auth->getAuthorizedUserID($req);
+        } catch(Exception $e) {
+            $authUID = -1;
+        }
+
+        $uidMismatch = ($lesson->creator_id != $authUID);
+
+        if($uidMismatch) {
+            $this->logger->info("putQuizHandler: This lesson's creator ID (#"
+            .$lesson->creator_id.") does not match the current user (#". $authUID .")");
+
             return $res->withStatus(401); // Unauthorized
         }
 
@@ -133,8 +142,6 @@ Class QuizController{
             return $res->withStatus(404); // Not Found
         }
 
-        $quiz = Quiz::find($req->getAttribute("quiz_id"));
-
         $stat = new StatusContainer($quiz);
         $stat->success();
         $stat->message("Here is the requested quiz.");
@@ -142,17 +149,95 @@ Class QuizController{
         return $res->withJson($stat);
 
     }
+
+    function putQuizHandler(Request $req, Response $res): Response{
+        $this->logger->info("PUT /api/lessons/{lesson_id}/quizzes/{quiz_id}");
+
+        //make sure lesson exitst
+        try {
+            $lesson = Lesson::findOrFail( $req->getAttribute('lesson_id') );
+        } catch(ModelNotFoundException $e) {
+            return self::LessonNotFoundErrorStatus($req);
+        }
+
+        //make sure user had authorization to update quiz
+        try {
+            $authUID = $this->auth->getAuthorizedUserID($req);
+        } catch(Exception $e) {
+            $authUID = -1;
+        }
+
+        $uidMismatch = ($lesson->creator_id != $authUID);
+
+        if($uidMismatch) {
+            $this->logger->info("putQuizHandler: This lesson's creator ID (#"
+            .$lesson->creator_id.") does not match the current user (#". $authUID .")");
+
+            return $res->withStatus(401); // Unauthorized
+        }
+
+        //make sure quiz exists
+        try {
+            $quiz = Quiz::findorFail($req->getAttribute("quiz_id"));
+        } catch(ModelNotFoundException $e) {
+            $this->logger->info("putQuizHandler: could not find quiz.");
+            return $res->withStatus(404); // Not Found
+        }
+
+        //make changes needed for quiz
+
+        $stat = new StatusContainer();
+        $stat->success();
+        $stat->message("Quiz has been updated");
+
+        return $res->withJson($stat);
+    }
+
+    function deleteQuizHandler(Request $req, Response $res): Response{
+        $this->logger->info("DELETE /api/lessons/{lesson_id}/quizzes/{quiz_id}");
+
+        //make sure lesson exitst
+        try {
+            $lesson = Lesson::findOrFail( $req->getAttribute('lesson_id') );
+        } catch(ModelNotFoundException $e) {
+            return self::LessonNotFoundErrorStatus($req);
+        }
+
+        //make sure user has authorization to delete quiz
+        try {
+            $authUID = $this->auth->getAuthorizedUserID($req);
+        } catch(Exception $e) {
+            $authUID = -1;
+        }
+
+        $uidMismatch = ($lesson->creator_id != $authUID);
+
+        if($uidMismatch) {
+            $this->logger->info("putQuizHandler: This lesson's creator ID (#"
+            .$lesson->creator_id.") does not match the current user (#". $authUID .")");
+
+            return $res->withStatus(401); // Unauthorized
+        }
+
+        //make sure quiz exists
+        try {
+            $quiz = Quiz::findorFail($req->getAttribute("quiz_id"));
+        } catch(ModelNotFoundException $e) {
+            $this->logger->info("putQuizHandler: could not find quiz.");
+            return $res->withStatus(404); // Not Found
+        }
+
+        $quiz->delete();
+
+        $stat = new StatusContainer();
+        $stat->success();
+        $stat->message("The quiz has been deleted");
+
+        return $res->withJson($stat);
+    }
     //
-    // function putQuizHandler(Request $req, Response $res): Response{
     //
-    // }
-    //
-    // function deleteQuizHandler(Request $req, Response $res): Response{
-    //
-    // }
-    //
-    //
-    // function questionHandler(Request $req, Response $res): Response{
+    // function questionCollectionHandler(Request $req, Response $res): Response{
     //
     // }
 
