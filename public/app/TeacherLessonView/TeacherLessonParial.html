@@ -65,77 +65,77 @@
         	-->
 
 			<!-- course cards -->
-			<div class="col-md-8">
-				<div class="row" id="module-list" aria-label="Modules you've authored" role="list">
-                	<!-- course card repeat element -->
-					<div class="col-md-6" ng-repeat="module in modules" role="presentation">
-						<div class="module-card" aria-label="Module" role="listitem"
-                     	ng-class="{'unpublished': !module.published}">
+			<div class="row" id="module-list" aria-label="Modules you've authored" role="list">
+                <!-- course card repeat element -->
+				<div ng-repeat="module in modules" role="presentation">
+					<div class="module-card" aria-label="Module" role="listitem"
+                     ng-class="{'unpublished': !module.published}">
 
-							<h3 class="course-card-title">
-								<span>{{module.name}}</span><br>
-								<small>{{module.creator.name || module.creator.email}}</small>
-							</h3>
+						<h3 class="course-card-title">
+							<span>{{module.name}}</span><br>
+							<small>{{module.creator.name || module.creator.email}}</small>
+						</h3>
 
-                        	<div class="btn-toolbar" role="toolbar" aria-label="Module actions">
-                            	<div class="btn-group" role="group">
-                                	<button type="button" class="btn btn-link"
-                                	ng-click="editModule(module)" role="button">
-                                    	Edit
-                                	</button>
-                                	<button type="button" class="btn btn-link btn-link-danger"
-                                	ng-click="deleteModule(module)" role="button">
-                                    	Delete
-                                	</button>
-                            	</div><!-- /.btn-group -->
-                        	</div><!-- /.btn-toolbar -->
+                        <div class="btn-toolbar" role="toolbar" aria-label="Module actions">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-link"
+                                ng-click="editModule(module)" role="button">
+                                    Edit
+                                </button>
+                                <button type="button" class="btn btn-link btn-link-danger"
+                                ng-click="deleteModule(module)" role="button">
+                                    Delete
+                                </button>
+                            </div><!-- /.btn-group -->
+                        </div><!-- /.btn-toolbar -->
 
-                        	<span ng-if="!module.published" class="unpublished-flag">
-                            	<i class="fa fa-eye-slash"></i>
+                        <span ng-if="!module.published" class="unpublished-flag">
+                            <i class="fa fa-eye-slash"></i>
                             	Unpublished
-                        	</span><!-- /.unpublished-flag -->
+                        </span><!-- /.unpublished-flag -->
 
-						</div><!-- /.module-card -->
-					</div><!-- /.col-md-6 -->
+					</div><!-- /.module-card -->
+                </div>
+            </div>
 
-                	<!-- MODULE ADD CARD -->
-                	<div class="col-md-6" role="presentation" ng-show="showNewModuleForm" ng-cloak>
-						<div class="course-card add-course-form" aria-label="Module" role="listitem">
+            <!-- MODULE ADD CARD -->
+            <div class="row" role="presentation" ng-show="showNewModuleForm" ng-cloak>
+				<div class="course-card add-course-form" aria-label="Module" role="listitem">
 
-                        	<form name="NewModuleForm">
-    							<h3 class="course-card-title">
-    								<span>
-                                    	<input class="course-card-title-input" placeholder="New module" name="NewModuleName">
-                                	</span><br>
-    								<small>{{user.name || user.email}}</small>
-    							</h3>
+                    <form name="NewModuleForm">
+    					<h3 class="course-card-title">
+    						<span>
+                                <input class="course-card-title-input" placeholder="New module" name="NewModuleName">
+                            </span><br>
+    						<small>{{user.name || user.email}}</small>
+    					</h3>
 
-                            	<div class="btn-toolbar" role="toolbar" aria-label="New module options">
-                                	<div class="btn-group" role="group">
-                                    	<button type="button" class="btn btn-link btn-link-danger"
-                                    	ng-click="showNewModuleForm=false" role="button">
-                                        	Cancel
-                                    	</button>
-                                    	<button type="button" class="btn btn-link btn-link-success"
-                                    	ng-click="saveNewModule()" role="button">
-                                        	Save
-                                    	</button>
-                                	</div><!-- /.btn-group -->
-                            	</div><!-- /.btn-toolbar -->
-                        	</form>
+                        <div class="btn-toolbar" role="toolbar" aria-label="New module options">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-link btn-link-danger"
+                                ng-click="showNewModuleForm=false" role="button">
+                                    Cancel
+                                </button>
+                                <button type="button" class="btn btn-link btn-link-success"
+                                ng-click="saveNewModule()" role="button">
+                                    Save
+                                </button>
+                            </div><!-- /.btn-group -->
+                        </div><!-- /.btn-toolbar -->
+                    </form>
 
-						</div><!-- /.course-card -->
-					</div><!-- /.col-md-6 -->
+				</div><!-- /.course-card -->
+			</div><!-- /.row -->
                 	<!-- END COURSE ADD CARD -->
 
-                <!-- add course placeholder card -->
-                <div class="col-md-6" role="presentation">
-					<button class="modeul-card-add" aria-label="Create a new module"
-                     ng-click="showNewModuleForm=true">
-                        <i class="fa fa-2x fa-plus"></i>
-					</button><!-- /.course-card-add -->
-				</div><!-- /.col-md-6 -->
-                <!-- end add card -->
+            <!-- add course placeholder card -->
+            <div class="row" role="presentation">
+				<button class="module-card-add" aria-label="Create a new module"
+                ng-click="showNewModuleForm=true">
+                    <i class="fa fa-2x fa-plus"></i>
+				</button><!-- /.course-card-add -->
+			</div><!-- /.row -->
+            <!-- end add card -->
 				
 
 
