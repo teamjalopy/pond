@@ -1,0 +1,147 @@
+<div class = "container">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="col-md-3"></div>
+			<div class="col-md-6">
+				<h1>{{lesson.name}}</h1>
+
+				<!-- Edit course modal -->
+        		<!--
+            		NG-TEMPLATE
+        		-->
+        		<script type="text/ng-template" id="editModuleModal.html">
+            		<header class="modal-header">
+                		<h3 class="modal-title">Edit Module</h3>
+            		</header><!-- .modal-header -->
+            		<main class="modal-body">
+                		<form name="EditModuleForm">
+                    		<div class="form-group">
+                        		<label for="EditModuleName">Module Name</label>
+                        		<input type="text" class="form-control" id="EditModuleName" placeholder="Module Name"
+                        		 ng-model="module.name" name="EditModuleName">
+                    		</div>
+
+                    		<!--Should all modules be published right off the bat? -->
+                    		<div class="checkbox">
+                        		<label>
+                            		<input type="checkbox" ng-model="module.published" name="EditModulePublished"> Published
+                        		</label>
+                    		</div>
+                		</form>
+            		</main><!-- .modal-body -->
+           	 		<footer class="modal-footer">
+                		<button class="btn btn-default" ng-click="cancel()">Cancel</button>
+                		<button class="btn btn-primary" ng-click="save()">Save</button>
+            		</footer><!-- .modal-footer -->
+        		</script>
+        		<!--
+            		END NG-TEMPLATE
+        		-->
+
+
+        		<!-- Delete module modal -->
+        		<!--
+            		NG-TEMPLATE
+        		-->
+        	   <script type="text/ng-template" id="deleteModuleModal.html">
+            		<header class="modal-header">
+                		<h3 class="modal-title">Delete Module</h3>
+                		<span class="label label-danger">Danger Zone</span>
+            		</header><!-- .modal-header -->
+            	<main class="modal-body">
+                	<p>Are you sure you want to delete this module? This cannot be undone. If you want to make the module private, you can <em>unpublish</em> it.</p>
+            	</main><!-- .modal-body -->
+            	<footer class="modal-footer">
+                	<button class="btn btn-danger" ng-click="confirm()">
+                    	<i class="fa fa-trash"></i> Confirm deletion
+                	</button>
+                	<button class="btn btn-success" ng-click="cancel()">
+                    	<i class="fa fa-undo"></i> Never mind
+                	</button>
+            	</footer><!-- .modal-footer -->
+        	   </script>
+        	   <!--
+            	   END NG-TEMPLATE
+        	   -->
+
+
+                <!-- BEGIN HTML -->
+                <!-- Took away column elements as we just want it to show in a row -->
+    			<!-- course cards -->
+    			<div class="row" id="module-list" aria-label="Modules you've authored" role="list">
+                    <!-- course card repeat element -->
+    				<div class="row" ng-repeat="module in modules" role="presentation">
+    					<div class="course-card" aria-label="Module" role="listitem"
+                         ng-class="{'unpublished': !module.published}">
+
+    						<h3 class="course-card-title">
+    							<span>{{module.name}}</span><br>
+    							<small>{{module.creator.name || module.creator.email}}</small>
+    						</h3>
+
+                            <div class="btn-toolbar" role="toolbar" aria-label="Module actions">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-link"
+                                    ng-click="editModule(module)" role="button">
+                                        Edit
+                                    </button>
+                                    <button type="button" class="btn btn-link btn-link-danger"
+                                    ng-click="deleteModule(module)" role="button">
+                                        Delete
+                                    </button>
+                                </div><!-- /.btn-group -->
+                            </div><!-- /.btn-toolbar -->
+
+                            <span ng-if="!module.published" class="unpublished-flag">
+                                <i class="fa fa-eye-slash"></i>
+                                	Unpublished
+                            </span><!-- /.unpublished-flag -->
+
+    					</div><!-- /.module-card -->
+                    </div><!-- /.row -->
+                </div><!-- /.row -->
+
+                <!-- MODULE ADD CARD -->
+                <div class="row" role="presentation" ng-show="showNewModuleForm" ng-cloak>
+    				<div class="course-card add-course-form" aria-label="Module" role="listitem">
+
+                        <form name="NewModuleForm">
+        					<h3 class="course-card-title">
+        						<span>
+                                    <input class="course-card-title-input" placeholder="New module" name="NewModuleName">
+                                </span><br>
+        					</h3>
+
+                            <div class="btn-toolbar" role="toolbar" aria-label="New module options">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-link btn-link-danger"
+                                    ng-click="showNewModuleForm=false" role="button">
+                                        Cancel
+                                    </button>
+                                    <button type="button" class="btn btn-link btn-link-success"
+                                    ng-click="saveNewModule()" role="button">
+                                        Save
+                                    </button>
+                                </div><!-- /.btn-group -->
+                            </div><!-- /.btn-toolbar -->
+                        </form>
+
+    				</div><!-- /.course-card -->
+    			</div><!-- /.row -->
+                <!-- END COURSE ADD CARD -->
+
+                <!-- add course placeholder card -->
+                <div class="row" role="presentation">
+    				<button class="module-card-add" aria-label="Create a new module"
+                    ng-click="showNewModuleForm=true">
+                        <i class="fa fa-2x fa-plus"></i>
+    				</button><!-- /.course-card-add -->
+    			</div><!-- /.row -->
+                <!-- end add card -->
+    				
+
+
+			</div><!-- /.col-md-6 -->
+		</div><!-- /.col-md-12 -->
+	</div><!-- /.row -->
+</div><!-- /.container -->
