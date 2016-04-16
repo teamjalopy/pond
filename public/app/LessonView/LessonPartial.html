@@ -15,30 +15,42 @@
 		<div class="col-md-6">
 			<div class="panel panel-default">
 				<div class="panel-body" ng-switch="lesson.description">
+					<button class="btn btn-default btn-nb"
+					 aria-label="Edit lesson description"
+					 title="Edit lesson description"
+					 ng-if="user.is_teacher"
+					>
+						<i class="fa fa-pencil fa-fw" aria-hidden></i>
+					</button>
 					<span ng-switch-default>
 						{{lesson.description}}
 					</span>
-					<span ng-switch-when="null" class="in-place-message">
+					<span ng-switch-when="null" class="in-place-message vmid">
 						No description
 					</span>
 				</div><!-- /.panel-body -->
 			</div><!-- /.panel -->
 
 			<div class="form-group" ng-if="user.is_student">
-				<button class="btn btn-primary btn-lg">Start this lesson</button>
+				<button class="btn btn-primary">Start this lesson</button>
+			</div><!-- /.form-group -->
+
+			<div class="form-group" ng-if="user.is_teacher">
+				<button class="btn btn-primary">Add a module</button>
 			</div><!-- /.form-group -->
 		</div><!-- /.col-md-6 -->
 
 		<div class="col-md-6">
 			<div class="list-group">
 
+				<!-- MODULE LIST ITEM -->
   				<a href class="list-group-item module-group-item">
 					<div class="module-icon">
 						<i class="fa fa-video-camera fa-fw fa-lg"></i>
 					</div>
 					<div class="module-description">
 	    				<h4 class="list-group-item-heading">
-							<span>The Fundamental Theorem of Calculus</span>
+							<span class="vmid">The Fundamental Theorem of Calculus</span>
 							<!-- <i class="fa fa-check module-complete-flag"></i> -->
 						</h4>
 
@@ -47,23 +59,7 @@
 						</p>
 					</div><!-- /.module-description -->
   				</a><!-- /.module-group-item -->
-
-				<a href class="list-group-item module-group-item">
-					<div class="module-icon">
-						<i class="fa fa-video-camera fa-fw fa-lg"></i>
-					</div>
-					<div class="module-description">
-	    				<h4 class="list-group-item-heading">
-							<span>Riemann Sums</span>
-							<!-- <i class="fa fa-check module-complete-flag"></i> -->
-						</h4>
-
-	    				<p class="list-group-item-text">
-							Integrals become easy to understand when you visualize a Riemann sum.
-						</p>
-					</div><!-- /.module-description -->
-  				</a><!-- /.module-group-item -->
-
+				<!-- END MODULE LIST ITEM -->
 
 			</div><!--/.list-group-->
 		</div><!-- /.col-md-6 -->
