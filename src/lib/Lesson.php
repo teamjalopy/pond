@@ -8,6 +8,7 @@
             'published' => 'boolean',
         ];
 
+        // Relations
         public function creator() {
             return $this->belongsTo('Pond\User', 'creator_id');
         }
@@ -16,15 +17,20 @@
             return $this->hasMany('Pond\Module')->orderBy('order');
         }
 
-        public function getCreatorAttribute() {
-            return $this->creator()->get()->first();
-        }
-
         public function students() {
             return $this->belongsToMany('Pond\User','enrollment','lesson_id','student_id');
         }
 
-        protected $appends = ['creator'];
+        // Generated Attributes
+        public function getModuleCountAttribute() {
+            return $this->modules()->count();
+        }
+
+        public function getCreatorAttribute() {
+            return $this->creator()->get()->first();
+        }
+
+        protected $appends = ['creator', 'module_count'];
         protected $hidden = ['creator_id'];
     }
 ?>

@@ -75,8 +75,4 @@ function($scope, $http, $location, $cookies, settings, $controller) {
             console.log(response);
         }
     );
-
-    $scope.goToLesson = function(){
-        $location.path('/lesson');
-    }
 });

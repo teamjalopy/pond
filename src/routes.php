@@ -21,12 +21,12 @@ $app->any('/api/lessons[/{lesson_id}]', '\Pond\LessonController');
 
 // Enrollment Endpoints
 $app->get('/api/users/{user_id}/enrolled', '\Pond\LessonController:getEnrolledLessonsHandler');
-
+$app->get('/api/lessons/{lesson_id}/students', '\Pond\LessonController:getLessonStudentsHandler');
 $app->post('/api/lessons/{lesson_id}/students', '\Pond\LessonController:postLessonStudentsHandler');
+$app->delete('/api/lessons/{lesson_id}/students/{user_id}', '\Pond\LessonController:deleteLessonStudentsHandler');
 
-//Module quiz Endpoints
+// Quiz Endpoints
 $app->post('/api/lessons/{lesson_id}/quizzes', '\Pond\QuizController:quizCollectionHandler');
 $app->any('/api/lessons/{lesson_id}/quizzes/{quiz_id}', '\Pond\QuizController');
-
 $app->post('/api/lessons/{lesson_id}/quizzes/{quiz_id}/questions', '\Pond\QuizController:questionCollectionHandler');
 $app->any('/api/lessons/{lesson_id}/quizzes/{quiz_id}/questions/{question_id}', '\Pond\QuizController');

@@ -1,44 +1,55 @@
 <!--Dash View Common-->
 
 <!--Common navbar, needs to be edited in order to determine if student or teacher used-->
-<nav class="navbar navbar-default navbar-fixed-top navbar-main" role="navigation"
+<nav class="navbar navbar-default navbar-fixed-top navbar-main navbar-flex" role="navigation"
  ng-class="{'uncollapse': !navCollapsed}">
 	<div class="container-fluid">
-		<div class="navbar-header">
-			<!-- Brand -->
-			<!-- (desktop branding) -->
-			<a class="navbar-brand hidden-xs" ng-href="{{user.is_teacher ? '#/teacher-dash' : '#/student-dash'}}" style="padding:10px">
-				<img src="assets/img/pond.png" height="30">
-			</a>
-			<!-- (mobile branding) -->
-			<a class="navbar-brand visible-xs-block brand-center" ng-href="{{user.is_teacher ? '#/teacher-dash' : '#/student-dash'}}" ng-class="{'uncollapse': !navCollapsed}">
-				<img src="assets/img/icon.png" height="30">
-			</a>
 
-			<button class="navbar-toggle" ng-click="navCollapsed = !navCollapsed">
-				<i class="fa fa-bars fa-fw"></i>
-			</button>
-		</div><!-- /.navbar-header -->
+        <div class="navbar-flex-container">
+            <ul class="nav navbar-nav navbar-left navbar-back" role="menu">
+                <li role="presentation" ng-if="backPage">
+                    <a ng-href="{{backPage}}" role="menuitem" aria-label="Back Button">
+                        <i class="fa fa-chevron-left fa-fw" aria-hidden></i>
+                    </a>
+                </li>
+            </ul>
 
-		<ul class="nav navbar-nav navbar-right navbar-collapse" role="menu">
-			<li role="presentation">
-				<a ng-href="#/settings" aria-label="Settings" role="menuitem" ng-click="navCollapsed=true">
-					<i class="fa fa-cog" aria-hidden></i>
-					<span class="visible-xs-inline" aria-hidden>Settings</span>
-				</a>
-			</li>
-			<li role="presentation">
-				<a href ng-click="logOut();navCollapsed=true" aria-label="Log out" role="menuitem">
-					<i class="fa fa-power-off" aria-hidden></i>
-					<span class="visible-xs-inline" aria-hidden>Log out</span>
-				</a>
-			</li>
-		</ul><!-- /.nav.navbar-nav.navbar-right.navbar-collapse.collapse -->
+            <div class="navbar-header">
+    			<!-- Brand -->
+    			<!-- (desktop branding) -->
+    			<a class="navbar-brand  brand-center" ng-href="{{user.is_teacher ? '#/teacher-dash' : '#/student-dash'}}">
+    				<img src="assets/img/pond.png" height="30" class="hidden-xs">
+                    <img src="assets/img/icon.png" height="30" class="visible-xs-block">
+    			</a>
+    		</div><!-- /.navbar-header -->
+
+            <button class="navbar-toggle" ng-click="navCollapsed = !navCollapsed" ng-switch="navCollapsed">
+                <!--<i class="fa fa-bars fa-fw" ng-switch-when="true" ng-cloak></i>
+                <i class="fa fa-times fa-fw" ng-switch-when="false" ng-cloak></i>-->
+                <i class="fa fa-bars fa-fw"></i>
+            </button>
+
+            <ul class="nav navbar-nav navbar-right navbar-collapse" role="menu">
+    			<li role="presentation">
+    				<a ng-href="#/settings" aria-label="Settings" role="menuitem" ng-click="navCollapsed=true">
+    					<i class="fa fa-cog" aria-hidden></i>
+    					<span class="visible-xs-inline" aria-hidden>Settings</span>
+    				</a>
+    			</li>
+    			<li role="presentation">
+    				<a href ng-click="logOut();navCollapsed=true" aria-label="Log out" role="menuitem">
+    					<i class="fa fa-power-off" aria-hidden></i>
+    					<span class="visible-xs-inline" aria-hidden>Log out</span>
+    				</a>
+    			</li>
+    		</ul><!-- /.nav.navbar-nav.navbar-right.navbar-collapse.collapse -->
+        </div><!-- /.navbar-flex-container -->
 
 	</div>
 </nav>
 
 <!--this is where the page for the users differ-->
 <div style="margin-top: 70px">
+    <!-- Page Partial content -->
 	<ng-include src="pagePartial"></ng-include>
 </div>

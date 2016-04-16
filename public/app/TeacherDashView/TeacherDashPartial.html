@@ -92,13 +92,27 @@
                 <!-- course card repeat element -->
 				<div class="col-md-6" ng-repeat="lesson in lessons" role="presentation">
 					<div class="course-card" aria-label="Lesson" role="listitem"
-                     ng-class="{'unpublished': !lesson.published}"
-                    >
+                     ng-class="{'unpublished': !lesson.published}">
+						<div class="course-card-title">
+							<a ng-href="#/lessons/{{lesson.id}}">
+								<h3>{{lesson.name}}</h3>
+							</a>
 
-						<h3 class="course-card-title">
-							<span>{{lesson.name}}</span><br>
-							<small>{{lesson.creator.name || lesson.creator.email}}</small>
-						</h3>
+							<span class="course-card-details">
+								<span class="course-card-author">
+									By {{lesson.creator.name || lesson.creator.email}}
+								</span>
+								&middot;
+								<span class="course-card-module-count">
+									<ng-pluralize count="lesson.module_count"
+									 when="{
+										'one': '1 module',
+										'other': '{} modules'
+									 }">
+									</ng-pluralize>
+								</span>
+							</span><!-- /.course-card-details -->
+						</div><!-- /.course-card-title -->
 
                         <div class="btn-toolbar" role="toolbar" aria-label="Lesson actions">
                             <div class="btn-group" role="group">
@@ -140,7 +154,7 @@
                                         Cancel
                                     </button>
                                     <button type="button" class="btn btn-link btn-link-success"
-                                    ng-click="saveNewLesson()" role="button">
+                                    ng-click="saveNewLesson();showNewLessonForm=false" role="button">
                                         Save
                                     </button>
                                 </div><!-- /.btn-group -->

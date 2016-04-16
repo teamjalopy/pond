@@ -23,7 +23,7 @@
 				<ul class="list-group list-group-flush">
 					<a href class="list-group-item">Courses</a>
 					<a href class="list-group-item">Certificates</a>
-					<a href class="list-group-item">Inbox<span class="badge">{{classinvites}}</span></a>
+					<a href class="list-group-item">Inbox <span class="badge">0</span></a>
 				</ul><!-- /.list-group.list-group-flush -->
 			</div><!-- /.panel.panel-default -->
 		</div><!-- /.col-md-4 -->
@@ -32,12 +32,32 @@
 		<div class="col-md-8">
 			<div class="row">
 
+				<div ng-hide="enrolled.length" class="col-md-12">
+					<p class="in-place-message text-center" style="padding:4em 0;">You are not enrolled in any classes</p>
+				</div>
+
 				<div class="col-md-6" ng-repeat="lesson in enrolled">
-					<div class="course-card" ng-click="goToLesson()">
-						<h3 class="course-card-title">
-							<span>{{lesson.name}}</span><br>
-							<small>{{lesson.creator.name || lesson.creator.email}}</small>
-						</h3>
+					<div class="course-card">
+						<div class="course-card-title">
+							<a ng-href="#/lessons/{{lesson.id}}">
+								<h3>{{lesson.name}}</h3>
+							</a>
+
+							<span class="course-card-details">
+								<span class="course-card-author">
+									By {{lesson.creator.name || lesson.creator.email}}
+								</span>
+								&middot;
+								<span class="course-card-module-count">
+									<ng-pluralize count="lesson.module_count"
+									 when="{
+										'one': '1 module',
+										'other': '{} modules'
+									 }">
+									</ng-pluralize>
+								</span>
+							</span><!-- /.course-card-details -->
+						</div><!-- /.course-card-title -->
 
 						<div class="progress">
 							<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">

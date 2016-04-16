@@ -7,6 +7,7 @@ angular.module('pond', [
     'ngCookies',
     'vcRecaptcha',
     'ui.bootstrap',
+    'ngTagsInput',
     'pond.HomeView',
     'pond.LoginView',
     'pond.DashController',
@@ -22,7 +23,7 @@ angular.module('pond', [
         $routeProvider.otherwise({ redirectTo: '/' });
 }])
 .value('settings',{
-    'baseURI': 'http://pond.dev/'
+    'baseURI': 'https://pond.dev/'
 });
 
 // Prevent view/partial caching

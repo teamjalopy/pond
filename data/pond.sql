@@ -47,6 +47,7 @@ CREATE TABLE `lessons` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `creator_id` int(11) unsigned NOT NULL,
   `name` varchar(128) DEFAULT NULL,
+  `description` text DEFAULT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
