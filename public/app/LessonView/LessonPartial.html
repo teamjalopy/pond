@@ -7,7 +7,7 @@
 			<h1>{{lesson.name}}</h1>
 			<p>
 				<span>By {{lesson.creator.name || lesson.creator.email}}</span>
-				<span class="label label-default" ng-if="user.id==lesson.creator.id">Your Lesson</span>
+				<!-- <span class="label label-info" ng-if="user.id==lesson.creator.id">Your Lesson</span> -->
 			</p>
 		</div><!-- /.col-md-12 -->
 	</div><!-- /.row -->
@@ -26,12 +26,6 @@
 
 			<div class="form-group" ng-if="user.is_student">
 				<button class="btn btn-primary btn-lg">Start this lesson</button>
-			</div><!-- /.form-group -->
-			<div class="form-group" ng-if="user.is_teacher">
-				<button class="btn btn-default btn-lg"
-				 ng-click="showStudents(lesson,students)">
-				 	Students <span class="badge">{{students.length}}</span>
-				</button>
 			</div><!-- /.form-group -->
 		</div><!-- /.col-md-6 -->
 
@@ -73,8 +67,50 @@
 
 			</div><!--/.list-group-->
 		</div><!-- /.col-md-6 -->
-
 	</div><!-- /.row -->
+
+	<!-- Students table row -->
+	<section class="row" ng-if="user.is_teacher">
+		<div class="col-md-12">
+			<h3 class="ib">
+				<span class="vmid">Students </span>
+				<span class="label label-primary label-pill">{{students.length}}</span>
+			</h3>
+			<!-- Add students button -->
+			<div class="header-btn-group btn-group" ng-if="user.is_teacher">
+				<button class="btn btn-default"
+				 ng-click="showStudents(lesson,students)">
+				 	<i class="fa fa-plus fa-fw" aria-hidden></i>
+					Add Students
+				</button>
+			</div><!-- /.btn-group -->
+			<!-- end add students button -->
+			<table class="table">
+				<thead>
+					<th>Name</th><th>Progress</th><th></th>
+				</thead>
+				<tbody>
+					<tr ng-repeat="student in students" class="vmid">
+						<td>{{student.name || student.email}}</td>
+						<td>
+							<div class="progress">
+								<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+									<span class="sr-only">40% Complete</span>
+								</div>
+							</div><!-- /.progress -->
+						</td>
+						<td>
+							<button type="button" class="btn btn-s btn-link btn-link-danger" role="button">
+								Remove
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div><!-- /.col-md-12 -->
+	</section><!-- /.row -->
+	<!-- end students table row -->
+
 </div><!-- /.container -->
 
 <!-- Students modal -->
@@ -83,49 +119,23 @@
 -->
 <script type="text/ng-template" id="studentsModal.html">
 	<header class="modal-header">
-		<h3 class="modal-title">Students</h3>
+		<h3 class="modal-title">Add new students</h3>
 	</header><!-- .modal-header -->
 	<main class="modal-body">
 
 		<!-- Add students form -->
 		<form name="NewStudentForm">
 			<div class="form-group">
-				<label for="EditLessonName">Add Students</label>
 				<tags-input ng-model="newStudentEmails" type="email" spellcheck="false"
 				 allowed-tags-pattern=".+@.+" min-tags="1" placeholder="Student email">
 			 	</tags-input>
 			</div><!-- /.form-group -->
-			<div class="form-group">
-				<button class="btn btn-primary" ng-click="addNewStudents()">Add</button>
-			</div><!-- /.form-group -->
 		</form>
-
-		<table class="table">
-			<thead>
-				<th>Name</th><th>Progress</th><th></th>
-			</thead>
-			<tbody>
-				<tr ng-repeat="student in students" class="vmid">
-					<td>{{student.name || student.email}}</td>
-					<td>
-						<div class="progress">
-							<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-								<span class="sr-only">40% Complete</span>
-							</div>
-						</div><!-- /.progress -->
-					</td>
-					<td>
-						<button type="button" class="btn btn-s btn-link btn-link-danger" role="button">
-							Remove
-						</button>
-					</td>
-				</tr>
-			</tbody>
-		</table>
 
 	</main><!-- .modal-body -->
 	<footer class="modal-footer">
-		<button class="btn btn-default" ng-click="close()">OK</button>
+		<button class="btn btn-default" ng-click="cancel()">Cancel</button>
+		<button class="btn btn-primary" ng-click="addNewStudents()">Add</button>
 	</footer><!-- .modal-footer -->
 </script>
 <!--

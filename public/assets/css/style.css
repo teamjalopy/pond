@@ -188,6 +188,20 @@ html, body {
     vertical-align: middle;
 }
 
+.label-pill {
+    font-size: 0.6em;
+    border-radius: 20px;
+}
+
+.ib {
+    display: inline-block;
+}
+
+.header-btn-group {
+    float: right;
+    margin: 20px 0 10px;
+}
+
 .subtle-head {
     color: #777;
 }
@@ -449,6 +463,10 @@ tags-input .tags .tag-item .remove-button {
 
 td .progress {
     margin: 0;
+}
+
+.vmid {
+    vertical-align: middle;
 }
 
 .table>tbody>tr.vmid>td {
