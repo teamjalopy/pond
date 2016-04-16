@@ -92,7 +92,7 @@ function($scope, $uibModalInstance, $http, $cookies, settings, lesson, students)
     $scope.lesson = lesson;
     $scope.students = students;
 
-    $scope.close = function() { $uibModalInstance.close(); };
+    $scope.cancel = function() { $uibModalInstance.close(); };
 
     $scope.addNewStudents = function() {
         var newStudentsData = {

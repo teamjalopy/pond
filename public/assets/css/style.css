@@ -188,6 +188,20 @@ html, body {
     vertical-align: middle;
 }
 
+.label-pill {
+    font-size: 0.6em;
+    border-radius: 20px;
+}
+
+.ib {
+    display: inline-block;
+}
+
+.header-btn-group {
+    float: right;
+    margin: 20px 0 10px;
+}
+
 .subtle-head {
     color: #777;
 }
@@ -220,7 +234,7 @@ html, body {
     color: #888;
 }
 
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width : 48em) {
     .course-card, .course-card-add {
         height: 250px;
     }
@@ -269,6 +283,14 @@ html, body {
     color: #398439;
 }
 
+.btn-nb {
+    border: none;
+}
+
+.btn-inline {
+
+}
+
 .course-card.unpublished {
     opacity: 0.6;
 }
@@ -289,6 +311,23 @@ html, body {
 }
 
 /* Navbar tweaks */
+
+.navbar-flex .navbar-flex-container {
+    width: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
+
+.navbar-flex .navbar-back {
+    order: -1;
+}
+
+.navbar-flex .navbar-right {
+    margin-right: 0 !important;
+}
 
 .navbar-brand {
     padding: 8px 10px;
@@ -315,13 +354,13 @@ html, body {
 
 .brand-center {
     display: block;
-    width: 50px;
+    width: auto;
     height: 50px;
     padding: 0;
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    margin-left: -25px;
+    margin: 0 !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .brand-center img {
@@ -332,15 +371,8 @@ html, body {
     transform: rotate(180deg);
 }
 
-.mobile-back-button {
-    color: #fff !important;
-    text-decoration: none;
-    padding: 4px 10px;
-    margin: 10px 15px 0;
-}
-
 /* Black navbar for mobile */
-@media only screen and (max-width: 48em) {
+@media only screen and (max-width: 47.999em) {
     .navbar-main.uncollapse {
         height: 100%;
     }
@@ -351,6 +383,9 @@ html, body {
         border: none;
         transition: height 0.8s ease-in-out;
         overflow: hidden;
+    }
+    .navbar-main .navbar-nav>li>a {
+        color: #fff;
     }
     .navbar-main .navbar-toggle {
         border: none;
@@ -427,7 +462,7 @@ tags-input .tags .tag-item .remove-button {
 }
 
 /* Modal tweaks on mobile */
-@media only screen and (max-width: 48em) {
+@media only screen and (max-width: 47.99em) {
     .modal-dialog {
         margin: 0;
         height: 100%;
@@ -449,6 +484,10 @@ tags-input .tags .tag-item .remove-button {
 
 td .progress {
     margin: 0;
+}
+
+.vmid {
+    vertical-align: middle;
 }
 
 .table>tbody>tr.vmid>td {
