@@ -92,10 +92,11 @@
                 <!-- course card repeat element -->
 				<div class="col-md-6" ng-repeat="lesson in lessons" role="presentation">
 					<div class="course-card" aria-label="Lesson" role="listitem"
-                     ng-class="{'unpublished': !lesson.published}" ng-click="goToLesson()"
-                    >
+                     ng-class="{'unpublished': !lesson.published}">
 						<div class="course-card-title">
-							<h3>{{lesson.name}}</h3>
+							<a ng-href="#/lessons/{{lesson.id}}">
+								<h3>{{lesson.name}}</h3>
+							</a>
 
 							<span class="course-card-details">
 								<span class="course-card-author">

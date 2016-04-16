@@ -108,10 +108,6 @@ function($scope, settings, $location, $cookies, $http, $uibModal, $controller) {
             }
         );
     }
-
-    $scope.goToLesson = function(){
-        $location.path('/teacher-lesson');
-    }
 })
 
 // Modal for editing lessons
@@ -130,7 +126,7 @@ function($scope, $uibModalInstance, lesson, $http, settings, $cookies) {
 
         $http({
             'method': 'PUT',
-            'url': settings.baseURI + 'api/lessons/' + $scope.lesson.lesson_id,
+            'url': settings.baseURI + 'api/lessons/' + $scope.lesson.id,
             'headers': {
                 'Content-Type' : 'application/json',
                 'Authorization' : 'Bearer ' + $cookies.get('token')
