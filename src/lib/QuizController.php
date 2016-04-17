@@ -15,7 +15,7 @@ use \Exception;
 
 use Slim\Container;
 
-Class QuizController{
+Class QuizController {
     private $container;
     private $logger;
     private $auth;
@@ -46,58 +46,11 @@ Class QuizController{
     }
 
     function quizCollectionHandler(Request $req, Response $res): Response{
-
         if(null !== $req->getAttribute('quiz_id')){
             return $this->individualQuizHandler($req, $res);
         }
-        else {
-            switch ($req->getMethod()) {
-            case 'POST':
-                return $this->postQuizHandler($req,$res);
-            default:
-                return $res->withStatus(405);
-            }
-        }
-    }
 
-    function postQuizHandler(Request $req, Response $res): Response{
-        //Creates an empty post and returns the quiz id
-        $this->logger->info("POST /api/lessons/{lesson_id}/quizzes");
-
-
-        //makes sure lesson exists
-        try {
-            $lesson = Lesson::findOrFail($req->getAttribute("lesson_id"));
-        } catch(ModelNotFoundException $e) {
-            $this->logger->info("postQuizHandler: could not find lesson.");
-            return $res->withStatus(404); // Not Found
-        }
-
-        //make sure user had authorization to update quiz
-        try {
-            $authUID = $this->auth->getAuthorizedUserID($req);
-        } catch(Exception $e) {
-            $authUID = -1;
-        }
-
-        $uidMismatch = ($lesson->creator_id != $authUID);
-
-        if($uidMismatch) {
-            $this->logger->info("putQuizHandler: This lesson's creator ID (#"
-            .$lesson->creator_id.") does not match the current user (#". $authUID .")");
-
-            return $res->withStatus(401); // Unauthorized
-        }
-
-        $quiz = new \Pond\Quiz();
-        $quiz->save();
-
-        $stat = new StatusContainer($quiz);
-        $stat->success();
-        $stat->message('Quiz successfully created.');
-        $res = $res->withStatus(200);
-
-        return $res->withJson($stat);
+        return $res->withStatus(405);
     }
 
     function individualQuizHandler(Request $req, Response $res): Response{
@@ -308,7 +261,7 @@ Class QuizController{
     function deleteQuestionHandler(Request $req, Response $res): Response{
         $this->logger->info("DELETE /api/lessons/{lesson_id}/quizzes/{quiz_id}/questions/{question_id}");
 
-        
+
         $stat = new StatusContainer();
         $stat->success();
         $stat->message("The question has been deleted");

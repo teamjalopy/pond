@@ -1,26 +1,21 @@
 <?php
     namespace Pond;
 
+    use \Illuminate\Database\Eloquent\Model;
 
-    class Module extends \Illuminate\Database\Eloquent\Model {
+    class Module extends Model {
 
-        function lesson() {
-            return $this->belongsTo('Pond\Lesson');
+        public function getModuleTypeAttribute($value) {
+            switch($value) {
+                case 'Pond\\Quiz':
+                    return 'quiz';
+                case 'Pond\\Article':
+                    return 'article';
+                case 'Pond\\Video':
+                    return 'video';
+                default:
+                    return null;
+            }
         }
-
-        function content() {
-            return $this->morphTo('contentable');
-        }
-
-        function getTypeAttribute() {
-            return $this->attributes['contentable_type'];
-        }
-
-        function getContentAttribute() {
-            return $this->content()->first()->get();
-        }
-
-        protected $hidden = ['contentable_id', 'contentable_type'];
-        protected $appends = ['type','content'];
 
     }

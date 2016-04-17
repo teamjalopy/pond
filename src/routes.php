@@ -25,6 +25,10 @@ $app->get('/api/lessons/{lesson_id}/students', '\Pond\LessonController:getLesson
 $app->post('/api/lessons/{lesson_id}/students', '\Pond\LessonController:postLessonStudentsHandler');
 $app->delete('/api/lessons/{lesson_id}/students/{user_id}', '\Pond\LessonController:deleteLessonStudentsHandler');
 
+// Modules Endpoints
+$app->get('/api/lessons/{lesson_id}/modules', '\Pond\LessonController:getModulesHandler');
+$app->post('/api/lessons/{lesson_id}/modules', '\Pond\LessonController:postModulesHandler');
+
 // Quiz Endpoints
 $app->post('/api/lessons/{lesson_id}/quizzes', '\Pond\QuizController:quizCollectionHandler');
 $app->any('/api/lessons/{lesson_id}/quizzes/{quiz_id}', '\Pond\QuizController');

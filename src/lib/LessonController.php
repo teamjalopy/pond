@@ -70,6 +70,104 @@ class LessonController {
         }
     }
 
+    function postModulesHandler(Request $req, Response $res): Response {
+        $this->logger->info("POST /api/lessons/{lesson_id}/modules");
+
+        $form = $req->getParsedBody();
+
+        if(!isset($form['type'])) {
+            $this->logger->info("postModulesHandler: expected `type` field.");
+            return $res->withStatus(400); // Bad Request
+        }
+
+        if(!isset($form['name'])) {
+            $this->logger->info("postModulesHandler: expected `name` field.");
+            return $res->withStatus(400); // Bad Request
+        }
+
+        // Makes sure Lesson exists
+
+        try {
+            $lesson = Lesson::findOrFail( $req->getAttribute("lesson_id") );
+        } catch(ModelNotFoundException $e) {
+            $this->logger->info("postModulesHandler: could not find lesson.");
+            return $res->withStatus(404); // Not Found
+        }
+
+        // Check User authorization for Lesson
+
+        try {
+            $authUID = $this->auth->getAuthorizedUserID($req);
+        } catch(Exception $e) {
+            $authUID = -1;
+        }
+
+        $uidMismatch = ($lesson->creator_id != $authUID);
+
+        if($uidMismatch) {
+            $this->logger->info("postModulesHandler: This lesson's creator ID (#"
+            .$lesson->creator_id.") does not match the current user (#". $authUID .")");
+
+            return $res->withStatus(401); // Unauthorized
+        }
+
+        switch($form['type']) {
+            case 'quiz':
+                return $this->createQuiz($lesson, $form['name'], $res);
+                break;
+            default:
+                return $res->withStatus(400); // Bad Request
+                break;
+        }
+    }
+
+    private function createQuiz(Lesson $lesson, string $name, Response $res): Response {
+        $this->logger->info("Quiz creation subhandler");
+
+        $quiz = new \Pond\Quiz();
+        $quiz->name = $name;
+        $lesson->quizzes()->save($quiz);
+
+        $stat = new StatusContainer($quiz);
+        $stat->success();
+        $stat->message('Quiz successfully created.');
+
+        return $res->withJson($stat);
+    }
+
+    function getModulesHandler(Request $req, Response $res): Response {
+        $this->logger->info("GET /api/lessons/{lesson_id}/modules Handler");
+
+        // Retrieve the lesson by ID #
+        try {
+            $lesson = Lesson::findOrFail( $req->getAttribute('lesson_id') );
+        } catch(ModelNotFoundException $e) {
+            return self::LessonNotFoundErrorStatus($res);
+        }
+
+        // If the lesson is not published, it must be owned by the requester,
+        // otherwise, behave as if it does not exist (like GitHub with private repos)
+        try {
+            $authUID = $this->auth->getAuthorizedUserID($req);
+        } catch(Exception $e) {
+            $authUID = -1;
+        }
+
+        $uidMismatch = ($lesson->creator_id != $authUID);
+
+        if(!$lesson->published && $uidMismatch) {
+            $this->logger->info("getModulesHandler: The lesson is not published, and the creator ID (#"
+            .$lesson->creator_id.") does not match the current user (#". $authUID .")");
+
+            return self::lessonNotFoundErrorStatus($res);
+        }
+
+        $stat = new StatusContainer($lesson->modules()->get());
+        $stat->success();
+        $stat->message("Here are the modules for the lesson");
+        return $res->withJson($stat);
+    }
+
     function getUserLessonsHandler(Request $req, Response $res): Response {
         $this->logger->info("GET /api/users/{user_id}/lessons Handler");
 
