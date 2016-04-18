@@ -14,9 +14,7 @@ angular.module('pond', [
     'pond.StudentDashView',
     'pond.TeacherDashView',
     'pond.SettingsView',
-    'pond.StudentArticleView',
-    'pond.StudentTestView',
-    'pond.StudentVideoView',
+    'pond.StudentModuleView',
     'pond.LessonView'
 ])
 .config(['$routeProvider', function($routeProvider) {
