@@ -29,6 +29,8 @@ class LessonController {
         $this->auth = new Auth($this->container);
     }
 
+    // BEGIN GENERAL HANDLERS
+
     function __invoke(Request $req, Response $res): Response {
         // Accepts all endpoints of the form
         //
@@ -71,7 +73,11 @@ class LessonController {
         }
     }
 
-    function postModulesHandler(Request $req, Response $res): Response {
+    // END GENERAL HANDLERS
+
+    // BEGIN MODULE HANDLERS
+
+    function postModuleCollectionHandler(Request $req, Response $res): Response {
         $this->logger->info("POST /api/lessons/{lesson_id}/modules");
 
         $form = $req->getParsedBody();
@@ -153,7 +159,7 @@ class LessonController {
         return $res->withJson($stat);
     }
 
-    function getModulesHandler(Request $req, Response $res): Response {
+    function getModuleCollectionHandler(Request $req, Response $res): Response {
         $this->logger->info("GET /api/lessons/{lesson_id}/modules Handler");
 
         // Retrieve the lesson by ID #
@@ -185,6 +191,97 @@ class LessonController {
         $stat->message("Here are the modules for the lesson");
         return $res->withJson($stat);
     }
+
+    function getModuleHandler(Request $req, Response $res): Response {
+        $this->logger->info("GET /api/lessons/{lesson_id}/modules/{module_id} Handler");
+
+        // Retrieve the lesson by ID #
+        try {
+            $lesson = Lesson::findOrFail( $req->getAttribute('lesson_id') );
+        } catch(ModelNotFoundException $e) {
+            return self::LessonNotFoundErrorStatus($res);
+        }
+
+        // If the lesson is not published, it must be owned by the requester,
+        // otherwise, behave as if it does not exist (like GitHub with private repos)
+        try {
+            $authUID = $this->auth->getAuthorizedUserID($req);
+        } catch(Exception $e) {
+            $authUID = -1;
+        }
+
+        $uidMismatch = ($lesson->creator_id != $authUID);
+
+        if(!$lesson->published && $uidMismatch) {
+            $this->logger->info("getModulesHandler: The lesson is not published, and the creator ID (#"
+            .$lesson->creator_id.") does not match the current user (#". $authUID .")");
+
+            return self::lessonNotFoundErrorStatus($res);
+        }
+
+        try {
+            $module = $lesson->modules()->findOrFail( $req->getAttribute('module_id') );
+        } catch(ModelNotFoundException $e) {
+            return $res->withStatus(404);
+        }
+
+        $stat = new StatusContainer($module);
+        $stat->success();
+        $stat->message("Here is the requested module");
+        return $res->withJson($stat);
+    }
+
+    function deleteModuleHandler(Request $req, Response $res): Response {
+        $this->logger->info("DELETE /api/lessons/{lesson_id}/modules/{module_id} Handler");
+
+        // Get the lesson
+        try {
+            $lesson = Lesson::findOrFail( $req->getAttribute('lesson_id') );
+        } catch(ModelNotFoundException $e){
+            return self::LessonNotFoundErrorStatus($res);
+        }
+
+        // Get the module
+        try {
+            $module = $lesson->modules()->findOrFail( $req->getAttribute('module_id') );
+        } catch(ModelNotFoundException $e) {
+            return $res->withStatus(404);
+        }
+
+        // Require authorship [on lesson] to delete [the module]
+        if(!$this->auth->isRequestAuthorized($req,$lesson->creator_id)) {
+            return $res->withStatus(401); // Unauthorized
+        }
+
+        // Transactionally delete the content entry first, then the module.
+        try {
+            $this->deleteModule($module);
+        } catch(Exception $e) {
+            $stat = new StatusContainer();
+            $stat->error('FailedTransactionError');
+            $stat->message('Something went wrong during the module deletion transaction. It was rolled back.');
+        }
+
+        $stat = new StatusContainer();
+        $stat->success();
+        $stat->message("The module and corresponding content has been deleted");
+
+        return $res->withJson($stat);
+    }
+
+    private function deleteModule(Module $module) {
+        Capsule::transaction(function() use($module)
+        {
+            // delete the associated content first
+            $content = $module->content()->delete();
+            // then delete the module record itself.
+            $module->delete();
+        });
+    }
+
+    // END MODULE HANDLERS
+
+    // BEGIN ENROLLMENT HANDLERS
 
     function getUserLessonsHandler(Request $req, Response $res): Response {
         $this->logger->info("GET /api/users/{user_id}/lessons Handler");
@@ -345,6 +442,10 @@ class LessonController {
         return $res->withJson($stat);
     }
 
+    // END ENROLLMENT HANDLERS
+
+    // BEGIN LESSON HANDLERS
+
     function getLessonHandler(Request $req, Response $res): Response {
 
         $this->logger->info("GET /api/lessons/{lesson_id} Handler");
@@ -378,7 +479,6 @@ class LessonController {
         $stat->message("Here is the requested lesson");
         return $res->withJson($stat);
     } // getLessonHandler
-
 
     function putLessonHandler(Request $req, Response $res): Response {
         $this->logger->info("PUT /api/lessons/{lesson_id} Handler");
@@ -419,7 +519,6 @@ class LessonController {
         return self::lessonUpdatedStatus($res, $lesson);
     } // putLessonHandler
 
-
     function deleteLessonHandler(Request $req, Response $res): Response {
 
         $this->logger->info("DELETE /api/lessons/{lesson_id} Handler");
@@ -443,7 +542,6 @@ class LessonController {
         return $res->withJson($stat);
     } // deleteLessonHandler
 
-
     function getLessonCollectionHandler(Request $req, Response $res): Response {
 
         $this->logger->info("GET /api/lessons/ Handler");
@@ -458,7 +556,6 @@ class LessonController {
 
         return $res->withJson($stat);
     } // getLessonCollectionHandler
-
 
     function postLessonCollectionHandler(Request $req, Response $res): Response {
 
@@ -512,6 +609,9 @@ class LessonController {
         return $res->withJson($stat);
     } // postLessonHandler
 
+    // END LESSON HANDLERS
+
+    // BEGIN STATUS RESPONSES
 
     static function lessonNotFoundErrorStatus(Response $res): Response {
         $stat = new StatusContainer();
@@ -522,7 +622,6 @@ class LessonController {
         return $res->withJson($stat);
     } // lessonNotFoundError
 
-
     static function lessonInfoErrorStatus(Response $res): Response {
         $stat = new StatusContainer();
         $stat->error("LessonInfoError");
@@ -532,7 +631,6 @@ class LessonController {
         return $res->withJson($stat);
     } // lessonInfoError
 
-
     static function lessonUpdatedStatus(Response $res, Lesson $lesson): Response {
         $stat = new StatusContainer($lesson);
         $stat->success();
@@ -540,4 +638,5 @@ class LessonController {
         return $res->withJson($stat);
     } // lessonUpdated
 
+    // END STATUS RESPONSES
 }

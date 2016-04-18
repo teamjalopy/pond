@@ -36,7 +36,7 @@
             return $this->creator()->get()->first();
         }
 
-        protected $appends = ['creator'];
+        protected $appends = ['creator', 'module_count'];
         protected $hidden = ['creator_id'];
     }
 ?>
