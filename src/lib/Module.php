@@ -5,17 +5,18 @@
 
     class Module extends Model {
 
-        public function getModuleTypeAttribute($value) {
-            switch($value) {
-                case 'Pond\\Quiz':
-                    return 'quiz';
-                case 'Pond\\Article':
-                    return 'article';
-                case 'Pond\\Video':
-                    return 'video';
-                default:
-                    return null;
-            }
+        function content() {
+            return DB::table( $this->content_type )->where('id', $this->content_id );
         }
+
+        function lesson() {
+            return $this->belongsTo('Pond\Lesson','lesson_id');
+        }
+
+        function getContentAttribute() {
+            return $this->content();
+        }
+
+        protected $appends = ['content'];
 
     }

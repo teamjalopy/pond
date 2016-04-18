@@ -1,11 +1,9 @@
 <?php
     namespace Pond;
 
-    class Quiz extends ModuleProtocol {
+    use \Illuminate\Database\Eloquent\Model;
 
-        protected function getTypeAttribute() {
-            return 'quiz';
-        }
+    class Quiz extends Model {
 
         function questions() {
             return $this->hasMany('Pond\Question');

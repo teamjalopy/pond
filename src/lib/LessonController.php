@@ -126,12 +126,19 @@ class LessonController {
 
         $quiz = new \Pond\Quiz();
         $quiz->name = $name;
-        $lesson->quizzes()->save($quiz);
+        $quiz->save();
+
+        $module = new \Pond\Module();
+        $module->lesson()->associate($lesson);
+        $module->content_type = 'quiz';
+        $module->content_id = $quiz->id;
+        $module->save();
 
         $stat = new StatusContainer($quiz);
         $stat->success();
         $stat->message('Quiz successfully created.');
 
+        $res = $res->withStatus(201);
         return $res->withJson($stat);
     }
 
