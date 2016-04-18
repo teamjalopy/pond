@@ -42,20 +42,25 @@
 
 		<div class="col-md-6">
 			<div class="list-group">
-
+				<div class="list-group-item" ng-hide="modules.length">
+					<span class="in-place-message vmid">This lesson has no modules.</span>
+				</div>
 				<!-- MODULE LIST ITEM -->
-  				<a href class="list-group-item module-group-item">
-					<div class="module-icon">
-						<i class="fa fa-video-camera fa-fw fa-lg"></i>
+  				<a href class="list-group-item module-group-item" ng-repeat="module in modules">
+					<div class="module-icon" ng-switch="module.type">
+						<i class="fa fa-list fa-fw fa-lg" ng-switch-when="quiz"></i>
+						<i class="fa fa-file-text fa-fw fa-lg" ng-switch-when="article"></i>
+						<i class="fa fa-video-camera fa-fw fa-lg" ng-switch-when="video"></i>
+						<i class="fa fa-question fa-fw fa-lg" ng-switch-default></i>
 					</div>
 					<div class="module-description">
 	    				<h4 class="list-group-item-heading">
-							<span class="vmid">The Fundamental Theorem of Calculus</span>
+							<span class="vmid">{{module.content.name}}</span>
 							<!-- <i class="fa fa-check module-complete-flag"></i> -->
 						</h4>
 
 	    				<p class="list-group-item-text">
-							Calculus is based on a group of operations: integration and differentiation. The way these operations relate are outlined in this theorem.
+							{{module.content.description}}
 						</p>
 					</div><!-- /.module-description -->
   				</a><!-- /.module-group-item -->
@@ -86,6 +91,9 @@
 					<th>Name</th><th>Progress</th><th></th>
 				</thead>
 				<tbody>
+					<tr ng-hide="students.length" class="vmid">
+						<td><span class="in-place-message vmid text-center">This lesson has no students.</span></td>
+					</tr>
 					<tr ng-repeat="student in students" class="vmid">
 						<td>{{student.name || student.email}}</td>
 						<td>

@@ -92,6 +92,8 @@ class LessonController {
             return $res->withStatus(400); // Bad Request
         }
 
+        $description = $form['description'] ?? "";
+
         // Makes sure Lesson exists
 
         try {
@@ -120,7 +122,7 @@ class LessonController {
 
         switch($form['type']) {
             case 'quiz':
-                return $this->createQuiz($lesson, $form['name'], $res);
+                return $this->createQuiz($lesson, $form['name'], $description, $res);
                 break;
             default:
                 return $res->withStatus(400); // Bad Request
@@ -128,16 +130,17 @@ class LessonController {
         }
     }
 
-    private function createQuiz(Lesson $lesson, string $name, Response $res): Response {
+    private function createQuiz(Lesson $lesson, string $name, string $description, Response $res): Response {
         $this->logger->info("Quiz creation subhandler");
 
         $module = new \Pond\Module();
 
         try {
-            Capsule::transaction(function() use($lesson,$name,$module)
+            Capsule::transaction(function() use($lesson,$name,$description,$module)
             {
                 $quiz = new \Pond\Quiz();
                 $quiz->name = $name;
+                $quiz->description = $description;
                 $quiz->save();
 
                 $module->lesson()->associate($lesson);

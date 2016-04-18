@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.47-0ubuntu0.14.04.1)
 # Database: pond
-# Generation Time: 2016-04-18 15:30:41 +0000
+# Generation Time: 2016-04-18 21:16:03 +0000
 # ************************************************************
 
 
@@ -30,6 +30,7 @@ CREATE TABLE `articles` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `text` text,
+  `description` varchar(140) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -129,6 +130,7 @@ CREATE TABLE `quizzes` (
   `order` int(11) unsigned NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `description` varchar(140) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -163,6 +165,7 @@ CREATE TABLE `videos` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `resource_url` varchar(512) DEFAULT '',
+  `description` varchar(140) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

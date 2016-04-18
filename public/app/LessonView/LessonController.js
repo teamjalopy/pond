@@ -36,12 +36,35 @@ function($scope, $http, $location, $cookies, $routeParams, $controller, settings
             console.log(response.data);
             $scope.lesson = response.data.data;
             $scope.loadStudents();
+            $scope.loadModules();
         },
         function errorCallback(response) {
             console.error('Failed to load lesson');
             console.log(response);
         }
     );
+
+    // Load modules
+    $scope.loadModules = function() {
+        $http({
+            'method': 'GET',
+            'url': settings.baseURI + 'api/lessons/' + $routeParams.lessonID + '/modules',
+            'headers': {
+            	'Content-Type' : 'application/json',
+            	'Authorization' : 'Bearer ' + $cookies.get('token')
+            }
+        }).then(
+            function successCallback(response) {
+                console.log("Got the modules for this lesson");
+                console.log(response.data);
+                $scope.modules = response.data.data;
+            },
+            function errorCallback(response) {
+                console.error('Failed to load modules');
+                console.log(response);
+            }
+        );
+    };
 
     // Load students
     $scope.loadStudents = function() {

@@ -27,7 +27,11 @@
             return $this->content();
         }
 
-        protected $appends = ['content'];
+        function getTypeAttribute() {
+            return $this->content_type;
+        }
+
+        protected $appends = ['content','type'];
         protected $hidden = ['lesson','content_id','content_type'];
 
     }
