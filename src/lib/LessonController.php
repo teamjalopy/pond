@@ -134,7 +134,7 @@ class LessonController {
         $module->content_id = $quiz->id;
         $module->save();
 
-        $stat = new StatusContainer($quiz);
+        $stat = new StatusContainer($module);
         $stat->success();
         $stat->message('Quiz successfully created.');
 

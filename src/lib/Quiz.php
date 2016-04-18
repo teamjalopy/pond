@@ -9,4 +9,6 @@
             return $this->hasMany('Pond\Question');
         }
 
+        protected $hidden = ['created_at','updated_at'];
+
     }

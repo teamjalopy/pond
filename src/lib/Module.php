@@ -2,11 +2,21 @@
     namespace Pond;
 
     use \Illuminate\Database\Eloquent\Model;
+    use \Illuminate\Database\Capsule\Manager as Capsule;
 
     class Module extends Model {
 
         function content() {
-            return DB::table( $this->content_type )->where('id', $this->content_id );
+
+            switch($this->content_type) {
+            case 'quiz':
+                return Quiz::find($this->content_id);
+            case 'article':
+                return null;
+            case 'video':
+                return null;
+            }
+
         }
 
         function lesson() {
@@ -18,5 +28,6 @@
         }
 
         protected $appends = ['content'];
+        protected $hidden = ['lesson','content_id','content_type'];
 
     }
