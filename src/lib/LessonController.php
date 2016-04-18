@@ -6,6 +6,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 use Respect\Validation\Validator as v;
+use \Illuminate\Database\Capsule\Manager as Capsule;
 
 use Respect\Validation\Exceptions\ValidationException;
 use Respect\Validation\Exceptions\NestedValidationException;
@@ -124,15 +125,25 @@ class LessonController {
     private function createQuiz(Lesson $lesson, string $name, Response $res): Response {
         $this->logger->info("Quiz creation subhandler");
 
-        $quiz = new \Pond\Quiz();
-        $quiz->name = $name;
-        $quiz->save();
-
         $module = new \Pond\Module();
-        $module->lesson()->associate($lesson);
-        $module->content_type = 'quiz';
-        $module->content_id = $quiz->id;
-        $module->save();
+
+        try {
+            Capsule::transaction(function() use($lesson,$name,$module)
+            {
+                $quiz = new \Pond\Quiz();
+                $quiz->name = $name;
+                $quiz->save();
+
+                $module->lesson()->associate($lesson);
+                $module->content_type = 'quiz';
+                $module->content_id = $quiz->id;
+                $module->save();
+            });
+        } catch(Exception $e) {
+            $stat = new StatusContainer();
+            $stat->error('FailedTransactionError');
+            $stat->message('Something went wrong during the module creation transaction. It was rolled back.');
+        }
 
         $stat = new StatusContainer($module);
         $stat->success();
