@@ -13,6 +13,8 @@ angular.module('pond.LessonView', ['ngRoute'])
 .controller('LessonController',
 function($scope, $http, $location, $cookies, $routeParams, $controller, settings, $uibModal) {
     $scope.pagePartial = '/app/LessonView/LessonPartial.html';
+    $scope.loadedStudents = false;
+    $scope.loadedModules = false;
 
     // Inherit DashController
     $controller('DashController', {$scope: $scope});
@@ -58,6 +60,7 @@ function($scope, $http, $location, $cookies, $routeParams, $controller, settings
                 console.log("Got the modules for this lesson");
                 console.log(response.data);
                 $scope.modules = response.data.data;
+                $scope.loadedModules = true;
             },
             function errorCallback(response) {
                 console.error('Failed to load modules');
@@ -80,6 +83,7 @@ function($scope, $http, $location, $cookies, $routeParams, $controller, settings
             function successCallback(response) {
                 console.log('Got the students for this lesson');
                 $scope.students = response.data.data;
+                $scope.loadedStudents = true;
             },
             function errorCallback(response) {
                 console.error('Could not load the students for this lesson.');
