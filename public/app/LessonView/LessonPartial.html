@@ -15,7 +15,7 @@
 		<div class="col-md-6">
 			<div class="panel panel-default">
 				<div class="panel-body" ng-switch="lesson.description">
-					<button class="btn btn-default btn-nb"
+					<button class="btn btn-default btn-edit"
 					 aria-label="Edit lesson description"
 					 title="Edit lesson description"
 					 ng-if="user.is_teacher"
@@ -42,12 +42,12 @@
 
 		<div class="col-md-6">
 			<div class="list-group">
-				<div class="list-group-item" ng-hide="modules.length">
+				<div class="list-group-item" ng-if="!modules.length">
 					<span class="in-place-message vmid">This lesson has no modules.</span>
 				</div>
 				<!-- MODULE LIST ITEM -->
   				<a href class="list-group-item module-group-item" ng-repeat="module in modules">
-					<div class="module-icon" ng-switch="module.type">
+					<div class="module-icon vmid" ng-switch="module.type">
 						<i class="fa fa-list fa-fw fa-lg" ng-switch-when="quiz"></i>
 						<i class="fa fa-file-text fa-fw fa-lg" ng-switch-when="article"></i>
 						<i class="fa fa-video-camera fa-fw fa-lg" ng-switch-when="video"></i>
@@ -63,6 +63,12 @@
 							{{module.content.description}}
 						</p>
 					</div><!-- /.module-description -->
+					<div class="module-actions">
+						<button type="button" class="btn btn-danger"
+						ng-click="deleteModule(module)" role="button">
+							Delete
+						</button>
+					</div>
   				</a><!-- /.module-group-item -->
 				<!-- END MODULE LIST ITEM -->
 
@@ -104,7 +110,7 @@
 							</div><!-- /.progress -->
 						</td>
 						<td>
-							<button type="button" class="btn btn-s btn-link btn-link-danger" role="button">
+							<button type="button" class="btn btn-s btn-danger" role="button">
 								Remove
 							</button>
 						</td>
@@ -140,6 +146,31 @@
 	<footer class="modal-footer">
 		<button class="btn btn-default" ng-click="cancel()">Cancel</button>
 		<button class="btn btn-primary" ng-click="addNewStudents()">Add</button>
+	</footer><!-- .modal-footer -->
+</script>
+<!--
+	END NG-TEMPLATE
+-->
+
+<!-- Delete module modal -->
+<!--
+	NG-TEMPLATE
+-->
+<script type="text/ng-template" id="deleteModuleModal.html">
+	<header class="modal-header">
+		<h3 class="modal-title">Delete Module</h3>
+		<span class="label label-danger label-outline">Danger Zone</span>
+	</header><!-- .modal-header -->
+	<main class="modal-body">
+		<p>Are you sure you want to delete this module? This cannot be undone.</p>
+	</main><!-- .modal-body -->
+	<footer class="modal-footer">
+		<button class="btn btn-danger modal-delete-button" ng-click="confirm()">
+			<i class="fa fa-trash"></i> Confirm deletion
+		</button>
+		<button class="btn btn-success" ng-click="cancel()">
+			<i class="fa fa-undo"></i> Never mind
+		</button>
 	</footer><!-- .modal-footer -->
 </script>
 <!--

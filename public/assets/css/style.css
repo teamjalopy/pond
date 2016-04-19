@@ -6,6 +6,18 @@ html, body {
     font-family: "Lato", sans-serif;
 }
 
+button::-moz-focus-inner {
+  border: 0;
+}
+
+button:focus, a:focus {
+    outline: none !important;
+}
+
+*:focus {
+    outline: 2px solid orange;
+}
+
 .full-force {
     height: 100%;
 }
@@ -267,29 +279,92 @@ html, body {
     font-weight: 400;
 }
 
-.btn-link-danger {
-    color: #c9302c;
+/* Fix progress bar sizing to be more elegant */
+
+.progress {
+    height: 1em;
+    border-radius: 0.5em;
+    background: #eee;
+    box-shadow: none;
 }
 
-.btn-link-danger:hover {
-    color: #ac2925;
+.progress-bar-success {
+    background: #8BE268;
+    box-shadow: none;
 }
 
-.btn-link-success {
+/* Input restyle */
+
+.input, .input-lg, tags-input .tags {
+    box-shadow: none;
+}
+
+input:focus, tags-input .tags.focused {
+
+}
+
+/* Button restyle */
+
+.btn, .btn:hover, .btn:active, .btn:hover:active {
+    border: 0;
+    background: none;
+    box-shadow: none;
+    color: #333;
+}
+
+.btn-default, .btn-primary {
+    color: #337ab7;
+}
+
+.btn-default:hover, .btn-primary:hover {
+    color: #286090;
+}
+
+.btn-default:active, .btn-primary:active, .btn-default:hover:active, .btn-primary:hover:active {
+    color: #204d74;
+}
+
+.btn-danger {
+    color: #d9534f;
+}
+
+.btn-success {
+    color: #5cb85c;
+}
+
+.btn-success:hover {
     color: #449d44;
 }
 
-.btn-link-success:hover {
+.btn-success:active, .btn-success:hover:active {
     color: #398439;
 }
 
-.btn-nb {
-    border: none;
+.btn-edit, .btn-edit:hover, .btn-edit:active, .btn-edit:hover:active {
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    padding: 0;
+    color: #333;
 }
 
-.btn-inline {
-
+.btn-edit:hover {
+    background: #eee;
 }
+
+.btn-edit:active, .btn-edit:hover:active {
+    background: #ddd;
+}
+
+/* label styling */
+
+.label-outline.label-danger {
+    background: none;
+    color: #d9534f;
+    border: 1px solid #d9534f;
+}
+
+/* course card */
 
 .course-card.unpublished {
     opacity: 0.6;
@@ -311,6 +386,10 @@ html, body {
 }
 
 /* Navbar tweaks */
+
+.navbar-toggle {
+    margin: 0;
+}
 
 .navbar-flex .navbar-flex-container {
     width: 100%;
@@ -352,6 +431,10 @@ html, body {
     color: green;
 }
 
+.module-actions {
+    display: flex;
+}
+
 .brand-center {
     display: block;
     width: auto;
@@ -363,16 +446,17 @@ html, body {
     justify-content: center;
 }
 
-.brand-center img {
-    transition: transform 0.8s ease-in-out;
-}
-
-.brand-center.uncollapse img {
-    transform: rotate(180deg);
-}
-
 /* Black navbar for mobile */
 @media only screen and (max-width: 47.999em) {
+
+    .brand-center img {
+        transition: transform 0.8s ease-in-out;
+    }
+
+    .uncollapse .brand-center img {
+        transform: rotate(180deg);
+    }
+
     .navbar-main.uncollapse {
         height: 100%;
     }
@@ -434,7 +518,7 @@ html, body {
         flex: 0 0 50px;
         border: 2px solid #333;
         border-radius: 25px;
-        padding: 10px 8px 0 !important;
+        padding: 11px 8px 0 !important;
     }
     .module-group-item h4 {
         display: block;
@@ -446,6 +530,11 @@ html, body {
 }
 
 /* ng-tag-inputs styling */
+
+tags-input.ng-invalid .tags {
+    box-shadow: none;
+}
+
 tags-input .tags .tag-item {
     color: #333;
     background: #D3E7FA;
@@ -480,6 +569,10 @@ tags-input .tags .tag-item .remove-button {
         flex: 1;
         overflow: scroll;
     }
+}
+
+.modal-delete-button {
+    float: left;
 }
 
 td .progress {
