@@ -4,7 +4,7 @@
 angular.module('pond.StudentModuleView', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/module-view', {
+    $routeProvider.when('/module', {
         templateUrl: 'app/common/DashTemplate.html',
         controller: 'StudentModuleController'
     });
