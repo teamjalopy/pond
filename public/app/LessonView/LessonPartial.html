@@ -5,11 +5,22 @@
 	<div class="row">
 		<div class="col-md-12">
 			<h1>{{lesson.name}}</h1>
+		</div><!-- /.col-md-12 -->
+	</div><!-- /.row -->
+	<div class="row">
+		<!-- Lesson author header -->
+		<div class="col-md-6">
 			<p>
 				<span>By {{lesson.creator.name || lesson.creator.email}}</span>
 				<!-- <span class="label label-info" ng-if="user.id==lesson.creator.id">Your Lesson</span> -->
 			</p>
-		</div><!-- /.col-md-12 -->
+		</div><!-- /.col-md-6 -->
+		<!-- module actions -->
+		<div class="col-md-6">
+			<div class="form-group" ng-if="user.is_teacher">
+				<button class="btn btn-primary">Add a module</button>
+			</div><!-- /.form-group -->
+		</div><!-- /.col-md-6 -->
 	</div><!-- /.row -->
 	<div class="row">
 		<div class="col-md-6">
@@ -33,10 +44,6 @@
 
 			<div class="form-group" ng-if="user.is_student">
 				<button class="btn btn-primary">Start this lesson</button>
-			</div><!-- /.form-group -->
-
-			<div class="form-group" ng-if="user.is_teacher">
-				<button class="btn btn-primary">Add a module</button>
 			</div><!-- /.form-group -->
 		</div><!-- /.col-md-6 -->
 

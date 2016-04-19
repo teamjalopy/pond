@@ -552,6 +552,9 @@ tags-input .tags .tag-item .remove-button {
 
 /* Modal tweaks on mobile */
 @media only screen and (max-width: 47.99em) {
+    .modal-title {
+        font-size: 1em;
+    }
     .modal-dialog {
         margin: 0;
         height: 100%;
