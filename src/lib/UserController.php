@@ -72,7 +72,7 @@ class UserController
             $res = $res->withStatus(404); // not found
             return $res->withJson($stat);
         } catch(RuntimeException $e) { // there is no authorized user
-            $stat = new StatusContainer($users);
+            $stat = new StatusContainer();
             $stat->error("InvalidUser");
             $stat->message("Please make sure user is valid");
 
