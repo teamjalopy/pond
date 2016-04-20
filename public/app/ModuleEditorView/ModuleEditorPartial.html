@@ -1,1 +1,29 @@
 <!--module editing page-->
+<div class="container">
+	<div class="row">
+
+
+        <div class="panel-body">
+        	<fieldset  data-ng-repeat="choice in choices">
+      <select>
+         <option>Mobile</option>
+         <option>Office</option>
+         <option>Home</option>
+      </select>
+      <input type="text" ng-model="choice.name" name="" placeholder="Enter mobile number">
+      <button class="remove" ng-show="$last" ng-click="removeChoice()">-</button>
+   </fieldset>
+   <button class="addfields" ng-click="addNewChoice()">Add fields</button>
+       
+   <div id="choicesDisplay">
+      {{ choices }}
+   </div>
+
+
+
+        </div>
+
+
+
+	</div> <!-- /.row -->
+</div> <!-- /.container -->
