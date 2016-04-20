@@ -30,7 +30,7 @@ Class QuizController {
 
         //Handles all of the incomding endpoints
         //
-        // /api/lesson/{lesson_id}/quizzes/[{quiz_id}]
+        // /api/lesson/{lesson_id}/quizzes/[{module_id}]
         // /api/lesson/{lesson_id}/quizzes/questions/[{question_id}]
         //
         // with the items in the square brackets being optional
@@ -46,7 +46,7 @@ Class QuizController {
     }
 
     function quizCollectionHandler(Request $req, Response $res): Response{
-        if(null !== $req->getAttribute('quiz_id')){
+        if(null !== $req->getAttribute('module_id')){
             return $this->individualQuizHandler($req, $res);
         }
 
@@ -68,7 +68,7 @@ Class QuizController {
 
 
     function putQuizHandler(Request $req, Response $res): Response{
-        $this->logger->info("PUT /api/lessons/{lesson_id}/quizzes/{quiz_id}");
+        $this->logger->info("PUT /api/lessons/{lesson_id}/quizzes/{module_id}");
 
         //make sure lesson exitst
         try {
@@ -95,7 +95,7 @@ Class QuizController {
 
         //make sure quiz exists
         try {
-            $quiz = Quiz::findorFail($req->getAttribute("quiz_id"));
+            $quiz = Quiz::findorFail($req->getAttribute("module_id"));
         } catch(ModelNotFoundException $e) {
             $this->logger->info("putQuizHandler: could not find quiz.");
             return $res->withStatus(404); // Not Found
@@ -111,7 +111,7 @@ Class QuizController {
     }
 
     function deleteQuizHandler(Request $req, Response $res): Response{
-        $this->logger->info("DELETE /api/lessons/{lesson_id}/quizzes/{quiz_id}");
+        $this->logger->info("DELETE /api/lessons/{lesson_id}/quizzes/{module_id}");
 
         //make sure lesson exitst
         try {
@@ -138,7 +138,7 @@ Class QuizController {
 
         //make sure quiz exists
         try {
-            $quiz = Quiz::findorFail($req->getAttribute("quiz_id"));
+            $quiz = Quiz::findorFail($req->getAttribute("module_id"));
         } catch(ModelNotFoundException $e) {
             $this->logger->info("putQuizHandler: could not find quiz.");
             return $res->withStatus(404); // Not Found
@@ -156,7 +156,7 @@ Class QuizController {
 
     function questionCollectionHandler(Request $req, Response $res): Response{
         if(null !== $req->getAttribute('question_id')){
-            return $this->individualQuesitonHandler($req, $res);
+            return $this->individualQuestionHandler($req, $res);
         }
         else {
             switch ($req->getMethod()) {
@@ -170,7 +170,7 @@ Class QuizController {
 
     function postQuestionHandler(Request $req, Response $res): Response{
         //Creates an empty post and returns the quiz id
-        $this->logger->info("POST /api/lessons/{lesson_id}/quizzes/{quiz_id}/question");
+        $this->logger->info("POST /api/lessons/{lesson_id}/quizzes/{module_id}/question");
 
 
         $stat = new StatusContainer();
@@ -199,7 +199,7 @@ Class QuizController {
 
     function getQuestionHandler(Request $req, Response $res): Response{
 
-        $this->logger->info("GET /api/lessons/{lesson_id}/quizzes/{quiz_id}/questions/{question_id}");
+        $this->logger->info("GET /api/lessons/{lesson_id}/quizzes/{module_id}/questions/{question_id}");
 
         //make sure lesson exists
 
@@ -213,7 +213,7 @@ Class QuizController {
     }
 
     function putQuestionHandler(Request $req, Response $res): Response{
-        $this->logger->info("PUT /api/lessons/{lesson_id}/quizzes/{quiz_id}/quesitons/{question_id}");
+        $this->logger->info("PUT /api/lessons/{lesson_id}/quizzes/{module_id}/questions/{question_id}");
 
         $stat = new StatusContainer();
         $stat->success();
@@ -223,7 +223,7 @@ Class QuizController {
     }
 
     function deleteQuestionHandler(Request $req, Response $res): Response{
-        $this->logger->info("DELETE /api/lessons/{lesson_id}/quizzes/{quiz_id}/questions/{question_id}");
+        $this->logger->info("DELETE /api/lessons/{lesson_id}/quizzes/{module_id}/questions/{question_id}");
 
 
         $stat = new StatusContainer();
