@@ -494,55 +494,33 @@ td .progress {
     vertical-align: middle;
 }
 
-/* Quiz Module Button Styling */
-/*http://bootsnipp.com/snippets/featured/modal-quiz-with-radio-button*/
-
-#qid {
-  padding: 10px 15px;
-  -moz-border-radius: 50px;
-  -webkit-border-radius: 50px;
-  border-radius: 20px;
-}
-label.btn {
-    padding: 18px 60px;
-    white-space: normal;
-    -webkit-transform: scale(1.0);
-    -moz-transform: scale(1.0);
-    -o-transform: scale(1.0);
-    -webkit-transition-duration: .3s;
-    -moz-transition-duration: .3s;
-    -o-transition-duration: .3s
-}
-
-/* Edit of quize answer button */
-label.answer-btn:hover{
-    color: white;
-}
-
-
-label.answer-btn{
-    background-color: #008CBA;
-    color: #333;
-    font-family: "Lato", sans-serif;
-    font-size: 20px;
-
-}
-
-label.btn-block {
+.answer-choice {
+    display: block;
+    width: 100%;
     text-align: left;
-    position: relative
+    padding: 1em;
+
+    background: #eee;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
-label .answer-label {
-    position: absolute;
-    left: 0;
-    top: 0;
+.answer-label {
+    width: 1.5em;
+    height: 1.5em;
     display: inline-block;
-    padding: 0 10px;
-    background: rgba(0,0,0,.15);
-    height: 100%
+    background: #337ab7;
+    color: #fff;
+
     text-align: center;
-    font-size: 15px;
+    padding-top: -1px;
+    margin-right: 1em;
+    border-radius: 3px;
+
 }
 
 

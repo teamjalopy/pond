@@ -3,7 +3,7 @@
 		<div class="col-md-12">
 			<div class="col-md-3"></div>
 			<div class="col-md-6">
-				<h1>QUIZ NAME</h1>
+				<h1>Quiz Name</h1>
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						Question 1: Romeo and ...
@@ -13,20 +13,14 @@
 
 					<div class="panel-body">
 						<ul class="list-group list-group-flush">
-							<div class="quiz" id="quiz" data-toggle="buttons">
-           						<!--label class="btn btn-lg btn-primary btn-block"><span class="btn-label">A</span> <input type="radio" name="q_answer" value="1">Mercutio</label>
-          	 					<label class="btn btn-lg btn-primary btn-block"><span class="btn-label">B</span> <input type="radio" name="q_answer" value="2">Juliet</label>
-           						<label class="btn btn-lg btn-primary btn-block"><span class="btn-label">C</span> <input type="radio" name="q_answer" value="3">Benvolio</label>
-           						<label class="btn btn-lg btn-primary btn-block"><span class="btn-label">D</span> <input type="radio" name="q_answer" value="4">Tybalt</label>
+							<div class="quiz">
 
+           						<button ng-model="answerChoice" uib-btn-radio="'1'" class="answer-choice">
+           							<span class="answer-label">A</span>
+           							<span class="answer-text">Answer Choice</span>
+           						</button>
 
-           						<label class="btn answer-btn btn-block"><span class="answer-label">Test</span><input type="radio" name="q_answer" value="5">Test Answer</label-->
-
-           						<label class="btn answer-btn btn-block"><span class="answer-label">A</span><input type="radio" name="q_answer" value="5">Mercutio</label>
-           						<label class="btn answer-btn btn-block"><span class="answer-label">B</span><input type="radio" name="q_answer" value="5">Juliet</label>
-           						<label class="btn answer-btn btn-block"><span class="answer-label">C</span><input type="radio" name="q_answer" value="5">Bevolio</label>
-           						<label class="btn answer-btn btn-block"><span class="answer-label">A</span><input type="radio" name="q_answer" value="5">Tybalt</label>
-       						</div>
+       						</div><!-- /.quiz -->
        					</ul>
 					</div>
 
