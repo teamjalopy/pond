@@ -24,3 +24,16 @@ $app->get('/api/users/{user_id}/enrolled', '\Pond\LessonController:getEnrolledLe
 $app->get('/api/lessons/{lesson_id}/students', '\Pond\LessonController:getLessonStudentsHandler');
 $app->post('/api/lessons/{lesson_id}/students', '\Pond\LessonController:postLessonStudentsHandler');
 $app->delete('/api/lessons/{lesson_id}/students/{user_id}', '\Pond\LessonController:deleteLessonStudentsHandler');
+
+// Modules Endpoints
+$app->get('/api/lessons/{lesson_id}/modules', '\Pond\LessonController:getModuleCollectionHandler');
+$app->post('/api/lessons/{lesson_id}/modules', '\Pond\LessonController:postModuleCollectionHandler');
+
+$app->get('/api/lessons/{lesson_id}/modules/{module_id}', '\Pond\LessonController:getModuleHandler');
+$app->delete('/api/lessons/{lesson_id}/modules/{module_id}', '\Pond\LessonController:deleteModuleHandler');
+
+// Quiz Endpoints
+$app->post('/api/lessons/{lesson_id}/quizzes', '\Pond\QuizController:quizCollectionHandler');
+$app->any('/api/lessons/{lesson_id}/quizzes/{quiz_id}', '\Pond\QuizController');
+$app->post('/api/lessons/{lesson_id}/quizzes/{quiz_id}/questions', '\Pond\QuizController:questionCollectionHandler');
+$app->any('/api/lessons/{lesson_id}/quizzes/{quiz_id}/questions/{question_id}', '\Pond\QuizController');
