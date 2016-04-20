@@ -9,7 +9,11 @@ angular.module('pond.SettingsView', ['ngRoute'])
     });
 }])
 
-.controller('SettingsController', ['$scope', 'settings',
-function($scope, settings) {
+.controller('SettingsController', function($scope, settings, $controller) {
+
+    // Inherit DashController
+    $controller('DashController', {$scope: $scope});
+    console.log($scope.baseController);
+
     $scope.pagePartial = "/app/SettingsView/SettingsPartial.html";
-}]);
+});

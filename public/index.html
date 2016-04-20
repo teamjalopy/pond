@@ -18,8 +18,10 @@
     <link rel="stylesheet" href="assets/css/ng-tags-input.bootstrap.css">
     <!-- Sitewide stylesheet -->
     <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Angular blocking include -->
+    <script src="app/lib/angular.js"></script>
 </head>
-<body ng-app="pond" class="full full-force" ng-cloak ontouchstart="">
+<body ng-app="pond" class="full full-force ng-cloak" ontouchstart="">
 
     <div ng-view class="full full-force">
 
@@ -28,7 +30,7 @@
     <!-- Other Libraries -->
     <script src="https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit"></script>
     <!-- Angular script(s) -->
-    <script src="app/lib/angular.js"></script>
+    <!-- angular.js in head -->
     <script src="app/lib/angular-route.js"></script>
     <script src="app/lib/angular-cookies.js"></script>
     <script src="app/lib/angular-animate.js"></script>
