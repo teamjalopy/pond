@@ -65,7 +65,7 @@ class UserController
         try {
             $user = User::findOrFail( self::getUID($req, new Auth($this->container)) );
         } catch(ModelNotFoundException $e) { // user not found
-            $stat = new StatusContainer($users);
+            $stat = new StatusContainer();
             $stat->error("InvalidUser");
             $stat->message("Please make sure user is valid");
 
