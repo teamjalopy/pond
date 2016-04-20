@@ -38,19 +38,7 @@ Class QuizController {
         if(null !== $req->getAttribute('questions')){
             return $this->questionCollectionHandler($req, $res);
         }
-        else{
-            return $this->quizCollectionHandler($req, $res);
-        }
 
-
-    }
-
-    function quizCollectionHandler(Request $req, Response $res): Response{
-        if(null !== $req->getAttribute('module_id')){
-            return $this->individualQuizHandler($req, $res);
-        }
-
-        return $res->withStatus(405);
     }
 
     function questionCollectionHandler(Request $req, Response $res): Response{

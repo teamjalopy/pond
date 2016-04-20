@@ -35,6 +35,6 @@ $app->delete('/api/lessons/{lesson_id}/modules/{module_id}', '\Pond\LessonContro
 // Quiz Endpoints
 $app->post('/api/lessons/{lesson_id}/quizzes/{quiz_id}/questions', '\Pond\QuizController:questionCollectionHandler');
 $app->get('/api/lessons/{lesson_id}/quizzes/{quiz_id}/questions', '\Pond\QuizController:questionCollectionHandler');
-$app->get('/api/lessons/{lesson_id}/quizzes/{quiz_id}/questions/{question_id}', '\Pond\QuizController');
-$app->put('/api/lessons/{lesson_id}/quizzes/{quiz_id}/questions/{question_id}', '\Pond\QuizController');
-$app->delete('/api/lessons/{lesson_id}/quizzes/{quiz_id}/questions/{question_id}', '\Pond\QuizController');
+$app->get('/api/lessons/{lesson_id}/quizzes/{quiz_id}/questions/{question_id}', '\Pond\QuizController:getQuestionHandler');
+$app->put('/api/lessons/{lesson_id}/quizzes/{quiz_id}/questions/{question_id}', '\Pond\QuizController:postQuestionHandler');
+$app->delete('/api/lessons/{lesson_id}/quizzes/{quiz_id}/questions/{question_id}', '\Pond\QuizController:deleteQuestionHandler');
