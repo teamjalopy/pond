@@ -56,19 +56,17 @@ Class QuizController {
     function individualQuizHandler(Request $req, Response $res): Response{
 
         switch ($req->getMethod()) {
-        case 'GET':
-            return $this->getQuizHandler($req,$res);
-        case 'PUT':
-            return $this->putQuizHandler($req,$res);
-        case 'DELETE':
-            return $this->deleteQuizHandler($req, $res);
-        default:
-            return $res->withStatus(405); // Method Not Allowed
+            case 'PUT':
+                return $this->putQuizHandler($req,$res);
+            case 'DELETE':
+                return $this->deleteQuizHandler($req, $res);
+            default:
+                return $res->withStatus(405); // Method Not Allowed
 
         }
     }
 
-    
+
     function putQuizHandler(Request $req, Response $res): Response{
         $this->logger->info("PUT /api/lessons/{lesson_id}/quizzes/{quiz_id}");
 
