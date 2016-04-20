@@ -600,6 +600,8 @@ td .progress {
     border: 1px solid #ccc;
     border-radius: 3px;
 
+    margin-top: 10px;
+
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
