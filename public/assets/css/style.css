@@ -515,7 +515,9 @@ label.btn {
 }
 
 /* Edit of quize answer button */
-
+label.answer-btn:hover{
+    color: white;
+}
 
 
 label.answer-btn{
