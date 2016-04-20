@@ -68,41 +68,7 @@ Class QuizController {
         }
     }
 
-    function getQuizHandler(Request $req, Response $res): Response{
-
-        $this->logger->info("GET /api/lessons/{lesson_id}/quizzes/{quiz_id}");
-
-        //make sure lesson exists
-        try {
-            $lesson = Lesson::findOrFail($req->getAttribute("lesson_id"));
-        } catch(ModelNotFoundException $e) {
-            $this->logger->info("getQuizHandler: could not find lesson.");
-            return $res->withStatus(404); // Not Found
-        }
-
-        //make sure user is authorized to get quiz
-        try {
-            $user_id = $this->auth->getAuthorizedUserID($req);
-        } catch(RuntimeException $e) {
-            return $res->withStatus(401); // Unauthorized
-        }
-
-        //make sure quiz exists
-        try {
-            $quiz = Quiz::findorFail($req->getAttribute("quiz_id"));
-        } catch(ModelNotFoundException $e) {
-            $this->logger->info("getQuizHandler: could not find quiz.");
-            return $res->withStatus(404); // Not Found
-        }
-
-        $stat = new StatusContainer($quiz);
-        $stat->success();
-        $stat->message("Here is the requested quiz.");
-
-        return $res->withJson($stat);
-
-    }
-
+    
     function putQuizHandler(Request $req, Response $res): Response{
         $this->logger->info("PUT /api/lessons/{lesson_id}/quizzes/{quiz_id}");
 
