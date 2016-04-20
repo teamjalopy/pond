@@ -55,7 +55,7 @@
 					<span class="in-place-message vmid">This lesson has no modules.</span>
 				</div>
 				<!-- MODULE LIST ITEM -->
-  				<a href class="list-group-item module-group-item" ng-repeat="module in modules">
+  				<a class="list-group-item module-group-item" ng-repeat="module in modules" ng-href="#/modules/{{module.id}}">
 					<div class="module-icon vmid" ng-switch="module.type">
 						<i class="fa fa-list fa-fw fa-lg" ng-switch-when="quiz"></i>
 						<i class="fa fa-file-text fa-fw fa-lg" ng-switch-when="article"></i>
