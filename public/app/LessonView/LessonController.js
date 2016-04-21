@@ -13,6 +13,8 @@ angular.module('pond.LessonView', ['ngRoute'])
 .controller('LessonController',
 function($scope, $http, $location, $cookies, $routeParams, $controller, settings, $uibModal) {
     $scope.pagePartial = '/app/LessonView/LessonPartial.html';
+    $scope.loadedStudents = false;
+    $scope.loadedModules = false;
 
     // Inherit DashController
     $controller('DashController', {$scope: $scope});
@@ -36,12 +38,36 @@ function($scope, $http, $location, $cookies, $routeParams, $controller, settings
             console.log(response.data);
             $scope.lesson = response.data.data;
             $scope.loadStudents();
+            $scope.loadModules();
         },
         function errorCallback(response) {
             console.error('Failed to load lesson');
             console.log(response);
         }
     );
+
+    // Load modules
+    $scope.loadModules = function() {
+        $http({
+            'method': 'GET',
+            'url': settings.baseURI + 'api/lessons/' + $routeParams.lessonID + '/modules',
+            'headers': {
+            	'Content-Type' : 'application/json',
+            	'Authorization' : 'Bearer ' + $cookies.get('token')
+            }
+        }).then(
+            function successCallback(response) {
+                console.log("Got the modules for this lesson");
+                console.log(response.data);
+                $scope.modules = response.data.data;
+                $scope.loadedModules = true;
+            },
+            function errorCallback(response) {
+                console.error('Failed to load modules');
+                console.log(response);
+            }
+        );
+    };
 
     // Load students
     $scope.loadStudents = function() {
@@ -57,6 +83,7 @@ function($scope, $http, $location, $cookies, $routeParams, $controller, settings
             function successCallback(response) {
                 console.log('Got the students for this lesson');
                 $scope.students = response.data.data;
+                $scope.loadedStudents = true;
             },
             function errorCallback(response) {
                 console.error('Could not load the students for this lesson.');
@@ -92,7 +119,7 @@ function($scope, $uibModalInstance, $http, $cookies, settings, lesson, students)
     $scope.lesson = lesson;
     $scope.students = students;
 
-    $scope.close = function() { $uibModalInstance.close(); };
+    $scope.cancel = function() { $uibModalInstance.close(); };
 
     $scope.addNewStudents = function() {
         var newStudentsData = {

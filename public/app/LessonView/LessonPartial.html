@@ -1,80 +1,135 @@
 <!-- Course View HTML -->
-<div class="container">
+<div class="container ng-cloak" ng-show="loadedStudents && loadedModules">
 
 	<!--Lessons-->
 	<div class="row">
 		<div class="col-md-12">
 			<h1>{{lesson.name}}</h1>
-			<p>
-				<span>By {{lesson.creator.name || lesson.creator.email}}</span>
-				<span class="label label-default" ng-if="user.id==lesson.creator.id">Your Lesson</span>
-			</p>
 		</div><!-- /.col-md-12 -->
 	</div><!-- /.row -->
+	
+	<div class="row">
+		<!-- Lesson author header -->
+		<div class="col-md-6">
+			<p>
+				<span>By {{lesson.creator.name || lesson.creator.email}}</span>
+				<!-- <span class="label label-info" ng-if="user.id==lesson.creator.id">Your Lesson</span> -->
+			</p>
+		</div><!-- /.col-md-6 -->
+		<!-- module actions -->
+		<div class="col-md-6">
+			<div class="form-group" ng-if="user.is_teacher">
+				<button class="btn btn-primary">Add a module</button>
+			</div><!-- /.form-group -->
+		</div><!-- /.col-md-6 -->
+	</div><!-- /.row -->
+
 	<div class="row">
 		<div class="col-md-6">
 			<div class="panel panel-default">
 				<div class="panel-body" ng-switch="lesson.description">
+					<button class="btn btn-default btn-edit"
+					 aria-label="Edit lesson description"
+					 title="Edit lesson description"
+					 ng-if="user.is_teacher"
+					>
+						<i class="fa fa-pencil fa-fw" aria-hidden></i>
+					</button>
 					<span ng-switch-default>
 						{{lesson.description}}
 					</span>
-					<span ng-switch-when="null" class="in-place-message">
+					<span ng-switch-when="null" class="in-place-message vmid">
 						No description
 					</span>
 				</div><!-- /.panel-body -->
 			</div><!-- /.panel -->
 
 			<div class="form-group" ng-if="user.is_student">
-				<button class="btn btn-primary btn-lg">Start this lesson</button>
-			</div><!-- /.form-group -->
-			<div class="form-group" ng-if="user.is_teacher">
-				<button class="btn btn-default btn-lg"
-				 ng-click="showStudents(lesson,students)">
-				 	Students <span class="badge">{{students.length}}</span>
-				</button>
+				<button class="btn btn-primary">Start this lesson</button>
 			</div><!-- /.form-group -->
 		</div><!-- /.col-md-6 -->
 
 		<div class="col-md-6">
 			<div class="list-group">
-
-  				<a href class="list-group-item module-group-item">
-					<div class="module-icon">
-						<i class="fa fa-video-camera fa-fw fa-lg"></i>
+				<div class="list-group-item" ng-if="!modules.length">
+					<span class="in-place-message vmid">This lesson has no modules.</span>
+				</div>
+				<!-- MODULE LIST ITEM -->
+  				<a href class="list-group-item module-group-item" ng-repeat="module in modules">
+					<div class="module-icon vmid" ng-switch="module.type">
+						<i class="fa fa-list fa-fw fa-lg" ng-switch-when="quiz"></i>
+						<i class="fa fa-file-text fa-fw fa-lg" ng-switch-when="article"></i>
+						<i class="fa fa-video-camera fa-fw fa-lg" ng-switch-when="video"></i>
+						<i class="fa fa-question fa-fw fa-lg" ng-switch-default></i>
 					</div>
 					<div class="module-description">
 	    				<h4 class="list-group-item-heading">
-							<span>The Fundamental Theorem of Calculus</span>
+							<span class="vmid">{{module.content.name}}</span>
 							<!-- <i class="fa fa-check module-complete-flag"></i> -->
 						</h4>
 
 	    				<p class="list-group-item-text">
-							Calculus is based on a group of operations: integration and differentiation. The way these operations relate are outlined in this theorem.
+							{{module.content.description}}
 						</p>
 					</div><!-- /.module-description -->
-  				</a><!-- /.module-group-item -->
-
-				<a href class="list-group-item module-group-item">
-					<div class="module-icon">
-						<i class="fa fa-video-camera fa-fw fa-lg"></i>
+					<div class="module-actions">
+						<button type="button" class="btn btn-danger"
+						ng-click="deleteModule(module)" role="button">
+							Delete
+						</button>
 					</div>
-					<div class="module-description">
-	    				<h4 class="list-group-item-heading">
-							<span>Riemann Sums</span>
-							<!-- <i class="fa fa-check module-complete-flag"></i> -->
-						</h4>
-
-	    				<p class="list-group-item-text">
-							Integrals become easy to understand when you visualize a Riemann sum.
-						</p>
-					</div><!-- /.module-description -->
   				</a><!-- /.module-group-item -->
-
+				<!-- END MODULE LIST ITEM -->
 
 			</div><!--/.list-group-->
 		</div><!-- /.col-md-6 -->
-
 	</div><!-- /.row -->
+
+	<!-- Students table row -->
+	<section class="row" ng-if="user.is_teacher">
+		<div class="col-md-12">
+			<h3 class="ib">
+				<span class="vmid">Students </span>
+				<span class="label label-primary label-pill">{{students.length}}</span>
+			</h3>
+			<!-- Add students button -->
+			<div class="header-btn-group btn-group" ng-if="user.is_teacher">
+				<button class="btn btn-default"
+				 ng-click="showStudents(lesson,students)">
+				 	<i class="fa fa-plus fa-fw" aria-hidden></i>
+					Add Students
+				</button>
+			</div><!-- /.btn-group -->
+			<!-- end add students button -->
+			<table class="table">
+				<thead>
+					<th>Name</th><th>Progress</th><th></th>
+				</thead>
+				<tbody>
+					<tr ng-hide="students.length" class="vmid">
+						<td><span class="in-place-message vmid text-center">This lesson has no students.</span></td>
+					</tr>
+					<tr ng-repeat="student in students" class="vmid">
+						<td>{{student.name || student.email}}</td>
+						<td>
+							<div class="progress">
+								<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+									<span class="sr-only">40% Complete</span>
+								</div>
+							</div><!-- /.progress -->
+						</td>
+						<td>
+							<button type="button" class="btn btn-s btn-danger" role="button">
+								Remove
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div><!-- /.col-md-12 -->
+	</section><!-- /.row -->
+	<!-- end students table row -->
+
 </div><!-- /.container -->
 
 <!-- Students modal -->
@@ -83,49 +138,48 @@
 -->
 <script type="text/ng-template" id="studentsModal.html">
 	<header class="modal-header">
-		<h3 class="modal-title">Students</h3>
+		<h3 class="modal-title">Add new students</h3>
 	</header><!-- .modal-header -->
 	<main class="modal-body">
 
 		<!-- Add students form -->
 		<form name="NewStudentForm">
 			<div class="form-group">
-				<label for="EditLessonName">Add Students</label>
 				<tags-input ng-model="newStudentEmails" type="email" spellcheck="false"
 				 allowed-tags-pattern=".+@.+" min-tags="1" placeholder="Student email">
 			 	</tags-input>
 			</div><!-- /.form-group -->
-			<div class="form-group">
-				<button class="btn btn-primary" ng-click="addNewStudents()">Add</button>
-			</div><!-- /.form-group -->
 		</form>
-
-		<table class="table">
-			<thead>
-				<th>Name</th><th>Progress</th><th></th>
-			</thead>
-			<tbody>
-				<tr ng-repeat="student in students" class="vmid">
-					<td>{{student.name || student.email}}</td>
-					<td>
-						<div class="progress">
-							<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-								<span class="sr-only">40% Complete</span>
-							</div>
-						</div><!-- /.progress -->
-					</td>
-					<td>
-						<button type="button" class="btn btn-s btn-link btn-link-danger" role="button">
-							Remove
-						</button>
-					</td>
-				</tr>
-			</tbody>
-		</table>
 
 	</main><!-- .modal-body -->
 	<footer class="modal-footer">
-		<button class="btn btn-default" ng-click="close()">OK</button>
+		<button class="btn btn-default" ng-click="cancel()">Cancel</button>
+		<button class="btn btn-primary" ng-click="addNewStudents()">Add</button>
+	</footer><!-- .modal-footer -->
+</script>
+<!--
+	END NG-TEMPLATE
+-->
+
+<!-- Delete module modal -->
+<!--
+	NG-TEMPLATE
+-->
+<script type="text/ng-template" id="deleteModuleModal.html">
+	<header class="modal-header">
+		<h3 class="modal-title">Delete Module</h3>
+		<span class="label label-danger label-outline">Danger Zone</span>
+	</header><!-- .modal-header -->
+	<main class="modal-body">
+		<p>Are you sure you want to delete this module? This cannot be undone.</p>
+	</main><!-- .modal-body -->
+	<footer class="modal-footer">
+		<button class="btn btn-danger modal-delete-button" ng-click="confirm()">
+			<i class="fa fa-trash"></i> Confirm deletion
+		</button>
+		<button class="btn btn-success" ng-click="cancel()">
+			<i class="fa fa-undo"></i> Never mind
+		</button>
 	</footer><!-- .modal-footer -->
 </script>
 <!--

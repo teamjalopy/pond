@@ -6,6 +6,18 @@ html, body {
     font-family: "Lato", sans-serif;
 }
 
+button::-moz-focus-inner {
+  border: 0;
+}
+
+button:focus, a:focus {
+    outline: none !important;
+}
+
+*:focus {
+    outline: 2px solid orange;
+}
+
 .full-force {
     height: 100%;
 }
@@ -15,7 +27,7 @@ html, body {
 }
 
 [ng\:cloak], [ng-cloak], .ng-cloak {
-    display: none;
+    display: none !important;
 }
 
 .strike {
@@ -188,6 +200,20 @@ html, body {
     vertical-align: middle;
 }
 
+.label-pill {
+    font-size: 0.6em;
+    border-radius: 20px;
+}
+
+.ib {
+    display: inline-block;
+}
+
+.header-btn-group {
+    float: right;
+    margin: 20px 0 10px;
+}
+
 .subtle-head {
     color: #777;
 }
@@ -220,7 +246,7 @@ html, body {
     color: #888;
 }
 
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width : 48em) {
     .course-card, .course-card-add {
         height: 250px;
     }
@@ -253,21 +279,92 @@ html, body {
     font-weight: 400;
 }
 
-.btn-link-danger {
-    color: #c9302c;
+/* Fix progress bar sizing to be more elegant */
+
+.progress {
+    height: 1em;
+    border-radius: 0.5em;
+    background: #eee;
+    box-shadow: none;
 }
 
-.btn-link-danger:hover {
-    color: #ac2925;
+.progress-bar-success {
+    background: #8BE268;
+    box-shadow: none;
 }
 
-.btn-link-success {
+/* Input restyle */
+
+.input, .input-lg, tags-input .tags {
+    box-shadow: none;
+}
+
+input:focus, tags-input .tags.focused {
+
+}
+
+/* Button restyle */
+
+.btn, .btn:hover, .btn:active, .btn:hover:active {
+    border: 0;
+    background: none;
+    box-shadow: none;
+    color: #333;
+}
+
+.btn-default, .btn-primary {
+    color: #337ab7;
+}
+
+.btn-default:hover, .btn-primary:hover {
+    color: #286090;
+}
+
+.btn-default:active, .btn-primary:active, .btn-default:hover:active, .btn-primary:hover:active {
+    color: #204d74;
+}
+
+.btn-danger {
+    color: #d9534f;
+}
+
+.btn-success {
+    color: #5cb85c;
+}
+
+.btn-success:hover {
     color: #449d44;
 }
 
-.btn-link-success:hover {
+.btn-success:active, .btn-success:hover:active {
     color: #398439;
 }
+
+.btn-edit, .btn-edit:hover, .btn-edit:active, .btn-edit:hover:active {
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    padding: 0;
+    color: #333;
+}
+
+.btn-edit:hover {
+    background: #eee;
+}
+
+.btn-edit:active, .btn-edit:hover:active {
+    background: #ddd;
+}
+
+/* label styling */
+
+.label-outline.label-danger {
+    background: none;
+    color: #d9534f;
+    border: 1px solid #d9534f;
+}
+
+/* course card */
 
 .course-card.unpublished {
     opacity: 0.6;
@@ -289,6 +386,27 @@ html, body {
 }
 
 /* Navbar tweaks */
+
+.navbar-toggle {
+    margin: 0;
+}
+
+.navbar-flex .navbar-flex-container {
+    width: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
+
+.navbar-flex .navbar-back {
+    order: -1;
+}
+
+.navbar-flex .navbar-right {
+    margin-right: 0 !important;
+}
 
 .navbar-brand {
     padding: 8px 10px;
@@ -313,34 +431,32 @@ html, body {
     color: green;
 }
 
+.module-actions {
+    display: flex;
+}
+
 .brand-center {
     display: block;
-    width: 50px;
+    width: auto;
     height: 50px;
     padding: 0;
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    margin-left: -25px;
-}
-
-.brand-center img {
-    transition: transform 0.8s ease-in-out;
-}
-
-.brand-center.uncollapse img {
-    transform: rotate(180deg);
-}
-
-.mobile-back-button {
-    color: #fff !important;
-    text-decoration: none;
-    padding: 4px 10px;
-    margin: 10px 15px 0;
+    margin: 0 !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 /* Black navbar for mobile */
-@media only screen and (max-width: 48em) {
+@media only screen and (max-width: 47.999em) {
+
+    .brand-center img {
+        transition: transform 0.8s ease-in-out;
+    }
+
+    .uncollapse .brand-center img {
+        transform: rotate(180deg);
+    }
+
     .navbar-main.uncollapse {
         height: 100%;
     }
@@ -351,6 +467,9 @@ html, body {
         border: none;
         transition: height 0.8s ease-in-out;
         overflow: hidden;
+    }
+    .navbar-main .navbar-nav>li>a {
+        color: #fff;
     }
     .navbar-main .navbar-toggle {
         border: none;
@@ -399,7 +518,7 @@ html, body {
         flex: 0 0 50px;
         border: 2px solid #333;
         border-radius: 25px;
-        padding: 10px 8px 0 !important;
+        padding: 11px 8px 0 !important;
     }
     .module-group-item h4 {
         display: block;
@@ -411,6 +530,11 @@ html, body {
 }
 
 /* ng-tag-inputs styling */
+
+tags-input.ng-invalid .tags {
+    box-shadow: none;
+}
+
 tags-input .tags .tag-item {
     color: #333;
     background: #D3E7FA;
@@ -427,7 +551,10 @@ tags-input .tags .tag-item .remove-button {
 }
 
 /* Modal tweaks on mobile */
-@media only screen and (max-width: 48em) {
+@media only screen and (max-width: 47.99em) {
+    .modal-title {
+        font-size: 1em;
+    }
     .modal-dialog {
         margin: 0;
         height: 100%;
@@ -447,8 +574,16 @@ tags-input .tags .tag-item .remove-button {
     }
 }
 
+.modal-delete-button {
+    float: left;
+}
+
 td .progress {
     margin: 0;
+}
+
+.vmid {
+    vertical-align: middle;
 }
 
 .table>tbody>tr.vmid>td {
