@@ -84,7 +84,7 @@ Class QuizController {
         //make sure quiz exists
         try {
             $module = Module::findOrFail($req->getAttribute("module_id"));
-            $quiz_id = $module->content();
+            $quiz_id = $module->content()['id'];
         }
         catch(ModelNotFoundException $e) {
             $this->logger->info("getQuestionshandler: could not find module");
@@ -92,7 +92,7 @@ Class QuizController {
         }
 
         try {
-            $quiz = Quiz::findOrFail($req->getAttribute("quiz_id"));
+            $quiz = Quiz::findOrFail($quiz_id);
             $questions = $quiz->questions->get();
         }
         catch(ModelNotFoundException $e) {
