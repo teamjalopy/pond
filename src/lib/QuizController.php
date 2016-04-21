@@ -81,10 +81,10 @@ Class QuizController {
             .$lesson->creator_id.") does not match the current user (#". $authUID .")");
             return $res->withStatus(401); // Unauthorized
         }
-        //make sure quiz exists
+        //make sure module exists
         try {
             $module = Module::findOrFail($req->getAttribute("module_id"));
-            $quiz_id = $module->content()['id'];
+            $quiz_id = $module->content()['id']; // get quiz_id
         }
         catch(ModelNotFoundException $e) {
             $this->logger->info("getQuestionshandler: could not find module");
@@ -110,14 +110,15 @@ Class QuizController {
     }
 
     function postQuestionHandler(Request $req, Response $res): Response{
-        //Creates an empty post and returns the quiz id
+        //post a new question to a quiz
         $this->logger->info("POST /api/lessons/{lesson_id}/quizzes/{module_id}/questions");
         $form = $req->getParsedBody();
 
-        if (!isset($form['text'])){
+        if (!isset($form['text'])){ // make sure text receives update
             $this->logger->info("postQuestionHandler: Please fill out the text field.");
             return $res->withStatus(400); // Bad Request
         }
+        // make sure lesson exists
         try {
             $lesson = Lesson::findOrFail($req->getAttribute("lesson_id"));
         }
@@ -142,7 +143,7 @@ Class QuizController {
         //make sure module exists
         try {
             $module = Module::findOrFail($req->getAttribute("module_id"));
-            $quiz_id = $module->content()['id'];
+            $quiz_id = $module->content()['id']; // get quiz_id
         }
         catch(ModelNotFoundException $e) {
             $this->logger->info("postQuestionhandler: could not find module");
@@ -237,10 +238,17 @@ Class QuizController {
             return $res->withStatus(404); // Not Found
         }
         // return the question
-        $stat = new StatusContainer($question);
-        $stat->success();
-        $stat->message('Here is the requested question.');
-        $res = $res->withStatus(200);
+        if ($quiz->id == $question->quiz_id){ // if question is part of quiz
+            $stat = new StatusContainer($question);
+            $stat->success();
+            $stat->message('Here is the requested question.');
+            $res = $res->withStatus(200);
+        } else { // question not part of quiz
+            $stat = new StatusContainer();
+            $stat->error();
+            $stat->message('Question not found');
+            $res = $res->withStatus(404);
+        }
 
         return $res->withJson($stat);
 
@@ -302,14 +310,21 @@ Class QuizController {
             $this->logger->info("putQuestionHandler: could not find question");
             return $res->withStatus(404); // Not Found
         }
-        // insert question
-        $question->text = $form['text'];
-        $question->save();
+        if ($quiz->id == $question->quiz_id){ // if question is part of quiz
+            // update question
+            $question->text = $form['text'];
+            $question->save();
+            $stat = new StatusContainer($question);
+            $stat->success();
+            $stat->message('Question successfully updated.');
+            $res = $res->withStatus(200);
+        } else { // question not part of quiz
+            $stat = new StatusContainer();
+            $stat->error();
+            $stat->message('Question not found');
+            $res = $res->withStatus(404);
+        }
 
-        $stat = new StatusContainer($question);
-        $stat->success();
-        $stat->message('Question successfully updated.');
-        $res = $res->withStatus(200);
 
         return $res->withJson($stat);
     }
@@ -342,7 +357,7 @@ Class QuizController {
         //make sure quiz exists
         try {
             $module = Module::findOrFail($req->getAttribute("module_id"));
-            $quiz_id = $module->content()['id'];
+            $quiz_id = $module->content()['id']; // retrieve quiz_id
         }
         catch(ModelNotFoundException $e) {
             $this->logger->info("deleteQuestionhandler: could not find module");
@@ -364,16 +379,20 @@ Class QuizController {
             $this->logger->info("deleteQuestionHandler: could not find question");
             return $res->withStatus(404); // Not Found
         }
-        $question->delete(); // remove question
-
-        $stat = new StatusContainer();
-        $stat->success();
-        $stat->message('Question successfully deleted.');
-        $res = $res->withStatus(200);
+        if ($quiz->id == $question->quiz_id){ // if question is part of quiz
+            $question->delete(); // remove question
+            $stat = new StatusContainer();
+            $stat->success();
+            $stat->message('Question successfully deleted.');
+            $res = $res->withStatus(200);
+        } else { // question not part of quiz
+            $stat = new StatusContainer();
+            $stat->error();
+            $stat->message('Question not found');
+            $res = $res->withStatus(404);
+        }
 
         return $res->withJson($stat);
     }
-
-
 
 }
