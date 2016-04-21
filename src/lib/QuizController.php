@@ -115,38 +115,54 @@ Class QuizController {
         $form = $req->getParsedBody();
 
         if (!isset($form['text'])){
-            $this->logger->info("postLessonStudentsHandler: Please fill out the text field.");
+            $this->logger->info("postQuestionHandler: Please fill out the text field.");
             return $res->withStatus(400); // Bad Request
         }
         try {
             $lesson = Lesson::findOrFail($req->getAttribute("lesson_id"));
         }
         catch(ModelNotFoundException $e) {
-            $this->logger->info("getQuizHandler: could not find lesson.");
+            $this->logger->info("postQuestionHandler: could not find lesson.");
             return $res->withStatus(404); // Not Found
         }
         //make sure user is authorized to get quiz
         try {
-            $user_id = $this->auth->getAuthorizedUserID($req);
+            $authUID = $this->auth->getAuthorizedUserID($req);
         }
-        catch(RuntimeException $e) {
+        catch(Exception $e) {
+            $authUID = -1;
+        }
+        $uidMismatch = ($lesson->creator_id != $authUID);
+
+        if($uidMismatch) {
+            $this->logger->info("postQuestionHandler: This lesson's creator ID (#"
+            .$lesson->creator_id.") does not match the current user (#". $authUID .")");
             return $res->withStatus(401); // Unauthorized
         }
         //make sure quiz exists
         try {
-            $quiz = Quiz::findOrFail($req->getAttribute("module_id"));
+            $module = Module::findOrFail($req->getAttribute("module_id"));
+            $quiz_id = $module->content()['id'];
         }
         catch(ModelNotFoundException $e) {
-            $this->logger->info("getQuizHandler: could not find quiz.");
+            $this->logger->info("postQuestionhandler: could not find module");
             return $res->withStatus(404); // Not Found
         }
+
+        try {
+            $quiz = Quiz::findOrFail($quiz_id);
+        }
+        catch(ModelNotFoundException $e) {
+            $this->logger->info("postQuestionHandler: could not find quiz");
+            return $res->withStatus(404); // Not Found
+        }
+
         $question = new Question;
         $question->text = $form['text'];
+        $question->quiz_id = $quiz->id;
         $question->save();
 
-
-
-        $stat = new StatusContainer();
+        $stat = new StatusContainer($question);
         $stat->success();
         $stat->message('Question successfully created.');
         $res = $res->withStatus(200);

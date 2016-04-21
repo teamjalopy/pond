@@ -33,7 +33,7 @@ $app->get('/api/lessons/{lesson_id}/modules/{module_id}', '\Pond\LessonControlle
 $app->delete('/api/lessons/{lesson_id}/modules/{module_id}', '\Pond\LessonController:deleteModuleHandler');
 
 // Quiz Endpoints
-$app->post('/api/lessons/{lesson_id}/quizzes/{quiz_id}/questions', '\Pond\QuizController:questionCollectionHandler');
+$app->post('/api/lessons/{lesson_id}/quizzes/{module_id}/questions', '\Pond\QuizController:questionCollectionHandler');
 $app->get('/api/lessons/{lesson_id}/quizzes/{module_id}/questions', '\Pond\QuizController:questionCollectionHandler');
 $app->get('/api/lessons/{lesson_id}/quizzes/{quiz_id}/questions/{question_id}', '\Pond\QuizController:getQuestionHandler');
 $app->put('/api/lessons/{lesson_id}/quizzes/{quiz_id}/questions/{question_id}', '\Pond\QuizController:postQuestionHandler');
