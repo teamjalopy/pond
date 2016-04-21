@@ -4,24 +4,32 @@
 
 
         <div class="panel-body">
-        	<fieldset  data-ng-repeat="choice in choices">
-      <select>
-         <option>Mobile</option>
-         <option>Office</option>
-         <option>Home</option>
-      </select>
-      <input type="text" ng-model="choice.name" name="" placeholder="Enter mobile number">
-      <button class="remove" ng-show="$last" ng-click="removeChoice()">-</button>
-   </fieldset>
-   <button class="addfields" ng-click="addNewChoice()">Add fields</button>
-       
-   <div id="choicesDisplay">
-      {{ choices }}
-   </div>
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label for="inputQuizName" class="col-md-2 control-label">Quiz Name</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" id="inputQuizName" placeholder="Quiz Name">
+                    </div>
+        	       
+                </div>
 
 
+                <fieldset  data-ng-repeat="choice in choices">
+                    <select>
+                        <option>Mobile</option>
+                        <option>Office</option>
+                        <option>Home</option>
+                    </select>
+                    <input type="text" ng-model="choice.name" name="" placeholder="Enter mobile number">
+                        <button class="remove" ng-show="$last" ng-click="removeChoice()">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                        </button>
+                </fieldset>
+            
+                <button class="addfields" ng-click="addNewChoice()">Add fields</button>
+            </form>
 
-        </div>
+        </div><!-- /.panel-body -->
 
 
 
