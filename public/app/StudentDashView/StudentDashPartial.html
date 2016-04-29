@@ -1,0 +1,74 @@
+<!-- Student View HTML -->
+<div class="container">
+
+	<!-- Profile icon & dash header -->
+	<div class="row">
+		<div class="col-md-4 visible-md-block visible-lg-block">
+			<img src="assets/img/profile-default.png" class="img-circle center-block user-icon" width="100" height="100">
+		</div><!-- /.col-md-4 -->
+	</div><!-- /.row -->
+
+	<!-- main row -->
+	<div class="row">
+
+		<!-- sidebar -->
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div ng-cloak style="height:24px">
+						<span class="subtle-head">{{username}}</span>
+						<span class="label label-primary label-caps">{{user.type}}</span>
+					</div>
+				</div>
+				<ul class="list-group list-group-flush">
+					<a href class="list-group-item">Courses</a>
+					<a href class="list-group-item">Certificates</a>
+					<a href class="list-group-item">Inbox <span class="badge">0</span></a>
+				</ul><!-- /.list-group.list-group-flush -->
+			</div><!-- /.panel.panel-default -->
+		</div><!-- /.col-md-4 -->
+
+		<!-- course cards -->
+		<div class="col-md-8">
+			<div class="row">
+
+				<div ng-hide="enrolled.length" class="col-md-12">
+					<p class="in-place-message text-center" style="padding:4em 0;">You are not enrolled in any classes</p>
+				</div>
+
+				<div class="col-md-6" ng-repeat="lesson in enrolled">
+					<div class="course-card">
+						<div class="course-card-title">
+							<a ng-href="#/lessons/{{lesson.id}}">
+								<h3>{{lesson.name}}</h3>
+							</a>
+
+							<span class="course-card-details">
+								<span class="course-card-author">
+									By {{lesson.creator.name || lesson.creator.email}}
+								</span>
+								&middot;
+								<span class="course-card-module-count">
+									<ng-pluralize count="lesson.module_count"
+									 when="{
+										'one': '1 module',
+										'other': '{} modules'
+									 }">
+									</ng-pluralize>
+								</span>
+							</span><!-- /.course-card-details -->
+						</div><!-- /.course-card-title -->
+
+						<div class="progress">
+							<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+								<span class="sr-only">40% Complete</span>
+							</div>
+						</div><!-- /.progress -->
+					</div><!-- /.course-card -->
+				</div><!-- /.col-md-6 -->
+
+			</div><!-- /.row -->
+		</div><!-- /.col-md-8 -->
+
+	</div><!-- /.row -->
+</div><!-- /.container -->

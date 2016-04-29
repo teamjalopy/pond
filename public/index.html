@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" class="full full-force">
+<head>
+    <title>Pond</title>
+
+    <!-- meta tag hints: character set and viewport -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- page icon -->
+    <link rel="icon" href="assets/img/icon.png">
+    <!-- Google Fonts: Lato family -->
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,400italic,700,300' rel='stylesheet' type='text/css'>
+    <!-- Bootstrap & Font Awesome -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/font-awesome.css">
+    <!-- ngTagsInput stylesheets -->
+    <link rel="stylesheet" href="assets/css/ng-tags-input.css">
+    <link rel="stylesheet" href="assets/css/ng-tags-input.bootstrap.css">
+    <!-- Sitewide stylesheet -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Angular blocking include -->
+    <script src="app/lib/angular.js"></script>
+</head>
+<body ng-app="pond" class="full full-force ng-cloak" ontouchstart="">
+
+    <div ng-view class="full full-force">
+
+    </div>
+
+    <!-- Other Libraries -->
+    <script src="https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit"></script>
+    <!-- Angular script(s) -->
+    <!-- angular.js in head -->
+    <script src="app/lib/angular-route.js"></script>
+    <script src="app/lib/angular-cookies.js"></script>
+    <script src="app/lib/angular-animate.js"></script>
+    <script src="app/lib/angular-recaptcha.js"></script>
+    <script src="app/lib/angular-ui-bootstrap.min.js"></script>
+    <script src="app/lib/ng-tags-input.js"></script>
+    <!-- Angular App script -->
+    <script src="app/app.js"></script>
+    <!-- Front Page Controllers -->
+    <script src="app/HomeView/HomeController.js"></script>
+    <script src="app/LoginView/LoginController.js"></script>
+    <!-- Dash Controllers -->
+    <script src="app/common/DashController.js"></script>
+    <script src="app/StudentDashView/StudentDashController.js"></script>
+    <script src="app/TeacherDashView/TeacherDashController.js"></script>
+    <script src="app/SettingsView/SettingsController.js"></script>
+    <!--Lesson Controllers -->
+    <script src="app/StudentArticleView/StudentArticleController.js"></script>
+    <script src="app/StudentVideoView/StudentVideoController.js"></script>
+    <script src="app/StudentTestView/StudentTestController.js"></script>
+    <script src="app/LessonView/LessonController.js"></script>
+</body>
+</html>
